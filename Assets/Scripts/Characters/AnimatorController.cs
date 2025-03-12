@@ -2,26 +2,36 @@ using UnityEngine;
 
 public class AnimatorController : MonoBehaviour, IAnimatorController
 {
-    private Animator animator;
+    private Animator _animator;
 
     void Start()
     {
-        animator = GetComponent<Animator>();
+        _animator = GetComponent<Animator>();
     }
 
-    public void PlayAnimation(string animationName, bool state)
+    public void PlayWalkAnimation(bool state)
     {
-        animator.SetBool(animationName, state);
+        _animator.SetBool("isWalking", state);
     }
 
-    public void TriggerAnimation(string animationName)
+    public void PlayRunAnimation(bool state)
     {
-        animator.SetTrigger(animationName);
+        _animator.SetBool("isRunning", state);
     }
 
-    public void SetFloatAnimation(float x, float y)
+    public void PlayAttackAnimation()
     {
-        animator.SetFloat("X", x);
-        animator.SetFloat("Y", y);
+        _animator.SetInteger("AttackClip", Random.Range(1, 4));
+    }
+
+    public void SetFloatToAnimation(float x, float y)
+    {
+        _animator.SetFloat("X", x);
+        _animator.SetFloat("Y", y);
+    }
+
+    public void SetAttackClipToZero()
+    {
+        _animator.SetInteger("AttackClip", 0);
     }
 }

@@ -2,7 +2,8 @@
 
 internal interface IAnimatorController
 {
-    public void PlayAnimation(string animationName, bool state);
-    public void TriggerAnimation(string animationName);
-    public void SetFloatAnimation(float x, float y);
+    public void PlayWalkAnimation(bool state);
+    public void PlayRunAnimation(bool state);
+    public void PlayAttackAnimation();
+    public void SetFloatToAnimation(float x, float y);
 }
