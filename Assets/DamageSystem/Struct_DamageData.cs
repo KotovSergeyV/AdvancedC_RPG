@@ -2,10 +2,11 @@ using UnityEngine;
 
 public struct Struct_DamageData
 {
-    int Damage;
-    Enum_DamageResponses Responce; 
-    Enum_DamageTypes DamageType;
+    public int DamageAmount;
+    public Enum_DamageResponses Responce;
+    public Enum_DamageTypes DamageType;
 
-    bool isInneviåtable;
-    bool isBlockable;
+    public bool isInneviåtable;
+    public bool isBlockable;
+
 }
