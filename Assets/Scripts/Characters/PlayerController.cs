@@ -1,27 +1,28 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.AI;
 
-public class PlayerController : MonoBehaviour, IPlayerControlled
+public class PlayerController : Movement, IPlayerControlled
 {
-    [SerializeField] private float _moveSpeed = 3f;
-    [SerializeField] private float _runSpeed = 6f;
     [SerializeField] private CharacterController _characterController;
-    [SerializeField] private IAnimatorController _animatorController;
 
     private InputSystem_Actions _inputs;
-
     private Vector2 _moveInput;
     private bool _isRunning = false;
 
-    void Awake()
+    [SerializeField] private float _attackCooldown;
+    private float _lastAttackTime;
+
+    protected override void Awake()
     {
         _inputs = new InputSystem_Actions();
+        base.Awake();
     }
 
     void Start()
     {
         _characterController = GetComponent<CharacterController>();
-        _animatorController = GetComponent<IAnimatorController>();
+        _lastAttackTime = -_attackCooldown;
     }
 
     private void OnEnable()
@@ -30,8 +31,10 @@ public class PlayerController : MonoBehaviour, IPlayerControlled
         _inputs.Player.Move.canceled += OnMove;
         _inputs.Player.Sprint.performed += OnRun;
         _inputs.Player.Sprint.canceled += OnRun;
-        _inputs.Player.Attack.started += OnAttack;
+        _inputs.Player.Attack.performed += OnAttack;
         _inputs.Player.Attack.canceled += OnAttack;
+        _inputs.Player.Cast.started += OnCastMagic;
+        _inputs.Player.Cast.canceled += OnCastMagic;
         _inputs.Enable();
     }
 
@@ -42,40 +45,52 @@ public class PlayerController : MonoBehaviour, IPlayerControlled
 
     void Update()
     {
-        Move(_moveInput);
-    }
-
-    public void Move(Vector2 direction)
-    {
-        float speed = _isRunning ? _runSpeed : _moveSpeed;
-        Vector3 move = new Vector3(direction.x, 0, direction.y);
-
-        _characterController.Move(move * speed * Time.deltaTime);
-
-        if (direction.magnitude > 0)
+        if (_characterController.enabled)
         {
-            if (!_isRunning)
+            Move(_moveInput);
+            _target = null;
+            StopMoving();
+        }
+
+        if (_target == null) return;
+
+        float distanceToTarget = Vector3.Distance(transform.position, _target.position);
+
+        if (distanceToTarget <= _attackRange)
+        {
+            _agent.isStopped = true;
+
+            if (Time.time - _lastAttackTime >= _attackCooldown)
             {
-                _animatorController.PlayWalkAnimation(true);
-                _animatorController.PlayRunAnimation(_isRunning);
-            }
-            else
-            {
-                _animatorController.PlayWalkAnimation(false);
-                _animatorController.PlayRunAnimation(_isRunning);
+                Debug.Log("Attacking");
+                _lastAttackTime = Time.time;
+                AnimatorController?.PlayAttackAnimationByTrigger();
+                AnimatorController?.PlayRunAnimation(false);
+                AnimatorController?.PlayWalkAnimation(false);
             }
         }
         else
         {
-            _animatorController.PlayWalkAnimation(false);
-            _animatorController.PlayRunAnimation(false);
+            _agent.isStopped = false;
         }
     }
 
-    public void GoToTarget(Transform target, float speed)
+    public void Move(Vector2 direction)
     {
-        Vector3 direction = (target.position - transform.position).normalized;
-        Move(new Vector2(direction.x, direction.z));
+        float speed = _isRunning ? _runSpeed : _walkSpeed;
+        Vector3 move = new Vector3(direction.x, 0, direction.y);
+        _characterController.Move(move * speed * Time.deltaTime);
+
+        if (direction.magnitude > 0)
+        {
+            AnimatorController?.PlayWalkAnimation(!_isRunning);
+            AnimatorController?.PlayRunAnimation(_isRunning);
+        }
+        else
+        {
+            AnimatorController?.PlayWalkAnimation(false);
+            AnimatorController?.PlayRunAnimation(false);
+        }
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -83,7 +98,8 @@ public class PlayerController : MonoBehaviour, IPlayerControlled
         if (context.performed)
         {
             _moveInput = context.ReadValue<Vector2>();
-            _animatorController.SetFloatToAnimation(_moveInput.x, _moveInput.y);
+            AnimatorController?.SetFloatToAnimation(_moveInput.x, _moveInput.y);
+            _characterController.enabled = true;
         }
         else if (context.canceled)
         {
@@ -94,7 +110,6 @@ public class PlayerController : MonoBehaviour, IPlayerControlled
     public void OnRun(InputAction.CallbackContext context)
     {
         _isRunning = context.performed;
-
         if (context.canceled)
         {
             _isRunning = false;
@@ -103,8 +118,33 @@ public class PlayerController : MonoBehaviour, IPlayerControlled
 
     public void OnAttack(InputAction.CallbackContext context)
     {
-        //логика атаки
-        Debug.Log("Attack");
-        _animatorController.PlayAttackAnimation();
+        if (context.performed)
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+            if (Physics.Raycast(ray, out RaycastHit hit))
+            {
+                if (hit.collider.CompareTag("Enemy"))
+                {
+                    _target = hit.collider.transform;
+                    base.GoToTarget(_target, _runSpeed);
+                    _characterController.enabled = false;
+                    _agent.isStopped = false;
+                    transform.LookAt(_target);
+                }
+            }
+        }
+    }
+
+    public void OnCastMagic(InputAction.CallbackContext context)
+    {
+        Debug.Log("Cast!");
+    }
+
+    public override void StopMoving()
+    {
+        if (_agent == null) return;
+
+        _agent.isStopped = true;
+        _agent.ResetPath();
     }
 }

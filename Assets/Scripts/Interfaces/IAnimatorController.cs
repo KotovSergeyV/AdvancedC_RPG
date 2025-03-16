@@ -6,4 +6,5 @@ internal interface IAnimatorController
     public void PlayRunAnimation(bool state);
     public void PlayAttackAnimation();
     public void SetFloatToAnimation(float x, float y);
+    public void PlayAttackAnimationByTrigger();
 }

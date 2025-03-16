@@ -34,4 +34,9 @@ public class AnimatorController : MonoBehaviour, IAnimatorController
     {
         _animator.SetInteger("AttackClip", 0);
     }
+
+    public void PlayAttackAnimationByTrigger()
+    {
+        _animator.SetTrigger("AttackTrigger");
+    }
 }
