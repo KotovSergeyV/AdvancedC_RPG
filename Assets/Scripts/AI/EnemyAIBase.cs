@@ -12,14 +12,13 @@ public abstract class EnemyAIBase : Movement
     protected override void Awake()
     {
         base.Awake();
+        FindWaypoints();
     }
 
     protected virtual void Start()
     {
         _currentState = States.Patrolling;
-        FindWaypoints();
         Patrol();
-        _agent = GetComponent<NavMeshAgent>();
     }
 
     /// <summary>

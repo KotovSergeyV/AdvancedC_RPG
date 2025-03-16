@@ -379,7 +379,7 @@ CharacterController:
     m_Bits: 0
   m_LayerOverridePriority: 0
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_Height: 1.6
   m_Radius: 0.5
@@ -402,6 +402,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _attackRange: 3
   _characterController: {fileID: 0}
+  _attackCooldown: 5
 --- !u!195 &904475545
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -647,7 +648,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _attackRange: 2
   _spotRange: 10
-  _attackCooldown: 2
+  _attackCooldown: 5
 --- !u!114 &1304750106
 MonoBehaviour:
   m_ObjectHideFlags: 0
