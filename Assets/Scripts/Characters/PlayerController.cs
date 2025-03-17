@@ -1,14 +1,19 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.AI;
+using Unity.Cinemachine;
 
 public class PlayerController : Movement, IPlayerControlled
 {
     [SerializeField] private CharacterController _characterController;
+    [SerializeField] private CinemachineInputAxisController _cameraInputController;
+    private Camera _mainCamera;
+    private CursorLockMode _cursorLockMode;
 
     private InputSystem_Actions _inputs;
     private Vector2 _moveInput;
     private bool _isRunning = false;
+    private bool _isRotatingCamera = false;
 
     [SerializeField] private float _attackCooldown;
     private float _lastAttackTime;
@@ -22,6 +27,7 @@ public class PlayerController : Movement, IPlayerControlled
     void Start()
     {
         _characterController = GetComponent<CharacterController>();
+        _mainCamera = Camera.main;
         _lastAttackTime = -_attackCooldown;
     }
 
@@ -35,6 +41,9 @@ public class PlayerController : Movement, IPlayerControlled
         _inputs.Player.Attack.canceled += OnAttack;
         _inputs.Player.Cast.started += OnCastMagic;
         _inputs.Player.Cast.canceled += OnCastMagic;
+        _inputs.Player.RotateCamera.performed += OnRotateCamera;
+        _inputs.Player.RotateCamera.canceled += OnRotateCamera;
+
         _inputs.Enable();
     }
 
@@ -78,19 +87,35 @@ public class PlayerController : Movement, IPlayerControlled
 
     public void Move(Vector2 direction)
     {
-        float speed = _isRunning ? _runSpeed : _walkSpeed;
-        Vector3 move = new Vector3(direction.x, 0, direction.y);
-        _characterController.Move(move * speed * Time.deltaTime);
+        if (_mainCamera != null)
+        {
+            Transform cameraTransform = _mainCamera.transform;
+            Vector3 forward = cameraTransform.forward;
+            Vector3 right = cameraTransform.right;
 
-        if (direction.magnitude > 0)
-        {
-            AnimatorController?.PlayWalkAnimation(!_isRunning);
-            AnimatorController?.PlayRunAnimation(_isRunning);
-        }
-        else
-        {
-            AnimatorController?.PlayWalkAnimation(false);
-            AnimatorController?.PlayRunAnimation(false);
+            forward.y = 0;
+            right.y = 0;
+
+            forward.Normalize();
+            right.Normalize();
+
+            Vector3 moveDirection = forward * direction.y + right * direction.x;
+            moveDirection.Normalize();
+
+            float speed = _isRunning ? _runSpeed : _walkSpeed;
+            _characterController.Move(moveDirection * speed * Time.deltaTime);
+
+            if (direction.magnitude > 0)
+            {
+                transform.forward = moveDirection;
+                AnimatorController?.PlayWalkAnimation(!_isRunning);
+                AnimatorController?.PlayRunAnimation(_isRunning);
+            }
+            else
+            {
+                AnimatorController?.PlayWalkAnimation(false);
+                AnimatorController?.PlayRunAnimation(false);
+            }
         }
     }
 
@@ -139,6 +164,24 @@ public class PlayerController : Movement, IPlayerControlled
     public void OnCastMagic(InputAction.CallbackContext context)
     {
         Debug.Log("Cast!");
+    }
+
+    public void OnRotateCamera(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            _isRotatingCamera = true;
+            _cameraInputController.enabled = true;
+            _cursorLockMode = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+        else if (context.canceled)
+        {
+            _isRotatingCamera = false;
+            _cameraInputController.enabled = false;
+            _cursorLockMode = CursorLockMode.None;
+            Cursor.visible = true;
+        }
     }
 
     public override void StopMoving()
