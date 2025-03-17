@@ -21,13 +21,14 @@ public class WarriorAI : EnemyAIBase
                 LookForTarget();
                 break;
             case States.Attacking:
+                transform.LookAt(_target);
                 Attack();
                 break;
         }
     }
 
     /// <summary>
-    /// Проверяет, есть ли игрок в зоне видимости, и начинает атаку
+    /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
     /// </summary>
     private void LookForTarget()
     {

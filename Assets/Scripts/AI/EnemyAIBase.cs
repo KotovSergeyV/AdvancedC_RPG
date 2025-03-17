@@ -12,17 +12,17 @@ public abstract class EnemyAIBase : Movement
     protected override void Awake()
     {
         base.Awake();
-        FindWaypoints();
     }
 
     protected virtual void Start()
     {
         _currentState = States.Patrolling;
         Patrol();
+        FindWaypoints();
     }
 
     /// <summary>
-    /// Находит все точки патрулирования по тегу "Waypoint"
+    /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ "Waypoint"
     /// </summary>
     private void FindWaypoints()
     {
@@ -31,7 +31,7 @@ public abstract class EnemyAIBase : Movement
     }
 
     /// <summary>
-    /// Запускает патрулирование между точками
+    /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     /// </summary>
     protected virtual void Patrol()
     {
@@ -42,7 +42,7 @@ public abstract class EnemyAIBase : Movement
     }
 
     /// <summary>
-    /// Проверяет, достиг ли враг точки патрулирования, и переключает цель
+    /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
     /// </summary>
     protected void UpdatePatrol()
     {

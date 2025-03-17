@@ -58,6 +58,7 @@ public class PlayerController : Movement, IPlayerControlled
 
         if (distanceToTarget <= _attackRange)
         {
+            transform.LookAt(_target);
             _agent.isStopped = true;
 
             if (Time.time - _lastAttackTime >= _attackCooldown)
