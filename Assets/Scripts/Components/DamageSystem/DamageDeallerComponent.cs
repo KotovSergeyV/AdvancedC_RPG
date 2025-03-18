@@ -3,18 +3,18 @@ using UnityEditor.Playables;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
-public class DamageComponent : MonoBehaviour, I_Damage
+public class DamageDeallerComponent : MonoBehaviour, I_DamageDealler
 {
     public int Damage(GameObject target, Struct_DamageData damageData) 
     {
-        if (ChackNull(target))
+        if (CheckNull(target))
         {
             Debug.Log("No target"); return 0; }
 
         else 
         {
             I_Stat targetObject = target.GetComponent<I_Stat>();
-            if (ChackNull(targetObject))
+            if (CheckNull(targetObject))
             {
                 Debug.Log("No I_Stat"); 
                 return 0;
@@ -55,7 +55,7 @@ public class DamageComponent : MonoBehaviour, I_Damage
 
     private int ApplyDamage(I_Health target, int targetsDefence, float damage)
     {
-        if (ChackNull(target)) { return 0; }
+        if (CheckNull(target)) { return 0; }
 
         int summarisedDamage = (int)(damage - (targetsDefence * 0.5f));
         summarisedDamage = Mathf.Max(summarisedDamage, 0); 
@@ -64,12 +64,12 @@ public class DamageComponent : MonoBehaviour, I_Damage
     }
 
 
-    private bool ChackNull(object target) { return target == null; }
+    private bool CheckNull(object target) { return target == null; }
 
 
     private void SetTargetState(I_EntityStates target, Enum_DamageResponses response)
     {
-        if (ChackNull(target)) { return; }
+        if (CheckNull(target)) { return; }
         switch (response)
         {
             case Enum_DamageResponses.SmallStun:
