@@ -8,122 +8,122 @@ ModelImporter:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: OMEGA DISGUSE GUY_M_Med_Carbide_Black_Body_BaseColor
-    second: {fileID: 2800000, guid: c45bf0038d878c84b8c3a6bb44a75d02, type: 3}
+    second: {fileID: 2800000, guid: a5dec332783c2f746a81f39083d1c2e4, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: OMEGA DISGUSE GUY_M_Med_Carbide_Black_Body_Emissive
-    second: {fileID: 2800000, guid: 8b97152ade6347649a641e03362649ae, type: 3}
+    second: {fileID: 2800000, guid: ffc6f1e8042798545bf506cae1a93a17, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: OMEGA DISGUSE GUY_M_Med_Carbide_Black_Body_Metallic
-    second: {fileID: 2800000, guid: bc642ab2d9e350940abc3d9eac4d2f76, type: 3}
+    second: {fileID: 2800000, guid: d97463f5c5fa87b4db8cdedbfbc83081, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: OMEGA DISGUSE GUY_M_Med_Carbide_Black_Body_Normal
-    second: {fileID: 2800000, guid: 397c153b910b42d4eb843af057201dc9, type: 3}
+    second: {fileID: 2800000, guid: 3aeff867bdfcde8439aaff05bb5c658d, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: OMEGA DISGUSE GUY_M_Med_Carbide_Black_Body_Opacity
-    second: {fileID: 2800000, guid: 0e9fbdaf34ff2ba44b8bf2eed2315068, type: 3}
+    second: {fileID: 2800000, guid: 7eeb96f0565d98a4bb924a96a781280f, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: OMEGA DISGUSE GUY_M_Med_Carbide_Black_Body_Roughness
-    second: {fileID: 2800000, guid: f1d361c352dfba5459c82e00f6dee1ff, type: 3}
+    second: {fileID: 2800000, guid: accea36403b49e04482a2bff0106b509, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: OMEGA DISGUSE GUY_M_Med_Carbide_Black_Hat_BaseColor
-    second: {fileID: 2800000, guid: bd7a38257c54d1e4db12d3555c8eb280, type: 3}
+    second: {fileID: 2800000, guid: 5ce52ee2e2690c34e97b4e0bdd1e170a, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: OMEGA DISGUSE GUY_M_Med_Carbide_Black_Hat_Emissive
-    second: {fileID: 2800000, guid: 3ec203b63c8231d48b9f7d18c3cf9306, type: 3}
+    second: {fileID: 2800000, guid: e22ba44fba8fc0e42b7536c32e8bdd81, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: OMEGA DISGUSE GUY_M_Med_Carbide_Black_Hat_Metallic
-    second: {fileID: 2800000, guid: 4c30db933ec264a47be8f76e5de9da86, type: 3}
+    second: {fileID: 2800000, guid: 00a4d22f0e083164a903e77297700770, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: OMEGA DISGUSE GUY_M_Med_Carbide_Black_Hat_Normal
-    second: {fileID: 2800000, guid: 0850167ec7e46954796365bbd3ee127a, type: 3}
+    second: {fileID: 2800000, guid: 873f60a614e9b5341be6544d8af9680d, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: OMEGA DISGUSE GUY_M_Med_Carbide_Black_Hat_Opacity
-    second: {fileID: 2800000, guid: d82d97ab1d994ab41811374624cad24e, type: 3}
+    second: {fileID: 2800000, guid: dd601c0fdb9a8b14894992819a89f21c, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: OMEGA DISGUSE GUY_M_Med_Carbide_Black_Hat_Roughness
-    second: {fileID: 2800000, guid: ce2118d284177fe4e92197667b7c5c93, type: 3}
+    second: {fileID: 2800000, guid: 058608d769181b4468edb4750df32050, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: OMEGA DISGUSE GUY_M_Med_Carbide_Blue_Armor_BaseColor
-    second: {fileID: 2800000, guid: ff3e7fdbe9b3a0e44a81633f9281c5fe, type: 3}
+    second: {fileID: 2800000, guid: 7bc5794bb97a1a6438744577d0d3a99a, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: OMEGA DISGUSE GUY_M_Med_Carbide_Blue_Armor_Emissive
-    second: {fileID: 2800000, guid: ea7be312bfe1e454cb78f0a426a94d47, type: 3}
+    second: {fileID: 2800000, guid: 585724a0fa4ccb2478dff143dbebb5de, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: OMEGA DISGUSE GUY_M_Med_Carbide_Blue_Armor_Metallic
-    second: {fileID: 2800000, guid: f3d95ec62de11004888065fb691a13cc, type: 3}
+    second: {fileID: 2800000, guid: 0e415b2e98cab544c961e20cc37457f8, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: OMEGA DISGUSE GUY_M_Med_Carbide_Blue_Armor_Normal
-    second: {fileID: 2800000, guid: 0fc40e7a933f5284580fe96a05575e3e, type: 3}
+    second: {fileID: 2800000, guid: d4a6a4f68af39ed4da80463d38938e3f, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: OMEGA DISGUSE GUY_M_Med_Carbide_Blue_Armor_Opacity
-    second: {fileID: 2800000, guid: 82bf42dbfc0cd8a409fa19c55561c541, type: 3}
+    second: {fileID: 2800000, guid: cfab29e9ea5d598409e7d20fae65ca23, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: OMEGA DISGUSE GUY_M_Med_Carbide_Blue_Armor_Roughness
-    second: {fileID: 2800000, guid: 163a03f5c88a05f438bf2fc917f51aa7, type: 3}
+    second: {fileID: 2800000, guid: 9cc64cefb75030e4d9c3526f45e2877f, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: OMEGA DISGUSE GUY_M_Med_Carbide_Blue_Body_BaseColor
-    second: {fileID: 2800000, guid: c5906b5972ee6fb4a95af0b7219df371, type: 3}
+    second: {fileID: 2800000, guid: bcde15cc3d153d243885502b1888abe7, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: OMEGA DISGUSE GUY_M_Med_Carbide_Blue_Body_Emissive
-    second: {fileID: 2800000, guid: c681c66adad49834c91d0f3c11284054, type: 3}
+    second: {fileID: 2800000, guid: 6cf2b4ff5630b6244b411b3089719ead, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: OMEGA DISGUSE GUY_M_Med_Carbide_Blue_Body_Metallic
-    second: {fileID: 2800000, guid: d2154e6663b1adb4b8224d028b7422ae, type: 3}
+    second: {fileID: 2800000, guid: 10c0b30073d9d4d4595ae93595882c11, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: OMEGA DISGUSE GUY_M_Med_Carbide_Blue_Body_Normal
-    second: {fileID: 2800000, guid: f5cabe4eb3dfca04ba011974e608157e, type: 3}
+    second: {fileID: 2800000, guid: 1472adcaa6b764045a5ae10231a9940d, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: OMEGA DISGUSE GUY_M_Med_Carbide_Blue_Body_Opacity
-    second: {fileID: 2800000, guid: 33179f9f56e6d3d4191ff1b2b64bf381, type: 3}
+    second: {fileID: 2800000, guid: 11f699ea4af352f4a914c52fabe41789, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: OMEGA DISGUSE GUY_M_Med_Carbide_Blue_Body_Roughness
-    second: {fileID: 2800000, guid: bb597be5fdc674f4fbb75a69e9f82e0b, type: 3}
+    second: {fileID: 2800000, guid: 925765d00f2a2ad4089eb3a777d044fb, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0
