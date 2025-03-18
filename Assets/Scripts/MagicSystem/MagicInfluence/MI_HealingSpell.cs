@@ -1,5 +1,5 @@
 using UnityEngine;
-
+/*
 public class HealingSpell : MagicInfluence
 {
     [SerializeField] int _healAmmount;
@@ -21,3 +21,4 @@ public class HealingSpell : MagicInfluence
         OnActivateMagic += HealSpellActivation;
     }
 }
+*/

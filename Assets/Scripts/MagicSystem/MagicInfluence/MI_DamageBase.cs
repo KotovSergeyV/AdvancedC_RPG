@@ -1,20 +1,23 @@
 using UnityEngine;
 
-public class DamageBase : MagicInfluence
+public class DamageMagic : MagicInfluence
 {
-    [SerializeField] private Struct_DamageData _damageData;
+    private Struct_DamageData _damageData;
 
-    void DamageSpellActivation()
+    public DamageMagic(float castTime, int manaCost, Struct_DamageData damageData)
+        : base(castTime, manaCost)
     {
-        Debug.Log("Active");
-        if (_target != null)
-        {
-            GetComponent<I_DamageDealler>()?.Damage(_target, _damageData);
-        }
+        _damageData = damageData;
+        OnActivateMagic += DamageSpellActivation;
     }
 
-    private void Start()
+    private void DamageSpellActivation(GameObject caster, GameObject target)
     {
-        OnActivateMagic += DamageSpellActivation;
+        if (_target != null)
+        {
+            I_DamageDealler damageDealler = caster.GetComponent<I_DamageDealler>();
+            damageDealler?.Damage(_target, _damageData);
+            Debug.Log("Damage dealt to target: " + _target.name);
+        }
     }
 }

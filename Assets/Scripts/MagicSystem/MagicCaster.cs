@@ -2,57 +2,63 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-
 public class MagicCaster : MonoBehaviour
 {
-    [SerializeField] MagicBase _magicToCast;
-
-    [SerializeField] bool _needMana;
-    [SerializeField] GameObject _target;
+    [SerializeField] private MagicBase _magicToCast; // Assign this in code
+    [SerializeField] private bool _needMana;
+    [SerializeField] private GameObject _target;
 
     public Action OnCastStarted;
     public Action OnCastSuccessful;
     public Action OnCastSuspended;
 
-    private void Start()
+    public void SetTarget(GameObject target)
     {
-        InitiateCast();
+        _target = target;
     }
 
     public void InitiateCast()
     {
         if (_needMana)
         {
-            if (GetComponent<I_Mana>()?.GetMana() > _magicToCast.manaCost)
+            I_Mana mana = GetComponent<I_Mana>();
+            if (mana == null || mana.GetMana() < _magicToCast.ManaCost)
             {
-                GetComponent<I_Mana>()?.RemoveMana(_magicToCast.manaCost);
+                SuspendCast();
+                return; // Exit if mana is insufficient
             }
-            else { SuspendCast(); }
+            mana.RemoveMana(_magicToCast.ManaCost);
         }
-        StartCoroutine(CastRoutine(_magicToCast.CastTime));
+
+        StartCoroutine(CastRoutine());
     }
 
     public void SuspendCast()
     {
-        StopCoroutine(CastRoutine(_magicToCast.CastTime));
+        StopAllCoroutines(); // Stop any running coroutines
         OnCastSuspended?.Invoke();
     }
 
-    private IEnumerator CastRoutine(float castTime)
+    private IEnumerator CastRoutine()
     {
         OnCastStarted?.Invoke();
-        Debug.Log("Started cast: " + castTime);
-        yield return new WaitForSeconds(castTime);
-        OnCastSuccessful?.Invoke();
+        Debug.Log("Started cast: " + _magicToCast.CastTime);
 
-        Debug.Log("casted");
-        if (_magicToCast is MagicInfluence magicInfluence && _target)
+        yield return new WaitForSeconds(_magicToCast.CastTime);
+
+        // Activate the magic
+        if (_magicToCast is MagicInfluence magicInfluence)
         {
-            magicInfluence.SetTarget(_target);
-            Debug.Log("Target locked");
+            magicInfluence.SetTarget(_target); // Set the target for influence-based magic
         }
+        _magicToCast.ActivateMagic(gameObject, _target);
 
+        OnCastSuccessful?.Invoke();
+        Debug.Log("Magic casted successfully!");
+    }
 
-        _magicToCast.OnActivateMagic?.Invoke();
+    public void SetMagic(MagicBase magic)
+    {
+        _magicToCast = magic;
     }
 }
