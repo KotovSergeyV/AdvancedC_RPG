@@ -20,8 +20,8 @@ public class DEBUG_MagicCasterUsage : MonoBehaviour
             Responce = Enum_DamageResponses.SmallStun
         };
 
-        DamageMagic damageMagic = MagicFactory.CreateDamageMagic(2.0f, 20, damageData);
-
+        // DamageMagic damageMagic = MagicFactory.CreateDamageMagic(2.0f, 20, damageData);
+        HealingSpell damageMagic = MagicFactory.CreateHealingSpell(2.0f, 20, 15);
         // Assign the magic to the caster
         _magicCaster.SetMagic(damageMagic);
 

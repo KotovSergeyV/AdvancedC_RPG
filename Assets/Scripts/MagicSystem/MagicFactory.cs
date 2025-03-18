@@ -17,4 +17,10 @@ public static class MagicFactory
     {
         return new DamageMagic(castTime, manaCost, damageData);
     }
+
+    // Create a healling spell instance
+    public static HealingSpell CreateHealingSpell(float castTime, int manaCost, int healAmount)
+    {
+        return new HealingSpell(castTime, manaCost, healAmount);
+    }
 }

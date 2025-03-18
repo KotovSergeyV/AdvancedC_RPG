@@ -1,24 +1,29 @@
 using UnityEngine;
-/*
+
 public class HealingSpell : MagicInfluence
 {
-    [SerializeField] int _healAmmount;
+    private int _healAmount;
 
-    void HealSpellActivation()
+    public HealingSpell(float castTime, int manaCost, int healAmount)
+        : base(castTime, manaCost)
     {
-        if (_target != null)
-        {
-            _target.GetComponent<I_Health>()?.Heal(_healAmmount);
-        }
-        else 
-        {
-            GetComponent<I_Health>()?.Heal(_healAmmount);
-        }
-    }
-
-    private void OnEnable()
-    {
+        _healAmount = healAmount;
         OnActivateMagic += HealSpellActivation;
     }
+
+    private void HealSpellActivation(GameObject caster, GameObject target)
+    {
+        if (target != null)
+        {
+            // Heal the target if it has an I_Health component
+            target.GetComponent<I_Health>()?.Heal(_healAmount);
+            Debug.Log($"Healed target {target.name} for {_healAmount} health.");
+        }
+        else
+        {
+            // Heal the caster if no target is specified
+            caster.GetComponent<I_Health>()?.Heal(_healAmount);
+            Debug.Log($"Healed caster {caster.name} for {_healAmount} health.");
+        }
+    }
 }
-*/
