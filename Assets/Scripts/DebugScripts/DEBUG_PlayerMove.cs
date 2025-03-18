@@ -13,6 +13,7 @@ public class DEBUG_PlayerMove : MonoBehaviour, I_Stat
     [SerializeField] int _agility = 5;
     [SerializeField] int _attack = 5;
     [SerializeField] int _luck = 5;
+    [SerializeField] int _inteligence = 5;
     
 
 
@@ -22,6 +23,7 @@ public class DEBUG_PlayerMove : MonoBehaviour, I_Stat
     public int GetAttack() { return _attack; }
     public int GetLuck() { return _luck; }
     public int GetDefence() { return _defence; }
+    public int GetInteligence() { return _inteligence; }
 
 
     void Start()
