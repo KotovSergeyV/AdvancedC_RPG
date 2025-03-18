@@ -28,7 +28,7 @@ public class WarriorAI : EnemyAIBase
     }
 
     /// <summary>
-    /// ���������, ���� �� ����� � ���� ���������, � �������� �����
+    /// Spot Range to find Player
     /// </summary>
     private void LookForTarget()
     {
@@ -66,7 +66,6 @@ public class WarriorAI : EnemyAIBase
                     Debug.Log("Attacking");
                     _lastAttackTime = Time.time;
                     AnimatorController?.PlayAttackAnimationByTrigger();
-                    AnimatorController?.PlayRunAnimation(false);
                     AnimatorController?.PlayWalkAnimation(false);
                 }
                 break;

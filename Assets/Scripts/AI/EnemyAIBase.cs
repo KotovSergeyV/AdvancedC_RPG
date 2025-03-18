@@ -22,7 +22,7 @@ public abstract class EnemyAIBase : Movement
     }
 
     /// <summary>
-    /// ������� ��� ����� �������������� �� ���� "Waypoint"
+    /// Find all waypoint with tag "Waypoints"
     /// </summary>
     private void FindWaypoints()
     {
@@ -31,7 +31,7 @@ public abstract class EnemyAIBase : Movement
     }
 
     /// <summary>
-    /// ��������� �������������� ����� �������
+    /// State to walk on all Waypoints
     /// </summary>
     protected virtual void Patrol()
     {
@@ -41,9 +41,6 @@ public abstract class EnemyAIBase : Movement
         base.GoToTarget(nextWaypoint, _walkSpeed);
     }
 
-    /// <summary>
-    /// ���������, ������ �� ���� ����� ��������������, � ����������� ����
-    /// </summary>
     protected void UpdatePatrol()
     {
         if (_waypoints == null || _waypoints.Length == 0) return;

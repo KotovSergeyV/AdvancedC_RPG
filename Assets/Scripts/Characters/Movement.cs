@@ -36,11 +36,13 @@ public class Movement : MonoBehaviour, IMovable
             if (speed >= _runSpeed)
             {
                 _animatorController.PlayRunAnimation(true);
+                _animatorController.PlayWalkAnimation(false);
                 _animatorController.SetFloatToAnimation(0, _runSpeed);
             }
             else
             {
                 _animatorController.PlayWalkAnimation(true);
+                _animatorController.PlayRunAnimation(false);
                 _animatorController.SetFloatToAnimation(0, _walkSpeed);
             }
         }

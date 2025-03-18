@@ -39,4 +39,9 @@ public class AnimatorController : MonoBehaviour, IAnimatorController
     {
         _animator.SetTrigger("AttackTrigger");
     }
+
+    public void PlayJumpAnimation()
+    {
+        _animator.SetTrigger("Jump");
+    }
 }

@@ -13,7 +13,6 @@ public class PlayerController : Movement, IPlayerControlled
     private InputSystem_Actions _inputs;
     private Vector2 _moveInput;
     private bool _isRunning = false;
-    private bool _isRotatingCamera = false;
 
     [SerializeField] private float _attackCooldown;
     private float _lastAttackTime;
@@ -170,14 +169,12 @@ public class PlayerController : Movement, IPlayerControlled
     {
         if (context.performed)
         {
-            _isRotatingCamera = true;
             _cameraInputController.enabled = true;
             _cursorLockMode = CursorLockMode.Locked;
             Cursor.visible = false;
         }
         else if (context.canceled)
         {
-            _isRotatingCamera = false;
             _cameraInputController.enabled = false;
             _cursorLockMode = CursorLockMode.None;
             Cursor.visible = true;
