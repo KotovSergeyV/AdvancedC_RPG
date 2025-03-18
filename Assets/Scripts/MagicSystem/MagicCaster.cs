@@ -12,6 +12,9 @@ public class MagicCaster : MonoBehaviour
     public Action OnCastSuccessful;
     public Action OnCastSuspended;
 
+    [SerializeField] AudioClip Clip;
+    [SerializeField] GameObject _partical;
+
     public void SetTarget(GameObject target)
     {
         _target = target;
@@ -45,6 +48,9 @@ public class MagicCaster : MonoBehaviour
         Debug.Log("Started cast: " + _magicToCast.CastTime);
 
         yield return new WaitForSeconds(_magicToCast.CastTime);
+
+        ManagerSFX.Instance.PlaySFX(Clip, transform.position, null, false, 1, 0);
+        ManagerVFX.Instance.PlayVFX(_partical, transform.position, -1.5f);
 
         // Activate the magic
         if (_magicToCast is MagicInfluence magicInfluence)

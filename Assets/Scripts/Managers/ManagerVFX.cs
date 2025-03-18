@@ -12,7 +12,7 @@ public class ManagerVFX : BaseManager<ManagerVFX>
     /// <summary>
     /// Какой эффект и где создаётся
     /// </summary>
-    public void PlayVFX(GameObject effectPrefab, Vector3 position)
+    public void PlayVFX(GameObject effectPrefab, Vector3 position, float timeToDestroy)
     {
         if (effectPrefab == null) return;
 
@@ -21,11 +21,11 @@ public class ManagerVFX : BaseManager<ManagerVFX>
         if (ps != null)
         {
             ps.Play();
-            Destroy(effect, ps.main.duration + 0.1f);
+            Destroy(effect, ps.main.duration + timeToDestroy);
         }
         else
         {
-            Destroy(effect, 2f);
+            Destroy(effect, timeToDestroy);
         }
     }
 }

@@ -6,6 +6,8 @@ public class MagicBase
     public float CastTime { get; private set; }
     public int ManaCost { get; private set; }
     public Action<GameObject, GameObject> OnActivateMagic { get; set; }
+    public GameObject Partical { get; set; }
+    public AudioClip Clip { get; set; }
 
     public MagicBase(float castTime, int manaCost)
     {

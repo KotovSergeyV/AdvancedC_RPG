@@ -23,6 +23,7 @@ public class PlayerController : Movement, IPlayerControlled
     [Header("Çâóêè")]
     [SerializeField] private AudioClip[] _spoteClips;
 
+    private MagicCaster _magicCaster;
     protected override void Awake()
     {
         _inputs = new InputSystem_Actions();
@@ -45,7 +46,6 @@ public class PlayerController : Movement, IPlayerControlled
         _inputs.Player.Attack.performed += OnAttack;
         _inputs.Player.Attack.canceled += OnAttack;
         _inputs.Player.Cast.started += OnCastMagic;
-        _inputs.Player.Cast.canceled += OnCastMagic;
         _inputs.Player.RotateCamera.performed += OnRotateCamera;
         _inputs.Player.RotateCamera.canceled += OnRotateCamera;
 
@@ -171,6 +171,8 @@ public class PlayerController : Movement, IPlayerControlled
     public void OnCastMagic(InputAction.CallbackContext context)
     {
         Debug.Log("Cast!");
+        CastHeal();
+
     }
 
     public void OnRotateCamera(InputAction.CallbackContext context)
@@ -195,5 +197,32 @@ public class PlayerController : Movement, IPlayerControlled
 
         _agent.isStopped = true;
         _agent.ResetPath();
+    }
+
+    public void CastHeal()
+    {
+        // Get the MagicCaster component
+        _magicCaster = GetComponent<MagicCaster>();
+
+        // Example: Create a damage magic instance using the factory
+        Struct_DamageData damageData = new Struct_DamageData()
+        {
+            DamageAmount = 10,
+            DamageType = Enum_DamageTypes.Magic,
+            isBlockable = false,
+            isInneviåtable = true,
+            Responce = Enum_DamageResponses.SmallStun
+        };
+
+        // DamageMagic damageMagic = MagicFactory.CreateDamageMagic(2.0f, 20, damageData);
+        HealingSpell damageMagic = MagicFactory.CreateHealingSpell(2.0f, 20, 15);
+        // Assign the magic to the caster
+        _magicCaster.SetMagic(damageMagic);
+
+        // Set the target (e.g., an enemy in the scene)
+        _magicCaster.SetTarget(gameObject);
+
+        // Cast the magic
+        _magicCaster.InitiateCast();
     }
 }

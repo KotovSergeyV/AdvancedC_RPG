@@ -58,14 +58,4 @@ public class DEBUG_PlayerMove : MonoBehaviour, I_Stat
         _stunFlag = false;
         
     }
-
-    private void FixedUpdate()
-    {
-        if (!_stunFlag) { Move(); }
-    }
-
-    void Move()
-    {
-        transform.position += _direction * _speed * Time.deltaTime;
-    }
 }
