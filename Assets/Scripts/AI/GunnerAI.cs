@@ -38,6 +38,7 @@ public class GunnerAI : EnemyAIBase
         float distance = Vector3.Distance(transform.position, player.transform.position);
         if (distance <= _spotRange)
         {
+            ManagerSFX.Instance.PlaySFX(_spoteClips?[Random.Range(0, _spoteClips.Length)], transform.position, null, true, 1, 0);
             _target = player.transform;
             _currentState = States.Attacking;
         }
