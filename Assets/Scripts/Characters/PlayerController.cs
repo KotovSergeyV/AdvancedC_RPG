@@ -20,6 +20,9 @@ public class PlayerController : Movement, IPlayerControlled
     [SerializeField] Texture2D _attackCursorTexture;
     [SerializeField] Vector2 _attackCursorHotSpot;
 
+    [Header("Звуки")]
+    [SerializeField] private AudioClip[] _spoteClips;
+
     protected override void Awake()
     {
         _inputs = new InputSystem_Actions();
@@ -159,6 +162,7 @@ public class PlayerController : Movement, IPlayerControlled
                     _agent.isStopped = false;
                     transform.LookAt(_target);
                     Cursor.SetCursor(_attackCursorTexture, _attackCursorHotSpot, CursorMode.Auto);
+                    ManagerSFX.Instance.PlaySFX(_spoteClips[Random.Range(0, _spoteClips.Length)], transform.position, null, false, 1, 0);
                 }
             }
         }

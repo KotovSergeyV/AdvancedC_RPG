@@ -9,6 +9,11 @@ public abstract class EnemyAIBase : Movement
     protected int _currentWaypointIndex = 0;
     protected States _currentState;
 
+
+    [Header("Звуки")]
+    [SerializeField] protected AudioClip[] _takeDamageClips;
+    [SerializeField] protected AudioClip[] _spoteClips;
+
     protected override void Awake()
     {
         base.Awake();
