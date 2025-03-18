@@ -1386,6 +1386,8 @@ MonoBehaviour:
   _characterController: {fileID: 0}
   _cameraInputController: {fileID: 929549944}
   _attackCooldown: 5
+  _attackCursorTexture: {fileID: 2800000, guid: 93417d47ec6cc0143b21ee60509046be, type: 3}
+  _attackCursorHotSpot: {x: 40, y: 40}
 --- !u!114 &1627660535
 MonoBehaviour:
   m_ObjectHideFlags: 0

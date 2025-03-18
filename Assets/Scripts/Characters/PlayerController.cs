@@ -17,6 +17,9 @@ public class PlayerController : Movement, IPlayerControlled
     [SerializeField] private float _attackCooldown;
     private float _lastAttackTime;
 
+    [SerializeField] Texture2D _attackCursorTexture;
+    [SerializeField] Vector2 _attackCursorHotSpot;
+
     protected override void Awake()
     {
         _inputs = new InputSystem_Actions();
@@ -155,6 +158,7 @@ public class PlayerController : Movement, IPlayerControlled
                     _characterController.enabled = false;
                     _agent.isStopped = false;
                     transform.LookAt(_target);
+                    Cursor.SetCursor(_attackCursorTexture, _attackCursorHotSpot, CursorMode.Auto);
                 }
             }
         }
