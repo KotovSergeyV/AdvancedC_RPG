@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class DEBUG_PlayerMove : MonoBehaviour, I_Stat
+public class DEBUG_StatsAndResponces : MonoBehaviour, I_Stat
 {
 
     [SerializeField] bool _stunFlag = false;
