@@ -12,7 +12,7 @@ public class PlayerController : Movement, IPlayerControlled
     [SerializeField] private float _attackCooldown;
     private float _lastAttackTime;
 
-    [Header("Звуки")]
+    [Header("пїЅпїЅпїЅпїЅпїЅ")]
     [SerializeField] private AudioClip[] _spoteClips;
 
     private MagicCaster _magicCaster;
@@ -117,6 +117,7 @@ public class PlayerController : Movement, IPlayerControlled
     public void OnMove(InputAction.CallbackContext context)
     {
         _moveInput = context.ReadValue<Vector2>();
+        _characterController.enabled = true;
     }
 
     public void OnRun(InputAction.CallbackContext context)

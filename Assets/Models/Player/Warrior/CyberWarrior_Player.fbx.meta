@@ -5,6 +5,26 @@ ModelImporter:
   internalIDToNameTable: []
   externalObjects:
   - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Med_Carbide_Black_Body
+    second: {fileID: 2100000, guid: a3c393c59787ce54fba71ba5d81ec351, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Med_Carbide_Black_Hat
+    second: {fileID: 2100000, guid: 87d3ca3a71d55b3499ec8186728ab776, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Med_Carbide_Blue_Armor
+    second: {fileID: 2100000, guid: 92e260213ddefd04fa790f3ad52b5c25, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Med_Carbide_Blue_Body
+    second: {fileID: 2100000, guid: 5b9fbb481633aa34fb10612cd1505107, type: 2}
+  - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: OMEGA DISGUSE GUY_M_Med_Carbide_Black_Body_BaseColor

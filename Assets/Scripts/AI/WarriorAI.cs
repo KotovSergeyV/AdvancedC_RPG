@@ -67,6 +67,7 @@ public class WarriorAI : EnemyAIBase
                     _lastAttackTime = Time.time;
                     AnimatorController?.PlayAttackAnimationByTrigger();
                     AnimatorController?.PlayWalkAnimation(false);
+                    StopMoving();
                 }
                 break;
         }
