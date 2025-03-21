@@ -49,4 +49,9 @@ public class AnimatorController : MonoBehaviour, IAnimatorController
     {
         _animator.SetBool("isDead", state);
     }
+
+    public void PlayHitAnimation()
+    {
+        _animator.SetTrigger("Hit");
+    }
 }

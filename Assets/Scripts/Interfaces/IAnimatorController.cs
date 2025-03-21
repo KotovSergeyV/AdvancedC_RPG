@@ -9,4 +9,5 @@ internal interface IAnimatorController
     public void PlayAttackAnimationByTrigger();
     public void PlayJumpAnimation();
     public void PlayDeathAnimation(bool state);
+    public void PlayHitAnimation();
 }
