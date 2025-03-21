@@ -24,6 +24,9 @@ public class WarriorAI : EnemyAIBase
                 transform.LookAt(_target);
                 Attack();
                 break;
+            case States.Dead:
+                Dead();
+                break;
         }
     }
 

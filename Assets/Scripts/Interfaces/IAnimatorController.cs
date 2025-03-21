@@ -8,4 +8,5 @@ internal interface IAnimatorController
     public void SetFloatToAnimation(float x, float y);
     public void PlayAttackAnimationByTrigger();
     public void PlayJumpAnimation();
+    public void PlayDeathAnimation(bool state);
 }

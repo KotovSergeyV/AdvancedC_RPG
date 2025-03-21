@@ -12,7 +12,6 @@ public class PlayerController : Movement, IPlayerControlled
     [SerializeField] private float _attackCooldown;
     private float _lastAttackTime;
 
-    [Header("�����")]
     [SerializeField] private AudioClip[] _spoteClips;
 
     private MagicCaster _magicCaster;

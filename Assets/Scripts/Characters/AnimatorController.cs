@@ -44,4 +44,9 @@ public class AnimatorController : MonoBehaviour, IAnimatorController
     {
         _animator.SetTrigger("Jump");
     }
+
+    public void PlayDeathAnimation(bool state)
+    {
+        _animator.SetBool("isDead", state);
+    }
 }
