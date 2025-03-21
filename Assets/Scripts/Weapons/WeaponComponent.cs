@@ -3,13 +3,7 @@ using UnityEngine;
 
 public class WeaponComponent : MonoBehaviour
 {
-    /*
-    [SerializeField] private int _attack;
-    [SerializeField] private Enum_DamageTypes _damageType;
-    [SerializeField] private Enum_DamageResponses _damageResponce;
-    [SerializeField] private bool isBlockable;
-    [SerializeField] private bool isInneviåtable;
-    */
+
     [SerializeField] private int _physicLayer;
     [SerializeField] private GameObject _rootOwner;
 
@@ -22,21 +16,22 @@ public class WeaponComponent : MonoBehaviour
         _physicLayer = _rootOwner.layer;
     }
 
-    private void OnTriggerEnter(Collider other)
+    protected void OnWeaponDamage(GameObject target)
     {
-
-        if (other.gameObject.layer != _physicLayer) 
+        Debug.Log(target);
+        if (target.layer != _physicLayer) 
         {
 
             if (_rootOwner.TryGetComponent<I_Stat>(out I_Stat stats))
             {
-                _rootOwner.GetComponent<DamageDeallerComponent>()?.Damage(other.gameObject, _weaponDamageData, stats);
+                _rootOwner.GetComponent<DamageDeallerComponent>()?.Damage(target, _weaponDamageData, stats);
             }
 
             else {
-                _rootOwner.GetComponent<DamageDeallerComponent>()?.Damage(other.gameObject, _weaponDamageData);
+                _rootOwner.GetComponent<DamageDeallerComponent>()?.Damage(target, _weaponDamageData);
             }
               
         }
     }
+
 }
