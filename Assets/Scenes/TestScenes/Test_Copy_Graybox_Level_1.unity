@@ -928,9 +928,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6ce27273e5e7314da26601786a8df81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attack: 1
   _physicLayer: 0
   _rootOwner: {fileID: 0}
+  _weaponDamageData:
+    DamageAmount: 5
+    Responce: 2
+    DamageType: 0
+    "isInnevi\u0435table": 0
+    isBlockable: 1
 --- !u!1 &1002502671
 GameObject:
   m_ObjectHideFlags: 0
