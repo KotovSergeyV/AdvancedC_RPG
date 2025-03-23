@@ -947,7 +947,9 @@ MonoBehaviour:
   _rootOwner: {fileID: 0}
   _weaponDamageData:
     DamageAmount: 5
+
     Responce: 0
+
     DamageType: 0
     "isInnevi\u0435table": 0
     isBlockable: 1

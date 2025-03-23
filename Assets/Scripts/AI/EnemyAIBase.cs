@@ -10,7 +10,6 @@ public abstract class EnemyAIBase : Movement
     protected States _currentState;
 
 
-    [Header("Звуки")]
     [SerializeField] protected AudioClip[] _takeDamageClips;
     [SerializeField] protected AudioClip[] _spoteClips;
 
@@ -65,11 +64,31 @@ public abstract class EnemyAIBase : Movement
         {
             UpdatePatrol();
         }
+
+        bool _dead;
+        if (TryGetComponent<HealthComponent>(out HealthComponent health)){
+            _dead = health.GetIsDead();
+            if (_dead)
+            {
+                _currentState = States.Dead;
+                AnimatorController.PlayDeathAnimation(_dead);
+            }
+        }
+    }
+
+    protected virtual void Dead() 
+    {
+        Rigidbody _rb = GetComponent<Rigidbody>();
+        Destroy(_rb);
+        Collider _col = GetComponent<Collider>();
+        Destroy(_col);
+        this.enabled = false;
     }
 }
 
 public enum States
 {
     Patrolling,
-    Attacking
+    Attacking,
+    Dead
 }

@@ -24,12 +24,14 @@ public class WeaponComponent : MonoBehaviour
 
             if (_rootOwner.TryGetComponent<I_Stat>(out I_Stat stats))
             {
+
                 _rootOwner.GetComponent<DamageDeallerComponent>()?.Damage(target, _weaponDamageData, stats);
             }
 
             else {
                 _rootOwner.GetComponent<DamageDeallerComponent>()?.Damage(target, _weaponDamageData);
             }
+
               
         }
     }

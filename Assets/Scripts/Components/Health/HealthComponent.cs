@@ -14,7 +14,12 @@ public class HealthComponent : MonoBehaviour, I_Health
     public int Damage(int amount)   
     { 
         _health = Mathf.Max(_health-amount, 0);
-        if (_health == 0) { _isDead = true; }   
+        GetComponent<AnimatorController>()?.PlayHitAnimation(); 
+        if (_health == 0) 
+        { 
+            _isDead = true;
+            GetComponent<AnimatorController>()?.PlayDeathAnimation(_isDead); 
+        }   
         return _health;
     }
     public void Heal(int amount)
