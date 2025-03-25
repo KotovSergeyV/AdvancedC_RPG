@@ -577,6 +577,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8889865818d1834c9b0f8d4d1573fb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &752339700
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 752339684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a38c99d23874d943b92303f4c940d55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &752339701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 752339684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e9f900f1b2dd7e4fb9abb223ebf5d71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _stunFlag: 0
+  _direction: {x: 1, y: 0, z: 0}
+  _speed: 5
+  _defence: 5
+  _agility: 5
+  _attack: 5
+  _luck: 5
+  _inteligence: 5
 --- !u!1 &821083182
 GameObject:
   m_ObjectHideFlags: 0
@@ -947,12 +979,10 @@ MonoBehaviour:
   _rootOwner: {fileID: 0}
   _weaponDamageData:
     DamageAmount: 5
-
     Responce: 0
-
     DamageType: 0
     "isInnevi\u0435table": 0
-    isBlockable: 1
+    isBlockable: 0
 --- !u!1 &1002502671
 GameObject:
   m_ObjectHideFlags: 0
@@ -8976,6 +9006,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 6df6f4d7496f7c644b8e66e5a3b02da6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 752339697}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 6df6f4d7496f7c644b8e66e5a3b02da6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 752339701}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 6df6f4d7496f7c644b8e66e5a3b02da6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 752339700}
   m_SourcePrefab: {fileID: 100100000, guid: 6df6f4d7496f7c644b8e66e5a3b02da6, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
