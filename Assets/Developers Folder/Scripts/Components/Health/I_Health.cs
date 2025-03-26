@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public interface I_Health
+public interface I_Health // А к чему эти интерфейсы?
 {
     int Damage(int amount);
     void Heal(int amount);

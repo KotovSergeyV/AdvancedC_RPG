@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-internal interface IMovable
+internal interface IMovable // А тут другой префикс)
 {
     void GoToTarget(Transform target, float speed);
 }
