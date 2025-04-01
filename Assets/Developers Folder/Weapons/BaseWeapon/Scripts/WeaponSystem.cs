@@ -27,18 +27,8 @@ public class WeaponSystem : MonoBehaviour
         if (target.layer != _physicLayer) 
         {
             Debug.Log(target);
-
-            if (_rootOwner.TryGetComponent<IStatSystem>(out IStatSystem stats))
-            {
-                _rootOwner.GetComponent<DamageCalculationSystem>()?.Damage(target, _weaponDamageData, stats);
-            }
-
-            else
-            {
-                _rootOwner.GetComponent<DamageCalculationSystem>()?.Damage(target, _weaponDamageData);
-            }
-
-              
+            EntityCoreSystem coreSystem = _rootOwner.GetComponent<EntityCoreSystem>();
+            coreSystem.GetDamageCalculationSystem().Damage(target, _weaponDamageData, coreSystem.GetStatSystem());
         }
     }
 

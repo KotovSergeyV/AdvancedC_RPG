@@ -1,6 +1,10 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Unity.Cinemachine;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.AddressableAssets;
+
+
 
 public class CameraController : MonoBehaviour
 {
@@ -12,12 +16,32 @@ public class CameraController : MonoBehaviour
     [SerializeField] private Texture2D _highlightCursor;
     [SerializeField] private Vector2 _cursorHotspot;
 
+    private AsyncOperationHandle<Texture2D> _dCursorLoadHandle;
+    private AsyncOperationHandle<Texture2D> _hCursorLoadHandle;
+
     private Camera _mainCamera;
 
     private void Awake()
     {
+        _cameraInputController = GetComponentInChildren<CinemachineInputAxisController>();
+        LoadCursorsTexture("DefaultCursor", _defaultCursor);
+
         _inputs = new InputSystem_Actions();
         _mainCamera = Camera.main;
+    }
+
+    async void LoadCursorsTexture(string cursorAddress, Texture2D cursor)
+    {
+        Debug.Log("Loading cursor...");
+        _dCursorLoadHandle = Addressables.LoadAssetAsync<Texture2D>("DefaultCursor");
+        _hCursorLoadHandle = Addressables.LoadAssetAsync<Texture2D>("HighlightCursor");
+        await _dCursorLoadHandle.Task;
+        await _hCursorLoadHandle.Task;
+
+        if (_dCursorLoadHandle.Status == AsyncOperationStatus.Succeeded) { _defaultCursor = _dCursorLoadHandle.Result; }
+        else { Debug.Log("Error assigning default texture!"); }
+        if (_hCursorLoadHandle.Status == AsyncOperationStatus.Succeeded) { _highlightCursor = _hCursorLoadHandle.Result; }
+        else { Debug.Log("Error assigning highlight texture!"); }
     }
 
     private void OnEnable()

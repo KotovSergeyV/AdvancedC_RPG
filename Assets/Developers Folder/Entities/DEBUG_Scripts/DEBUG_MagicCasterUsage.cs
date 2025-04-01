@@ -5,6 +5,8 @@ public class DEBUG_MagicCasterUsage : MonoBehaviour
     private MagicCaster _magicCaster;
     [SerializeField] private GameObject _target;
 
+    AudioClip _healAudioClip;
+
     private void Start()
     {
         // Get the MagicCaster component

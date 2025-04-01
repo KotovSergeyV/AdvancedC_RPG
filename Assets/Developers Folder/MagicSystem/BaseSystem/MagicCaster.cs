@@ -13,7 +13,19 @@ public class MagicCaster : MonoBehaviour
     public Action OnCastSuspended;
 
     [SerializeField] AudioClip Clip;
-    [SerializeField] GameObject _partical;
+    [SerializeField] GameObject _partical; 
+
+    ManagerSFX _managerSFX;
+    ManagerVFX _managerVFX;
+
+    IManaSystem _manaSystem;
+
+    public void Initialize(IManaSystem manaSystem, ManagerSFX managerSFX, ManagerVFX managerVFX)
+    {
+        _manaSystem = manaSystem;
+        _managerSFX = managerSFX;
+        _managerVFX = managerVFX;
+    }
 
     public void SetTarget(GameObject target)
     {
@@ -24,13 +36,12 @@ public class MagicCaster : MonoBehaviour
     {
         if (_needMana)
         {
-            IManaSystem mana = GetComponent<IManaSystem>();
-            if (mana == null || mana.GetMana() < _magicToCast.ManaCost)
+            if (_manaSystem == null || _manaSystem.GetMana() < _magicToCast.ManaCost)
             {
                 SuspendCast();
                 return; // Exit if mana is insufficient
             }
-            mana.RemoveMana(_magicToCast.ManaCost);
+            _manaSystem.RemoveMana(_magicToCast.ManaCost);
         }
 
         StartCoroutine(CastRoutine());
@@ -49,8 +60,9 @@ public class MagicCaster : MonoBehaviour
 
         yield return new WaitForSeconds(_magicToCast.CastTime);
 
-        ManagerSFX.Instance.PlaySFX(Clip, transform.position, null, false, 1, 0);
-        ManagerVFX.Instance.PlayVFX(_partical, transform.position, -1.5f);
+        _managerSFX.PlaySFX(_magicToCast.Clip, transform.position, null, false, 1, 0);
+        Debug.Log(_magicToCast.Clip);
+        _managerVFX.PlayVFX(_partical, transform.position, -1.5f);
 
         // Activate the magic
         if (_magicToCast is MagicInfluenceBase magicInfluence)

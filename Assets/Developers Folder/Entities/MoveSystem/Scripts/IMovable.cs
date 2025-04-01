@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 
-internal interface IMovable
+public interface IMovable
 {
     void GoToTarget(Transform target, float speed);
 }
 
-internal interface IPlayerControlled : IMovable
+public interface IPlayerControlled : IMovable
 {
     void Move(Vector2 direction);
 }

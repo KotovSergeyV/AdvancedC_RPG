@@ -1,8 +1,12 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.AI;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.AddressableAssets;
+using System.Linq;
+using System.Collections.Generic;
 
-public class PlayerController : Movement, IPlayerControlled
+public class PlayerController : Movable, IPlayerControlled
 {
     [SerializeField] private CharacterController _characterController;
     private InputSystem_Actions _inputs;
@@ -12,19 +16,51 @@ public class PlayerController : Movement, IPlayerControlled
     [SerializeField] private float _attackCooldown;
     private float _lastAttackTime;
 
-    [SerializeField] private AudioClip[] _spoteClips;
+    [SerializeField] private List<AudioClip> _spoteClips = new List<AudioClip>();
 
     private MagicCaster _magicCaster;
     private Camera _mainCamera;
+
+    ManagerSFX _managerSFX;
+
+
+    private AsyncOperationHandle<AudioClip> _clipHandle;
+
 
     protected override void Awake()
     {
         _inputs = new InputSystem_Actions();
         base.Awake();
     }
+    public void Initialize(MagicCaster magicCaster, ManagerSFX managerSFX) 
+    {
+        _managerSFX = managerSFX;
+
+        _magicCaster = magicCaster;
+    }
+
+    async void LoadAudioClip(string audioAddress)
+    {
+        _clipHandle = Addressables.LoadAssetAsync<AudioClip>(audioAddress);
+        await _clipHandle.Task;
+
+        if (_clipHandle.Status == AsyncOperationStatus.Succeeded)
+        {
+            _spoteClips.Add(_clipHandle.Result);
+            Debug.Log("Appended");
+        }
+        else
+        {
+            Debug.Log("Error assigningSound!");
+        }
+    }
 
     void Start()
     {
+        _attackCooldown = 5;
+
+        LoadAudioClip("Narvalsia");
+
         _characterController = GetComponent<CharacterController>();
         _mainCamera = Camera.main;
         _lastAttackTime = -_attackCooldown;
@@ -137,8 +173,11 @@ public class PlayerController : Movement, IPlayerControlled
                     base.GoToTarget(_target, _runSpeed);
                     _characterController.enabled = false;
                     _agent.isStopped = false;
+
                     transform.LookAt(_target);
-                    ManagerSFX.Instance.PlaySFX(_spoteClips[Random.Range(0, _spoteClips.Length)], transform.position, null, false, 1, 0);
+                    Debug.Log(_managerSFX);
+                    Debug.Log(_spoteClips[Random.Range(0, _spoteClips.Count)]);
+                    _managerSFX.PlaySFX(_spoteClips[Random.Range(0, _spoteClips.Count)], transform.position, null, false, 1, 0);
                 }
             }
         }
@@ -159,7 +198,6 @@ public class PlayerController : Movement, IPlayerControlled
 
     public void CastHeal()
     {
-        _magicCaster = GetComponent<MagicCaster>();
         HealingSpell healingSpell = MagicFactory.CreateHealingSpell(2.0f, 20, 15);
         _magicCaster.SetMagic(healingSpell);
         _magicCaster.SetTarget(gameObject);

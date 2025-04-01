@@ -2,7 +2,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
-public abstract class EnemyAIBase : Movement
+public abstract class EnemyAIBase : Movable
 {
     [SerializeField] protected float _spotRange;
     protected Transform[] _waypoints;
@@ -66,12 +66,12 @@ public abstract class EnemyAIBase : Movement
         }
 
         bool _dead;
-        if (TryGetComponent<HealthSystem>(out HealthSystem health)){
-            _dead = health.GetIsDead();
+        if (TryGetComponent<EntityCoreSystem>(out EntityCoreSystem core)) {
+            _dead = core.GetHealthSystem().GetIsDead();
             if (_dead)
             {
                 _currentState = States.Dead;
-                AnimatorController.PlayDeathAnimation(_dead);
+                //AnimatorController.PlayDeathAnimation(_dead);
             }
         }
     }
