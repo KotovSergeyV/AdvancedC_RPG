@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DamageMagic : MagicInfluence
+public class DamageMagic : MagicInfluenceBase
 {
     private Struct_DamageData _damageData;
 
@@ -15,7 +15,7 @@ public class DamageMagic : MagicInfluence
     {
         if (_target != null)
         {
-            I_DamageDealler damageDealler = caster.GetComponent<I_DamageDealler>();
+            IDamageCalculationSystem damageDealler = caster.GetComponent<IDamageCalculationSystem>();
             damageDealler?.Damage(_target, _damageData);
             Debug.Log("Damage dealt to target: " + _target.name);
         }

@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class RangeWeapon : WeaponComponent
+public class RangeWeapon : WeaponSystem
 {
     [SerializeField] float _range;
 

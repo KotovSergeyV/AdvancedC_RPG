@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class HealthComponent : MonoBehaviour, I_Health
+public class IHealthSystem : MonoBehaviour, HealthSystem
 {
     //debug 
     [SerializeField] private int _health;

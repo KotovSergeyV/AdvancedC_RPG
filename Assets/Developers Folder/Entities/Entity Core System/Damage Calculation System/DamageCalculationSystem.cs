@@ -3,9 +3,9 @@ using UnityEditor.Playables;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
-public class DamageDeallerComponent : MonoBehaviour, I_DamageDealler
+public class DamageCalculationSystem : IDamageCalculationSystem
 {
-    public int Damage(GameObject target, Struct_DamageData damageData, I_Stat ownerStats=null) 
+    public int Damage(GameObject target, Struct_DamageData damageData, IStatSystem ownerStats=null) 
     {
         if (CheckNull(target))
         { 
@@ -16,7 +16,7 @@ public class DamageDeallerComponent : MonoBehaviour, I_DamageDealler
         if (ownerStats != null) { damageData = CalaculatePotentialDamage(ownerStats, damageData); }
 
 
-        I_Stat targetObject = target.GetComponent<I_Stat>();
+        IStatSystem targetObject = target.GetComponent<IStatSystem>();
         if (CheckNull(targetObject))
         {
             Debug.Log("No I_Stat");
@@ -38,23 +38,23 @@ public class DamageDeallerComponent : MonoBehaviour, I_DamageDealler
                 return 0;
             }
 
-            else if (target.GetComponent<I_EntityStates>().GetEntityState() == Enum_EntityStates.Blocking && damageData.isBlockable)
+            else if (target.GetComponent<IEntityStatesSystem>().GetEntityState() == Enum_EntityStates.Blocking && damageData.isBlockable)
             {
-                SetTargetState(target.GetComponent<I_EntityStates>(), damageData.Responce);
+                SetTargetState(target.GetComponent<IEntityStatesSystem>(), damageData.Responce);
                 Debug.Log("DamagedBlocked");
-                return ApplyDamage(target.GetComponent<I_Health>(), defence, damageData.DamageAmount * 0.1f);
+                return ApplyDamage(target.GetComponent<HealthSystem>(), defence, damageData.DamageAmount * 0.1f);
             }
 
         }
 
-        SetTargetState(target.GetComponent<I_EntityStates>(), damageData.Responce);
+        SetTargetState(target.GetComponent<IEntityStatesSystem>(), damageData.Responce);
         Debug.Log("DamagedFull: "+ damageData.DamageAmount);
-        return ApplyDamage(target.GetComponent<I_Health>(), defence, damageData.DamageAmount);
+        return ApplyDamage(target.GetComponent<HealthSystem>(), defence, damageData.DamageAmount);
 
 
     }
 
-    private int ApplyDamage(I_Health target, int targetsDefence, float damage)
+    private int ApplyDamage(HealthSystem target, int targetsDefence, float damage)
     {
         if (CheckNull(target)) { return 0; }
 
@@ -68,7 +68,7 @@ public class DamageDeallerComponent : MonoBehaviour, I_DamageDealler
     private bool CheckNull(object target) { return target == null; }
 
 
-    private void SetTargetState(I_EntityStates target, Enum_DamageResponses response)
+    private void SetTargetState(IEntityStatesSystem target, Enum_DamageResponses response)
     {
         if (CheckNull(target)) { return; }
         switch (response)
@@ -86,7 +86,7 @@ public class DamageDeallerComponent : MonoBehaviour, I_DamageDealler
         }
     }
 
-    private Struct_DamageData CalaculatePotentialDamage(I_Stat weaponHolderStats, Struct_DamageData wDamageData)
+    private Struct_DamageData CalaculatePotentialDamage(IStatSystem weaponHolderStats, Struct_DamageData wDamageData)
     {
         wDamageData.DamageAmount += weaponHolderStats.GetAttack();
         return wDamageData;

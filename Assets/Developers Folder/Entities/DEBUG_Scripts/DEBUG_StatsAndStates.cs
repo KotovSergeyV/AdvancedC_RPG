@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class DEBUG_StatsAndResponces : MonoBehaviour, I_Stat
+public class DEBUG_StatsAndResponces : MonoBehaviour, IStatSystem
 {
 
     [SerializeField] bool _stunFlag = false;
@@ -17,7 +17,7 @@ public class DEBUG_StatsAndResponces : MonoBehaviour, I_Stat
     
 
 
-    [SerializeField] I_EntityStates _states;
+    [SerializeField] IEntityStatesSystem _states;
 
     public int GetAgility() { return _agility; }
     public int GetAttack() { return _attack; }
@@ -28,7 +28,7 @@ public class DEBUG_StatsAndResponces : MonoBehaviour, I_Stat
 
     void Start()
     {
-        _states = gameObject.GetComponent<I_EntityStates>();
+        _states = gameObject.GetComponent<IEntityStatesSystem>();
         _states.OnStateChanged += HandleStateChange;
     }
 

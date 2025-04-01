@@ -1,10 +1,10 @@
 using UnityEngine;
 
-public class MagicInfluence : MagicBase
+public class MagicInfluenceBase : MagicBase
 {
     protected GameObject _target;
 
-    public MagicInfluence(float castTime, int manaCost)
+    public MagicInfluenceBase(float castTime, int manaCost)
         : base(castTime, manaCost)
     {
     }

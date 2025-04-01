@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public interface I_Stat
+public interface IStatSystem
 {
     public int GetAgility() {  return 0; }
     public int GetAttack() {  return 0; }

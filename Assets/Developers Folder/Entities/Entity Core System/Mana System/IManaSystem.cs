@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public interface I_Mana
+public interface IManaSystem
 {
     int RemoveMana(int amount);
     void AddMana(int amount);

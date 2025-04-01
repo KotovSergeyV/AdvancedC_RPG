@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeaponComponent : MonoBehaviour
+public class WeaponSystem : MonoBehaviour
 {
 
     [SerializeField] private int _physicLayer;
@@ -28,14 +28,14 @@ public class WeaponComponent : MonoBehaviour
         {
             Debug.Log(target);
 
-            if (_rootOwner.TryGetComponent<I_Stat>(out I_Stat stats))
+            if (_rootOwner.TryGetComponent<IStatSystem>(out IStatSystem stats))
             {
-                _rootOwner.GetComponent<DamageDeallerComponent>()?.Damage(target, _weaponDamageData, stats);
+                _rootOwner.GetComponent<DamageCalculationSystem>()?.Damage(target, _weaponDamageData, stats);
             }
 
             else
             {
-                _rootOwner.GetComponent<DamageDeallerComponent>()?.Damage(target, _weaponDamageData);
+                _rootOwner.GetComponent<DamageCalculationSystem>()?.Damage(target, _weaponDamageData);
             }
 
               

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public interface I_Health
+public interface HealthSystem
 {
     int Damage(int amount);
     void Heal(int amount);
