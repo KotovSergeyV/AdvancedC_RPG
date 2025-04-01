@@ -7,14 +7,16 @@ public class EntityCoreSystem : MonoBehaviour
     IManaSystem _manaSystem;
     IStatSystem _statSystem;
     IEntityStatesSystem _statesSystem;
+    IMovable _moveSystem;
 
     public void Initialize(IHealthSystem healthSystem, IDamageCalculationSystem damageCalculationSystem,
-        IManaSystem manaSystem, IStatSystem statSystem, IEntityStatesSystem statesSystem)
+        IManaSystem manaSystem, IStatSystem statSystem, IEntityStatesSystem statesSystem, IMovable moveSystem)
     {
         _healthSystem = healthSystem;
         _damageCalculationSystem = damageCalculationSystem;
         _manaSystem = manaSystem;
         _statSystem = statSystem;
         _statesSystem = statesSystem;
+        _moveSystem = moveSystem;
     }
 }

@@ -10,7 +10,6 @@ public class Bootstrapper : MonoBehaviour
     private ManagerSFX _managerSFX;
     private ManagerVFX _managerVFX;
 
-
     private void Awake()
     {
         //Manager Instantiation
@@ -20,14 +19,17 @@ public class Bootstrapper : MonoBehaviour
         // Player Instantiation
         _player = Instantiate(_playerPrefab, Vector3.zero, Quaternion.identity);
 
-        EntityCoreCreation(_player);
+        PlayerCreation(_player);
 
     }
 
 
-    private void EntityCoreCreation(GameObject entity)
+    private void PlayerCreation(GameObject player)
     {
-        EntityCoreSystem entityCoreSystem = entity.AddComponent<EntityCoreSystem>();
-        entityCoreSystem.Initialize(new HealthSystem(), new DamageCalculationSystem(), new ManaSystem(), new StatSystem(), new EntityStatesSystem());
+        EntityCoreSystem entityCoreSystem = player.AddComponent<EntityCoreSystem>();
+        entityCoreSystem.Initialize(new HealthSystem(), new DamageCalculationSystem(), new ManaSystem(), new StatSystem(), new EntityStatesSystem(), new Movable());
+        player.AddComponent<PlayerController>();
+        player.AddComponent<CameraController>();
+        player.AddComponent<PlayerJump>();
     }
 }

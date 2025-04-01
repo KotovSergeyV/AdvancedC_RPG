@@ -2,7 +2,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
-public abstract class EnemyAIBase : Movement
+public abstract class EnemyAIBase : Movable
 {
     [SerializeField] protected float _spotRange;
     protected Transform[] _waypoints;

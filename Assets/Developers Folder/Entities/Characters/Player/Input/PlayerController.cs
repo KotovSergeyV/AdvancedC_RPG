@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.AI;
 
-public class PlayerController : Movement, IPlayerControlled
+public class PlayerController : Movable, IPlayerControlled
 {
     [SerializeField] private CharacterController _characterController;
     private InputSystem_Actions _inputs;

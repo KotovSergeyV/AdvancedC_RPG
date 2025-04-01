@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Movement : MonoBehaviour, IMovable
+public class Movable : MonoBehaviour, IMovable
 {
     protected Transform _target;
     protected float _walkSpeed = 2f;
