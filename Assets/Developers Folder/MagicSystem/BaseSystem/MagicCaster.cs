@@ -15,6 +15,13 @@ public class MagicCaster : MonoBehaviour
     [SerializeField] AudioClip Clip;
     [SerializeField] GameObject _partical;
 
+    IManaSystem _manaSystem;
+
+    public void Initialize(IManaSystem manaSystem)
+    {
+        _manaSystem = manaSystem;
+    }
+
     public void SetTarget(GameObject target)
     {
         _target = target;
@@ -24,13 +31,12 @@ public class MagicCaster : MonoBehaviour
     {
         if (_needMana)
         {
-            IManaSystem mana = GetComponent<IManaSystem>();
-            if (mana == null || mana.GetMana() < _magicToCast.ManaCost)
+            if (_manaSystem == null || _manaSystem.GetMana() < _magicToCast.ManaCost)
             {
                 SuspendCast();
                 return; // Exit if mana is insufficient
             }
-            mana.RemoveMana(_magicToCast.ManaCost);
+            _manaSystem.RemoveMana(_magicToCast.ManaCost);
         }
 
         StartCoroutine(CastRoutine());

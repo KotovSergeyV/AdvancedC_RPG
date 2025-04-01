@@ -22,6 +22,10 @@ public class PlayerController : Movable, IPlayerControlled
         _inputs = new InputSystem_Actions();
         base.Awake();
     }
+    public void Initialize(MagicCaster magicCaster) 
+    {
+        _magicCaster = magicCaster;
+    }
 
     void Start()
     {
@@ -159,7 +163,6 @@ public class PlayerController : Movable, IPlayerControlled
 
     public void CastHeal()
     {
-        _magicCaster = GetComponent<MagicCaster>();
         HealingSpell healingSpell = MagicFactory.CreateHealingSpell(2.0f, 20, 15);
         _magicCaster.SetMagic(healingSpell);
         _magicCaster.SetTarget(gameObject);

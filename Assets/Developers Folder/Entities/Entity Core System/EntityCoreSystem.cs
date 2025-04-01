@@ -19,4 +19,6 @@ public class EntityCoreSystem : MonoBehaviour
         _statesSystem = statesSystem;
         _moveSystem = moveSystem;
     }
+
+    public IManaSystem GetManaSystem() { return _manaSystem; }
 }
