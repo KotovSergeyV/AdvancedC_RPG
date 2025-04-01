@@ -13,6 +13,7 @@ public class PlayerController : Movable, IPlayerControlled
     private float _lastAttackTime;
 
     [SerializeField] private AudioClip[] _spoteClips;
+    [SerializeField] private AudioClip _healMagicClip;
 
     private MagicCaster _magicCaster;
     private Camera _mainCamera;

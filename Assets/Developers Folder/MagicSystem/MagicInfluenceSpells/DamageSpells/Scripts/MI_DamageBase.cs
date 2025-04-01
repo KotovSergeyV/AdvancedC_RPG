@@ -4,8 +4,8 @@ public class DamageMagic : MagicInfluenceBase
 {
     private Struct_DamageData _damageData;
 
-    public DamageMagic(float castTime, int manaCost, Struct_DamageData damageData)
-        : base(castTime, manaCost)
+    public DamageMagic(float castTime, int manaCost, Struct_DamageData damageData, string audioEffectAddress)
+        : base(castTime, manaCost, audioEffectAddress)
     {
         _damageData = damageData;
         OnActivateMagic += DamageSpellActivation;

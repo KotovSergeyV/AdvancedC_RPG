@@ -16,11 +16,11 @@ public class Bootstrapper : MonoBehaviour
     private void Awake()
     {
         //Manager Instantiation
-        _managerSFX =  Instantiate(ManagerSFX.Instance, Vector3.zero, Quaternion.identity);
-        _managerVFX =  Instantiate(ManagerVFX.Instance, Vector3.zero, Quaternion.identity);
+        _managerVFX = new ManagerVFX();
+        _managerSFX = new ManagerSFX();
 
         // Player Instantiation
-        _player = Instantiate(_playerPrefab, Vector3.zero, Quaternion.identity);
+        _player = Instantiate(_playerPrefab, Vector3.up, Quaternion.identity);
         PlayerCreation(_player);
 
         // Game Load
@@ -36,7 +36,7 @@ public class Bootstrapper : MonoBehaviour
 
         // Magic System
         MagicCaster magicCaster = player.AddComponent<MagicCaster>();
-        magicCaster.Initialize(entityCoreSystem.GetManaSystem());
+        magicCaster.Initialize(entityCoreSystem.GetManaSystem(), _managerSFX, _managerVFX);
 
         //Input-connected Systems
         PlayerController playerController = player.AddComponent<PlayerController>();
@@ -47,6 +47,6 @@ public class Bootstrapper : MonoBehaviour
 
     private void LoadGameScene()
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene("Test_Copy_Graybox_Level_1");
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Test_Copy_Graybox_Level_2", UnityEngine.SceneManagement.LoadSceneMode.Additive);
     }
 }
