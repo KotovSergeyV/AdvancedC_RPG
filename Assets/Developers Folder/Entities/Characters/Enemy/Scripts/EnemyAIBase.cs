@@ -66,12 +66,12 @@ public abstract class EnemyAIBase : Movable
         }
 
         bool _dead;
-        if (TryGetComponent<HealthSystem>(out HealthSystem health)){
-            _dead = health.GetIsDead();
+        if (TryGetComponent<EntityCoreSystem>(out EntityCoreSystem core)) {
+            _dead = core.GetHealthSystem().GetIsDead();
             if (_dead)
             {
                 _currentState = States.Dead;
-                AnimatorController.PlayDeathAnimation(_dead);
+                //AnimatorController.PlayDeathAnimation(_dead);
             }
         }
     }

@@ -15,13 +15,8 @@ public class DamageCalculationSystem : IDamageCalculationSystem
 
         if (ownerStats != null) { damageData = CalaculatePotentialDamage(ownerStats, damageData); }
 
-
-        IStatSystem targetObject = target.GetComponent<IStatSystem>();
-        if (CheckNull(targetObject))
-        {
-            Debug.Log("No I_Stat");
-            return 0;
-        }
+        EntityCoreSystem targetCore = target.GetComponent<EntityCoreSystem>();
+        IStatSystem targetObject = targetCore.GetStatSystem();
 
         int luck = targetObject.GetLuck();
         int defence = targetObject.GetDefence();
@@ -38,23 +33,23 @@ public class DamageCalculationSystem : IDamageCalculationSystem
                 return 0;
             }
 
-            else if (target.GetComponent<IEntityStatesSystem>().GetEntityState() == Enum_EntityStates.Blocking && damageData.isBlockable)
+            else if (targetCore.GetStatesSystem().GetEntityState() == Enum_EntityStates.Blocking && damageData.isBlockable)
             {
-                SetTargetState(target.GetComponent<IEntityStatesSystem>(), damageData.Responce);
+                SetTargetState(targetCore.GetStatesSystem(), damageData.Responce);
                 Debug.Log("DamagedBlocked");
                 return ApplyDamage(target.GetComponent<HealthSystem>(), defence, damageData.DamageAmount * 0.1f);
             }
 
         }
 
-        SetTargetState(target.GetComponent<IEntityStatesSystem>(), damageData.Responce);
+        SetTargetState(targetCore.GetStatesSystem(), damageData.Responce);
         Debug.Log("DamagedFull: "+ damageData.DamageAmount);
-        return ApplyDamage(target.GetComponent<HealthSystem>(), defence, damageData.DamageAmount);
+        return ApplyDamage(targetCore.GetHealthSystem(), defence, damageData.DamageAmount);
 
 
     }
 
-    private int ApplyDamage(HealthSystem target, int targetsDefence, float damage)
+    private int ApplyDamage(IHealthSystem target, int targetsDefence, float damage)
     {
         if (CheckNull(target)) { return 0; }
 

@@ -1,5 +1,6 @@
 using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Bootstrapper : MonoBehaviour
 {
@@ -31,8 +32,7 @@ public class Bootstrapper : MonoBehaviour
     private void PlayerCreation(GameObject player)
     {
         // Entity Core
-        EntityCoreSystem entityCoreSystem = player.AddComponent<EntityCoreSystem>();
-        entityCoreSystem.Initialize(new HealthSystem(), new DamageCalculationSystem(), new ManaSystem(), new StatSystem(), new EntityStatesSystem(), new Movable());
+        EntityCoreSystem entityCoreSystem = EntityCoreCreation(player);
 
         // Magic System
         MagicCaster magicCaster = player.AddComponent<MagicCaster>();
@@ -40,13 +40,48 @@ public class Bootstrapper : MonoBehaviour
 
         //Input-connected Systems
         PlayerController playerController = player.AddComponent<PlayerController>();
-        playerController.Initialize(magicCaster);
+        playerController.Initialize(magicCaster, _managerSFX);
         player.AddComponent<CameraController>();
         player.AddComponent<PlayerJump>();
     }
 
+    private EntityCoreSystem EntityCoreCreation(GameObject entity)
+    {
+        EntityCoreSystem entityCoreSystem = entity.AddComponent<EntityCoreSystem>();
+        entityCoreSystem.Initialize(new HealthSystem(), new DamageCalculationSystem(), new ManaSystem(), new StatSystem(), new EntityStatesSystem(), new Movable());
+        try {
+            HealthSystem healthSystem = ((HealthSystem)entityCoreSystem.GetHealthSystem());
+            healthSystem.OnDamaged += entity.GetComponent<AnimatorController>().PlayHitAnimation;
+            healthSystem.OnDead += entity.GetComponent<AnimatorController>().PlayDeathAnimation;
+        }
+        catch { Debug.Log("Damage/Death anim assignation error!"); }
+        return entityCoreSystem;
+    }
+
     private void LoadGameScene()
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene("Test_Copy_Graybox_Level_2", UnityEngine.SceneManagement.LoadSceneMode.Additive);
+        SceneManager.sceneLoaded += OnSceneLoaded;
+        SceneManager.LoadScene("Test_Copy_Graybox_Level_2", LoadSceneMode.Additive);
+    }
+
+    private void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "Test_Copy_Graybox_Level_2")
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded; 
+            InitializeEnemies();
+        }
+    }
+
+    private void InitializeEnemies()
+    {
+        foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("Enemy"))
+        {
+            EntityCoreCreation(enemy);
+            if (enemy.GetComponent<GunnerAI>())
+            {
+                enemy.GetComponent<GunnerAI>().Initialize(_managerSFX);
+            }
+        }
     }
 }

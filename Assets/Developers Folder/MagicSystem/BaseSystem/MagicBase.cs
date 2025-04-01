@@ -19,7 +19,7 @@ public class MagicBase
     {
         CastTime = castTime;
         ManaCost = manaCost;
-        LoadAndPlay(audioEffectAddress);
+        LoadAudioClip(audioEffectAddress);
     }
 
     public virtual void ActivateMagic(GameObject caster, GameObject target)
@@ -27,7 +27,7 @@ public class MagicBase
         OnActivateMagic?.Invoke(caster, target);
     }
 
-    async void LoadAndPlay(string audioAddress)
+    async void LoadAudioClip(string audioAddress)
     {
         _clipHandle = Addressables.LoadAssetAsync<AudioClip>(audioAddress);
         await _clipHandle.Task;

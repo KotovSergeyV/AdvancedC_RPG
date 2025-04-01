@@ -1,11 +1,15 @@
+using System;
 using UnityEngine;
 
-public class HealthSystem : MonoBehaviour, IHealthSystem
+public class HealthSystem : IHealthSystem
 {
     //debug 
     [SerializeField] private int _health;
     [SerializeField] private int _maxHealth;
     [SerializeField] private bool _isDead;
+
+    public Action OnDamaged;
+    public Action OnDead;
 
 
     // Functions from interface
@@ -14,11 +18,13 @@ public class HealthSystem : MonoBehaviour, IHealthSystem
     public int Damage(int amount)   
     { 
         _health = Mathf.Max(_health-amount, 0);
-        GetComponent<AnimatorController>()?.PlayHitAnimation(); 
+
+        OnDamaged?.Invoke();
+
         if (_health == 0) 
         { 
             _isDead = true;
-            GetComponent<AnimatorController>()?.PlayDeathAnimation(_isDead); 
+            OnDead?.Invoke(); 
         }   
         return _health;
     }

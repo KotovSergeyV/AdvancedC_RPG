@@ -20,5 +20,10 @@ public class EntityCoreSystem : MonoBehaviour
         _moveSystem = moveSystem;
     }
 
+    public IHealthSystem GetHealthSystem() { return _healthSystem; }
     public IManaSystem GetManaSystem() { return _manaSystem; }
+    public IDamageCalculationSystem GetDamageCalculationSystem() { return _damageCalculationSystem; }
+    public IStatSystem GetStatSystem() { return _statSystem; }
+    public IEntityStatesSystem GetStatesSystem() { return _statesSystem; }
+    public IMovable GetMoveSystem() { return _moveSystem; }
 }
