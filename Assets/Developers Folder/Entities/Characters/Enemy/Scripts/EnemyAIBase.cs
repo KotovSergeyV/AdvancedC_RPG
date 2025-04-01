@@ -66,7 +66,7 @@ public abstract class EnemyAIBase : Movement
         }
 
         bool _dead;
-        if (TryGetComponent<HealthComponent>(out HealthComponent health)){
+        if (TryGetComponent<HealthSystem>(out HealthSystem health)){
             _dead = health.GetIsDead();
             if (_dead)
             {

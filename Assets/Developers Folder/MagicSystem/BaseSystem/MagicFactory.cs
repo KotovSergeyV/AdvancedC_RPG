@@ -7,9 +7,9 @@ public static class MagicFactory
     }
 
     // Create a magic influence instance
-    public static MagicInfluence CreateMagicInfluence(float castTime, int manaCost)
+    public static MagicInfluenceBase CreateMagicInfluence(float castTime, int manaCost)
     {
-        return new MagicInfluence(castTime, manaCost);
+        return new MagicInfluenceBase(castTime, manaCost);
     }
 
     // Create a damage magic instance

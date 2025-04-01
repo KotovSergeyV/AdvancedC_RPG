@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class MeleeWeapon : WeaponComponent
+public class MeleeWeapon : WeaponSystem
 {
     private void OnTriggerEnter(Collider other)
     {

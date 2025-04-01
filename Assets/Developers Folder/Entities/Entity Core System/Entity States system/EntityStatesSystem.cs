@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class EntityStatesComponent : MonoBehaviour, I_EntityStates
+public class EntityStatesSystem : IEntityStatesSystem
 {
     Enum_EntityStates _currentState;
     public event Action<Enum_EntityStates> OnStateChanged;  //for subscription

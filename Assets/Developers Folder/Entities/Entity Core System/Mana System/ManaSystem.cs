@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ManaComponent : MonoBehaviour, I_Mana
+public class ManaSystem : IManaSystem
 {
     //debug 
     [SerializeField] private int _mana;

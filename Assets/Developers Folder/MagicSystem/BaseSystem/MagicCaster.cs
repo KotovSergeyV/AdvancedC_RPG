@@ -24,7 +24,7 @@ public class MagicCaster : MonoBehaviour
     {
         if (_needMana)
         {
-            I_Mana mana = GetComponent<I_Mana>();
+            IManaSystem mana = GetComponent<IManaSystem>();
             if (mana == null || mana.GetMana() < _magicToCast.ManaCost)
             {
                 SuspendCast();
@@ -53,7 +53,7 @@ public class MagicCaster : MonoBehaviour
         ManagerVFX.Instance.PlayVFX(_partical, transform.position, -1.5f);
 
         // Activate the magic
-        if (_magicToCast is MagicInfluence magicInfluence)
+        if (_magicToCast is MagicInfluenceBase magicInfluence)
         {
             magicInfluence.SetTarget(_target); // Set the target for influence-based magic
         }
