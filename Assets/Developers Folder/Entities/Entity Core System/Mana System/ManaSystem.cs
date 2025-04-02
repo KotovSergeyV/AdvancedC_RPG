@@ -6,6 +6,11 @@ public class ManaSystem : IManaSystem
     [SerializeField] private int _mana;
     [SerializeField] private int _maxMana;
 
+    public ManaSystem(int maxMana) 
+    {
+        _maxMana = maxMana;
+        _mana = maxMana;
+    }
 
     // Functions from interface
     public int GetMana()    { return _mana; }

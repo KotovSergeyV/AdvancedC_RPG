@@ -7,6 +7,7 @@ public class DamageCalculationSystem : IDamageCalculationSystem
 {
     public int Damage(GameObject target, Struct_DamageData damageData, IStatSystem ownerStats=null) 
     {
+        Debug.Log("DamageStarted");
         if (CheckNull(target))
         { 
             Debug.Log("No target");

@@ -32,7 +32,6 @@ public class CameraController : MonoBehaviour
 
     async void LoadCursorsTexture(string cursorAddress, Texture2D cursor)
     {
-        Debug.Log("Loading cursor...");
         _dCursorLoadHandle = Addressables.LoadAssetAsync<Texture2D>("DefaultCursor");
         _hCursorLoadHandle = Addressables.LoadAssetAsync<Texture2D>("HighlightCursor");
         await _dCursorLoadHandle.Task;

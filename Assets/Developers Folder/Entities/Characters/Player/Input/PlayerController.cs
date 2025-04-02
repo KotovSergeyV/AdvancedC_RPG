@@ -47,7 +47,6 @@ public class PlayerController : Movable, IPlayerControlled
         if (_clipHandle.Status == AsyncOperationStatus.Succeeded)
         {
             _spoteClips.Add(_clipHandle.Result);
-            Debug.Log("Appended");
         }
         else
         {
@@ -175,8 +174,6 @@ public class PlayerController : Movable, IPlayerControlled
                     _agent.isStopped = false;
 
                     transform.LookAt(_target);
-                    Debug.Log(_managerSFX);
-                    Debug.Log(_spoteClips[Random.Range(0, _spoteClips.Count)]);
                     _managerSFX.PlaySFX(_spoteClips[Random.Range(0, _spoteClips.Count)], transform.position, null, false, 1, 0);
                 }
             }

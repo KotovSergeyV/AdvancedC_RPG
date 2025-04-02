@@ -4,9 +4,9 @@ using UnityEngine;
 public class HealthSystem : IHealthSystem
 {
     //debug 
-    [SerializeField] private int _health;
-    [SerializeField] private int _maxHealth;
-    [SerializeField] private bool _isDead;
+    private int _health;
+    private int _maxHealth;
+    private bool _isDead;
 
     public Action OnDamaged;
     public Action OnDead;
@@ -14,11 +14,22 @@ public class HealthSystem : IHealthSystem
 
     private ManagerUI _managerUI;
 
-    public HealthSystem(ManagerUI managerUI)
+    public HealthSystem(ManagerUI managerUI, int maxHp)
     {
         _managerUI = managerUI;
+        _maxHealth = maxHp;
+        _health = maxHp;
+        _isDead = false;
+
+        UpdateCanvas();
+
     }
 
+    private void UpdateCanvas()
+    {
+        OnChangedUI?.Invoke(_health, _maxHealth);
+        _managerUI?.UpdateCanvasHp(_health, _maxHealth);
+    }
     // Functions from interface
     public int GetHp()    { Debug.Log("Çהמנמגüו " + _health); return _health; }
     public bool GetIsDead()    { return _isDead; }
@@ -30,8 +41,7 @@ public class HealthSystem : IHealthSystem
 
         OnDamaged?.Invoke();
 
-        OnChangedUI?.Invoke(_health, _maxHealth);
-        _managerUI?.UpdateCanvasHp(_health, _maxHealth);
+        UpdateCanvas();
 
         if (_health == 0) 
         { 
@@ -42,6 +52,9 @@ public class HealthSystem : IHealthSystem
     }
     public void Heal(int amount)
     {
+        UpdateCanvas();
+        Debug.Log("Çהמנמגüו " + _health);
+
         _health = Mathf.Min(_health+amount, _maxHealth);
     }
 }

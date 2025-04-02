@@ -51,13 +51,18 @@ public class Bootstrapper : MonoBehaviour
     private EntityCoreSystem EntityCoreCreation(GameObject entity)
     {
         EntityCoreSystem entityCoreSystem = entity.AddComponent<EntityCoreSystem>();
-        entityCoreSystem.Initialize(new HealthSystem(_managerUI), new DamageCalculationSystem(), new ManaSystem(), new StatSystem(), new EntityStatesSystem(), new Movable());
+
+        entityCoreSystem.Initialize(new HealthSystem(_managerUI, 100), new DamageCalculationSystem(), new ManaSystem(100),
+            new StatSystem(1, 1, 1, 1, 1), new EntityStatesSystem(), new Movable());
         try {
-            HealthSystem healthSystem = ((HealthSystem)entityCoreSystem.GetHealthSystem());
-            healthSystem.OnDamaged += entity.GetComponent<AnimatorController>().PlayHitAnimation;
-            healthSystem.OnDead += entity.GetComponent<AnimatorController>().PlayDeathAnimation;
+            IHealthSystem healthSystem = (entityCoreSystem.GetHealthSystem());
+            ((HealthSystem)healthSystem).OnDamaged += entity.GetComponent<AnimatorController>().PlayHitAnimation;
+            ((HealthSystem)healthSystem).OnDead += entity.GetComponent<AnimatorController>().PlayDeathAnimation;
+            Debug.Log("Initial HP:" + healthSystem.GetHp());
         }
         catch { Debug.Log("Damage/Death anim assignation error!"); }
+
+
         return entityCoreSystem;
     }
 

@@ -23,7 +23,7 @@ public class WeaponSystem : MonoBehaviour
 
     protected void OnWeaponDamage(GameObject target)
     {
-        
+        Debug.Log("OnWeaponDamage started");
         if (target.layer != _physicLayer) 
         {
             Debug.Log(target);
