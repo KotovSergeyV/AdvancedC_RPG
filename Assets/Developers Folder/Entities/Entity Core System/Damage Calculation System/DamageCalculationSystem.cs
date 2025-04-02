@@ -22,6 +22,8 @@ public class DamageCalculationSystem : IDamageCalculationSystem
         int defence = targetObject.GetDefence();
         int agility = targetObject.GetAgility();
 
+        targetCore.GetHealthSystem().GetHp();
+
         if (!damageData.isInneviåtable)
         {
             int baseDodgeChance = 5;

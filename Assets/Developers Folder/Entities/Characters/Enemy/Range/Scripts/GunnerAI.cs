@@ -28,6 +28,12 @@ public class GunnerAI : EnemyAIBase
                 Attack();
                 break;
         }
+
+        if (Input.GetKey(KeyCode.Q))
+        {
+            IHealthSystem hp = GetComponent<IHealthSystem>();
+            hp.Damage(10);
+        }
     }
 
     /// <summary>

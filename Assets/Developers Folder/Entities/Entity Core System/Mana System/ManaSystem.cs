@@ -12,6 +12,7 @@ public class ManaSystem : IManaSystem
     public int RemoveMana(int amount)   
     {
         _mana = Mathf.Max(_mana - amount, 0);
+        ManagerUI.Instance?.UpdateCanvasMana(_mana, _maxMana);
         return _mana;
     }
     public void AddMana(int amount)

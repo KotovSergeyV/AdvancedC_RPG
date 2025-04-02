@@ -17,13 +17,13 @@ public class HealingSpell : MagicInfluenceBase
         if (target != null)
         {
             // Heal the target if it has an I_Health component
-            target.GetComponent<HealthSystem>()?.Heal(_healAmount);
+            target.GetComponent<EntityCoreSystem>()?.GetHealthSystem().Heal(_healAmount);
             Debug.Log($"Healed target {target.name} for {_healAmount} health.");
         }
         else
         {
             // Heal the caster if no target is specified
-            caster.GetComponent<HealthSystem>()?.Heal(_healAmount);
+            caster.GetComponent<EntityCoreSystem>()?.GetHealthSystem().Heal(_healAmount);
             Debug.Log($"Healed caster {caster.name} for {_healAmount} health.");
         }
     }

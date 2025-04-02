@@ -16,6 +16,7 @@ public abstract class EnemyAIBase : Movable
     protected override void Awake()
     {
         base.Awake();
+        ManagerUI.Instance?.RegisterEnemyCanvas(gameObject);
     }
 
     protected virtual void Start()
@@ -83,6 +84,16 @@ public abstract class EnemyAIBase : Movable
         Collider _col = GetComponent<Collider>();
         Destroy(_col);
         this.enabled = false;
+    }
+
+    private void OnDisable()
+    {
+        ManagerUI.Instance?.UnregisterEnemyCanvas(this.gameObject);
+    }
+
+    private void OnDestroy()
+    {
+        ManagerUI.Instance?.UnregisterEnemyCanvas(this.gameObject);
     }
 }
 

@@ -1,17 +1,18 @@
 using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Bootstrapper : MonoBehaviour
 {
 
     [SerializeField] private GameObject _playerPrefab;
-
+    private HealthBar _playerHealthBar;
     [SerializeField] private GameObject _player;
 
     private ManagerSFX _managerSFX;
     private ManagerVFX _managerVFX;
-
+    private ManagerUI _managerUI;
 
 
     private void Awake()
@@ -19,15 +20,17 @@ public class Bootstrapper : MonoBehaviour
         //Manager Instantiation
         _managerVFX = new ManagerVFX();
         _managerSFX = new ManagerSFX();
+        _managerUI = new ManagerUI();
 
         // Player Instantiation
         _player = Instantiate(_playerPrefab, Vector3.up, Quaternion.identity);
         PlayerCreation(_player);
 
+        _playerHealthBar = GameObject.Find("HealthSlider")?.GetComponent<HealthBar>();
+
         // Game Load
         LoadGameScene();
     }
-
 
     private void PlayerCreation(GameObject player)
     {
@@ -48,7 +51,7 @@ public class Bootstrapper : MonoBehaviour
     private EntityCoreSystem EntityCoreCreation(GameObject entity)
     {
         EntityCoreSystem entityCoreSystem = entity.AddComponent<EntityCoreSystem>();
-        entityCoreSystem.Initialize(new HealthSystem(), new DamageCalculationSystem(), new ManaSystem(), new StatSystem(), new EntityStatesSystem(), new Movable());
+        entityCoreSystem.Initialize(new HealthSystem(_managerUI), new DamageCalculationSystem(), new ManaSystem(), new StatSystem(), new EntityStatesSystem(), new Movable());
         try {
             HealthSystem healthSystem = ((HealthSystem)entityCoreSystem.GetHealthSystem());
             healthSystem.OnDamaged += entity.GetComponent<AnimatorController>().PlayHitAnimation;
@@ -68,7 +71,8 @@ public class Bootstrapper : MonoBehaviour
     {
         if (scene.name == "Test_Copy_Graybox_Level_2")
         {
-            SceneManager.sceneLoaded -= OnSceneLoaded; 
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+            _managerUI.Initialize();
             InitializeEnemies();
         }
     }
