@@ -10,6 +10,9 @@ public class Bootstrapper : MonoBehaviour
     private HealthBar _playerHealthBar;
     private ManaBar _playerManaBar;
     [SerializeField] private GameObject _player;
+    [SerializeField] private GameObject _endscreenPrefab;
+
+    [SerializeField] private EndScreen _endscreen;
 
     private ManagerSFX _managerSFX;
     private ManagerVFX _managerVFX;
@@ -18,6 +21,25 @@ public class Bootstrapper : MonoBehaviour
 
     private void Awake()
     {
+
+        _endscreen = Instantiate(_endscreenPrefab).GetComponent<EndScreen>();
+        _endscreen.Initialize(this);
+
+        Load();
+    }
+
+    public async void Reload()
+    { 
+        Destroy(_player);
+        await SceneManager.UnloadSceneAsync("Test_Copy_Graybox_Level_2");
+        Load();
+    }
+
+    private void Load()
+    {
+        
+        _endscreen.Hide();
+
         //Manager Instantiation
         _managerVFX = new ManagerVFX();
         _managerSFX = new ManagerSFX();
@@ -63,6 +85,8 @@ public class Bootstrapper : MonoBehaviour
             IHealthSystem healthSystem = (entityCoreSystem.GetHealthSystem());
             ((HealthSystem)healthSystem).OnDamaged += entity.GetComponent<AnimatorController>().PlayHitAnimation;
             ((HealthSystem)healthSystem).OnDead += entity.GetComponent<AnimatorController>().PlayDeathAnimation;
+            ((HealthSystem)healthSystem).OnDead += _endscreen.Show;
+
             Debug.Log("Initial HP:" + healthSystem.GetHp());
         }
         catch { Debug.Log("Damage/Death anim assignation error!"); }
