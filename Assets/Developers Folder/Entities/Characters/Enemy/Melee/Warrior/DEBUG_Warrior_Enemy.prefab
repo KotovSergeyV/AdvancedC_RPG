@@ -833,7 +833,8 @@ MonoBehaviour:
   _attackRange: 2
   _spotRange: 10
   _takeDamageClips: []
-  _spoteClips: []
+  _spoteClips:
+  - {fileID: 8300000, guid: cd49c2766ab43f0478e1aefda4bb69d5, type: 3}
   _attackCooldown: 5
 --- !u!195 &6518691162251164879
 NavMeshAgent:

@@ -32,7 +32,7 @@ public class Bootstrapper : MonoBehaviour
     public async void Reload()
     { 
         Destroy(_player);
-        await SceneManager.UnloadSceneAsync("Test_Copy_Graybox_Level_2");
+        await SceneManager.UnloadSceneAsync("CyberpunkScene");
         Load();
     }
 
@@ -102,12 +102,12 @@ public class Bootstrapper : MonoBehaviour
     private void LoadGameScene()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
-        SceneManager.LoadScene("Test_Copy_Graybox_Level_2", LoadSceneMode.Additive);
+        SceneManager.LoadScene("CyberpunkScene", LoadSceneMode.Additive);
     }
 
     private void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == "Test_Copy_Graybox_Level_2")
+        if (scene.name == "CyberpunkScene")
         {
             SceneManager.sceneLoaded -= OnSceneLoaded;
             _managerUI.Initialize();

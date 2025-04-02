@@ -487,6 +487,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _physicLayer: 0
   _rootOwner: {fileID: 0}
+  _damageCooldown: 1
+  _canDamage: 1
   _weaponDamageData:
     DamageAmount: 10
     Responce: 0
@@ -910,7 +912,8 @@ MonoBehaviour:
   _spotRange: 10
   _takeDamageClips: []
   _spoteClips:
-  - {fileID: 8300000, guid: 22d01186a8f002f4eb9762df0e3c0c09, type: 3}
+  - {fileID: 8300000, guid: 0c48636b0ef53284c9f2b8423dd47cdf, type: 3}
+  - {fileID: 8300000, guid: cd49c2766ab43f0478e1aefda4bb69d5, type: 3}
   _attackCooldown: 5
 --- !u!114 &236502939237994026
 MonoBehaviour:
