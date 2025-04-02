@@ -9,6 +9,7 @@ public class ManaSystem : IManaSystem
     [SerializeField] private int _mana;
     [SerializeField] private int _maxMana;
     [SerializeField] private float _manaRegenTime;
+    [SerializeField] private bool _isRegening;
 
     ManagerUI _managerUI;
 
@@ -23,12 +24,14 @@ public class ManaSystem : IManaSystem
 
     private async Task RegenAsync()
     {
-        while (_mana != _maxMana)
+        _isRegening = true;
+        while (_mana < _maxMana)
         {
             await Task.Delay((int)(_manaRegenTime * 1000));
             _mana += 1;
             UpdateCanvas();
         }
+        _isRegening = false;
     }
 
     private void UpdateCanvas()
@@ -43,7 +46,7 @@ public class ManaSystem : IManaSystem
         UpdateCanvas();
         _mana = Mathf.Max(_mana - amount, 0);
 
-        RegenAsync();
+        if (!_isRegening) { RegenAsync(); }
         return _mana;
     }
 

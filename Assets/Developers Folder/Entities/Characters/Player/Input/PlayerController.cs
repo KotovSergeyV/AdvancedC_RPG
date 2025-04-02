@@ -206,7 +206,7 @@ public class PlayerController : Movable, IPlayerControlled
 
     public override void StopMoving()
     {
-        if (_agent == null) return;
+        if (_agent == null || _agent.gameObject.activeSelf) return;
         _agent.isStopped = true;
         _agent.ResetPath();
     }

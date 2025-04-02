@@ -52,10 +52,12 @@ public class HealthSystem : IHealthSystem
     }
     public void Heal(int amount)
     {
-        GetHp();
 
-        UpdateCanvas();
+        Debug.Log("Current hp: "+ _health);
 
         _health = Mathf.Min(_health+amount, _maxHealth);
+        UpdateCanvas();
+        Debug.Log("Healed on " + amount + "hp");
+        Debug.Log("New current hp: " + _health);
     }
 }

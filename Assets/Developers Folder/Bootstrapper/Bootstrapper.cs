@@ -2,6 +2,7 @@ using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class Bootstrapper : MonoBehaviour
 {
@@ -61,6 +62,10 @@ public class Bootstrapper : MonoBehaviour
         // Entity Core
         EntityCoreSystem entityCoreSystem = EntityCoreCreation(player);
 
+        // EndScreen
+        IHealthSystem healthSystem = (entityCoreSystem.GetHealthSystem());
+        ((HealthSystem)healthSystem).OnDead += _endscreen.Show;
+
         // Magic System
         MagicCaster magicCaster = player.AddComponent<MagicCaster>();
         magicCaster.Initialize(entityCoreSystem.GetManaSystem(), _managerSFX, _managerVFX);
@@ -85,7 +90,6 @@ public class Bootstrapper : MonoBehaviour
             IHealthSystem healthSystem = (entityCoreSystem.GetHealthSystem());
             ((HealthSystem)healthSystem).OnDamaged += entity.GetComponent<AnimatorController>().PlayHitAnimation;
             ((HealthSystem)healthSystem).OnDead += entity.GetComponent<AnimatorController>().PlayDeathAnimation;
-            ((HealthSystem)healthSystem).OnDead += _endscreen.Show;
 
             Debug.Log("Initial HP:" + healthSystem.GetHp());
         }
