@@ -34,15 +34,16 @@ public class MagicCaster : MonoBehaviour
 
     public void InitiateCast()
     {
-        if (_needMana)
-        {
-            if (_manaSystem == null || _manaSystem.GetMana() < _magicToCast.ManaCost)
+        Debug.Log(_manaSystem + " " + _manaSystem.GetMana() + " " + _magicToCast + " " + _magicToCast.ManaCost);
+        
+        if (_manaSystem == null || _manaSystem.GetMana() < _magicToCast.ManaCost)
             {
                 SuspendCast();
+
                 return; // Exit if mana is insufficient
             }
-            _manaSystem.RemoveMana(_magicToCast.ManaCost);
-        }
+        _manaSystem.RemoveMana(_magicToCast.ManaCost);
+        
 
         StartCoroutine(CastRoutine());
     }
@@ -56,12 +57,11 @@ public class MagicCaster : MonoBehaviour
     private IEnumerator CastRoutine()
     {
         OnCastStarted?.Invoke();
-        Debug.Log("Started cast: " + _magicToCast.CastTime);
 
         yield return new WaitForSeconds(_magicToCast.CastTime);
 
         _managerSFX.PlaySFX(_magicToCast.Clip, transform.position, null, false, 1, 0);
-        Debug.Log(_magicToCast.Clip);
+       
         _managerVFX.PlayVFX(_partical, transform.position, -1.5f);
 
         // Activate the magic

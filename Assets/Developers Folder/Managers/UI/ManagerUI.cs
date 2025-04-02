@@ -4,7 +4,8 @@ using UnityEngine;
 public class ManagerUI : BaseManager<ManagerUI>
 {
     private GameObject playerCanvas;
-    private List<GameObject> enemyCanvases = new List<GameObject>();
+    private Dictionary<IHealthSystem, HealthBar> healthBars = new Dictionary<IHealthSystem, HealthBar>();
+    private Dictionary<IManaSystem, ManaBar> manaBars = new Dictionary<IManaSystem, ManaBar>();
 
     private new void Awake()
     {
@@ -24,52 +25,63 @@ public class ManagerUI : BaseManager<ManagerUI>
         Debug.Log("UIManager Initialized: PlayerCanvas найден.");
     }
 
-    public void RegisterEnemyCanvas(GameObject enemyCanvas)
+    public void RegisterHealthBar(IHealthSystem healthSystem, HealthBar healthBar)
     {
-        if (!enemyCanvases.Contains(enemyCanvas))
+        if (healthSystem == null || healthBar == null) return;
+
+        if (!healthBars.ContainsKey(healthSystem))
         {
-            enemyCanvases.Add(enemyCanvas);
+            healthBars[healthSystem] = healthBar;
         }
     }
 
-    public void UnregisterEnemyCanvas(GameObject enemyCanvas)
+    public void UnregisterHealthBar(IHealthSystem healthSystem)
     {
-        if (enemyCanvases.Contains(enemyCanvas))
+        if (healthBars.ContainsKey(healthSystem))
         {
-            enemyCanvases.Remove(enemyCanvas);
+            healthBars.Remove(healthSystem);
         }
     }
 
-    public void ToggleEnemyUI(bool state)
+    public void UpdateCanvasHp(IHealthSystem healthSystem, int currentHealth, int maxHealth)
     {
-        foreach (var canvas in enemyCanvases)
+        if (healthBars.TryGetValue(healthSystem, out HealthBar targetHealthBar))
         {
-            if (canvas != null)
-            {
-                canvas.SetActive(state);
-            }
+            targetHealthBar.SetHealth(currentHealth, maxHealth);
+        }
+        else
+        {
+            Debug.LogError($"ManagerUI: HealthBar не найден для {healthSystem}");
         }
     }
 
-    public void UpdateCanvasHp(int currentHealth, int maxHealth)
+    public void RegisterManaBar(IManaSystem manaSystem, ManaBar manaBar)
     {
-        HealthBar targetHealthBar = playerCanvas?.GetComponentInChildren<HealthBar>();
+        if (manaSystem == null || manaBar == null) return;
 
-        if (targetHealthBar == null)
+        if (!manaBars.ContainsKey(manaSystem))
         {
-            Debug.LogError("ManagerUI: HealthBar не найден!");
-            return;
+            manaBars[manaSystem] = manaBar;
         }
-
-        targetHealthBar.SetHealth(currentHealth, maxHealth);
     }
 
-    public void UpdateCanvasMana(int currentMana, int maxMana)
+    public void UnregisterManaBar(IManaSystem manaSystem)
     {
-        ManaBar targetHealthBar = playerCanvas?.GetComponentInChildren<ManaBar>();
-        if (targetHealthBar != null)
+        if (manaBars.ContainsKey(manaSystem))
         {
-            targetHealthBar.SetMana(currentMana, maxMana);
+            manaBars.Remove(manaSystem);
+        }
+    }
+
+    public void UpdateCanvasMana(IManaSystem manaSystem, int currentHealth, int maxHealth)
+    {
+        if (manaBars.TryGetValue(manaSystem, out ManaBar targetHealthBar))
+        {
+            targetHealthBar.SetMana(currentHealth, maxHealth);
+        }
+        else
+        {
+            Debug.LogError($"ManagerUI: HealthBar не найден для {manaSystem}");
         }
     }
 }

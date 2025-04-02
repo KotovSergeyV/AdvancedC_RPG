@@ -10,28 +10,28 @@ public class HealthSystem : IHealthSystem
 
     public Action OnDamaged;
     public Action OnDead;
-    public Action<int, int> OnChangedUI;
 
     private ManagerUI _managerUI;
 
-    public HealthSystem(ManagerUI managerUI, int maxHp)
+    public HealthSystem(ManagerUI managerUI, int maxHp, HealthBar healthBar)
     {
         _managerUI = managerUI;
         _maxHealth = maxHp;
         _health = maxHp;
         _isDead = false;
 
+        _managerUI.RegisterHealthBar(this, healthBar);
         UpdateCanvas();
 
     }
 
     private void UpdateCanvas()
     {
-        OnChangedUI?.Invoke(_health, _maxHealth);
-        _managerUI?.UpdateCanvasHp(_health, _maxHealth);
+        _managerUI?.UpdateCanvasHp(this, _health, _maxHealth);
     }
+
     // Functions from interface
-    public int GetHp()    { Debug.Log("Çהמנמגüו " + _health); return _health; }
+    public int GetHp()    { UpdateCanvas();  return _health; }
     public bool GetIsDead()    { return _isDead; }
     public int Damage(int amount)   
     {
@@ -52,8 +52,9 @@ public class HealthSystem : IHealthSystem
     }
     public void Heal(int amount)
     {
+        GetHp();
+
         UpdateCanvas();
-        Debug.Log("Çהמנמגüו " + _health);
 
         _health = Mathf.Min(_health+amount, _maxHealth);
     }

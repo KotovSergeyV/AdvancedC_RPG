@@ -8,6 +8,7 @@ public class Bootstrapper : MonoBehaviour
 
     [SerializeField] private GameObject _playerPrefab;
     private HealthBar _playerHealthBar;
+    private ManaBar _playerManaBar;
     [SerializeField] private GameObject _player;
 
     private ManagerSFX _managerSFX;
@@ -26,7 +27,8 @@ public class Bootstrapper : MonoBehaviour
         _player = Instantiate(_playerPrefab, Vector3.up, Quaternion.identity);
         PlayerCreation(_player);
 
-        _playerHealthBar = GameObject.Find("HealthSlider")?.GetComponent<HealthBar>();
+        _playerHealthBar = GameObject.Find("HealthBar")?.GetComponent<HealthBar>();
+        _playerManaBar = GameObject.Find("ManaBar")?.GetComponent<ManaBar>(); ;
 
         // Game Load
         LoadGameScene();
@@ -52,7 +54,10 @@ public class Bootstrapper : MonoBehaviour
     {
         EntityCoreSystem entityCoreSystem = entity.AddComponent<EntityCoreSystem>();
 
-        entityCoreSystem.Initialize(new HealthSystem(_managerUI, 100), new DamageCalculationSystem(), new ManaSystem(100),
+        HealthBar healthBar = entity?.GetComponentInChildren<HealthBar>();
+        ManaBar manaBar = entity?.GetComponentInChildren<ManaBar>();
+
+        entityCoreSystem.Initialize(new HealthSystem(_managerUI, 100, healthBar), new DamageCalculationSystem(), new ManaSystem(_managerUI, 100, 0.5f, manaBar),
             new StatSystem(1, 1, 1, 1, 1), new EntityStatesSystem(), new Movable());
         try {
             IHealthSystem healthSystem = (entityCoreSystem.GetHealthSystem());

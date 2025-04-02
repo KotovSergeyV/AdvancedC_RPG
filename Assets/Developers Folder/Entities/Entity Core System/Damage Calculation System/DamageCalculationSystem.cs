@@ -17,6 +17,10 @@ public class DamageCalculationSystem : IDamageCalculationSystem
         if (ownerStats != null) { damageData = CalaculatePotentialDamage(ownerStats, damageData); }
 
         EntityCoreSystem targetCore = target.GetComponent<EntityCoreSystem>();
+        if (targetCore == null)
+        {
+            return 0;
+        }
         IStatSystem targetObject = targetCore.GetStatSystem();
 
         int luck = targetObject.GetLuck();

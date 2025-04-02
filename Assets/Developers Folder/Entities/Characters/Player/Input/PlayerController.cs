@@ -23,6 +23,7 @@ public class PlayerController : Movable, IPlayerControlled
 
     ManagerSFX _managerSFX;
 
+    private bool _dead;
 
     private AsyncOperationHandle<AudioClip> _clipHandle;
 
@@ -89,6 +90,11 @@ public class PlayerController : Movable, IPlayerControlled
             Move(_moveInput);
             _target = null;
             StopMoving();
+            _dead = GetComponent<EntityCoreSystem>().GetHealthSystem().GetIsDead();
+            if (_dead)
+            {
+                Dead();
+            }
         }
 
         if (_target == null) return;
@@ -111,6 +117,12 @@ public class PlayerController : Movable, IPlayerControlled
         else
         {
             _agent.isStopped = false;
+        }
+
+        _dead = GetComponent<EntityCoreSystem>().GetHealthSystem().GetIsDead();
+        if (_dead)
+        {
+            Dead();
         }
     }
 
@@ -177,6 +189,12 @@ public class PlayerController : Movable, IPlayerControlled
                     _managerSFX.PlaySFX(_spoteClips[Random.Range(0, _spoteClips.Count)], transform.position, null, false, 1, 0);
                 }
             }
+            else
+            {
+                _target = null;
+                _characterController.enabled = false;
+                _agent.isStopped = false;
+            }
         }
     }
 
@@ -199,5 +217,22 @@ public class PlayerController : Movable, IPlayerControlled
         _magicCaster.SetMagic(healingSpell);
         _magicCaster.SetTarget(gameObject);
         _magicCaster.InitiateCast();
+    }
+
+    private void Dead()
+    {
+        _characterController.enabled = false;
+        if (_agent != null)
+        {
+            _agent.isStopped = true;
+            _agent.ResetPath();
+        }
+
+        if (TryGetComponent<Collider>(out Collider col))
+        {
+            col.enabled = false;
+        }
+
+        this.enabled = false;
     }
 }

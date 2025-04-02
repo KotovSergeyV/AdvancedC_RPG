@@ -7,7 +7,7 @@ public class ManaBar : MonoBehaviour
 
     private void Awake()
     {
-        _manaBar = GetComponentInChildren<Slider>();
+        _manaBar = GameObject.Find("ManaBar").GetComponent<Slider>();
     }
 
     public void SetMana(int currentHealth, int maxHealth)
