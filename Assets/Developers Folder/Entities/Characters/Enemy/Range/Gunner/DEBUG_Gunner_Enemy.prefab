@@ -490,7 +490,7 @@ MonoBehaviour:
   _damageCooldown: 1
   _canDamage: 1
   _weaponDamageData:
-    DamageAmount: 10
+    DamageAmount: 4
     Responce: 0
     DamageType: 0
     "isInnevi\u0435table": 0

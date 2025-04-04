@@ -73,7 +73,7 @@ public class PlayerController : Movable, IPlayerControlled
         _inputs.Player.Sprint.performed += OnRun;
         _inputs.Player.Sprint.canceled += OnRun;
         _inputs.Player.Attack.performed += OnAttack;
-        _inputs.Player.Attack.canceled += OnAttack;
+       // _inputs.Player.Attack.canceled += OnAttack;
         _inputs.Player.Cast.started += OnCastMagic;
         _inputs.Enable();
     }
@@ -176,9 +176,15 @@ public class PlayerController : Movable, IPlayerControlled
         if (context.performed)
         {
             Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
-            if (Physics.Raycast(ray, out RaycastHit hit))
-            {
-                if (hit.collider.CompareTag("Enemy"))
+            Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity);
+            if (hit.collider == null) {
+                
+                _target = null;
+                _characterController.enabled = true;
+                _agent.isStopped = true; 
+            }
+
+            else if (hit.collider.CompareTag("Enemy"))
                 {
                     _target = hit.collider.transform;
                     base.GoToTarget(_target, _runSpeed);
@@ -187,14 +193,9 @@ public class PlayerController : Movable, IPlayerControlled
 
                     transform.LookAt(_target);
                     _managerSFX.PlaySFX(_spoteClips[Random.Range(0, _spoteClips.Count)], transform.position, null, false, 1, 0);
-                }
             }
-            else
-            {
-                _target = null;
-                _characterController.enabled = false;
-                _agent.isStopped = false;
-            }
+            
+
         }
     }
 

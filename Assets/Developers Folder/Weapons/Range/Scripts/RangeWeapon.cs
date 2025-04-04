@@ -20,7 +20,7 @@ public class RangeWeapon : WeaponSystem
         while (true) {
             yield return new WaitForSeconds(_cooldown);
             OnFire();
-            Debug.Log("Fire DEBUG_FIRE");
+           // Debug.Log("Fire DEBUG_FIRE");
         }
     }
 
@@ -28,7 +28,7 @@ public class RangeWeapon : WeaponSystem
 
     public void OnFire()
     {
-        Debug.Log("Fire OnFire");
+       // Debug.Log("Fire OnFire");
 
         RaycastHit hit;
         if (_lastShot+_cooldown < Time.time)
