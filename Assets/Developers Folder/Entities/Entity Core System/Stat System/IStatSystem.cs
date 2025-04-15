@@ -7,4 +7,5 @@ public interface IStatSystem
     public int GetLuck() {  return 0; }
     public int GetDefence() {  return 0; }
     public int GetInteligence() {  return 0; }
+
 }

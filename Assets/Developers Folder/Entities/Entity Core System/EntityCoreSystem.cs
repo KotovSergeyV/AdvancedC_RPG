@@ -1,5 +1,10 @@
+using System;
+using System.Collections.Generic;
+using System.Numerics;
 using UnityEngine;
 
+
+[Serializable]
 public class EntityCoreSystem : MonoBehaviour
 {
     IHealthSystem _healthSystem;
@@ -26,4 +31,5 @@ public class EntityCoreSystem : MonoBehaviour
     public IStatSystem GetStatSystem() { return _statSystem; }
     public IEntityStatesSystem GetStatesSystem() { return _statesSystem; }
     public IMovable GetMoveSystem() { return _moveSystem; }
+
 }

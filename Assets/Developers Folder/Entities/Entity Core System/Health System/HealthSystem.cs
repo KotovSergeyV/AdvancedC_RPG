@@ -32,6 +32,7 @@ public class HealthSystem : IHealthSystem
 
     // Functions from interface
     public int GetHp()    { UpdateCanvas();  return _health; }
+    public int GetMaxHp()    { UpdateCanvas();  return _maxHealth; }
     public bool GetIsDead()    { return _isDead; }
     public int Damage(int amount)   
     {

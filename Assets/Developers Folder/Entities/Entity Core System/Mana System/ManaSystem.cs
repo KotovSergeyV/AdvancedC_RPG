@@ -41,6 +41,7 @@ public class ManaSystem : IManaSystem
 
     // Functions from interface
     public int GetMana()    { UpdateCanvas(); Debug.Log("Мана " + _mana); return _mana; }
+    public int GetMaxMana() { return _maxMana; }
     public int RemoveMana(int amount)   
     {
         UpdateCanvas();
