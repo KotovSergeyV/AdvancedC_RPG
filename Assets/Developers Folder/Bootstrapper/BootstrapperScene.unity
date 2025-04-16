@@ -272,6 +272,10 @@ MonoBehaviour:
   _playerPrefab: {fileID: 5194816544369008159, guid: 5c9723286f00a674ea0a9b2e5c865ee8, type: 3}
   _player: {fileID: 0}
   _endscreenPrefab: {fileID: 2087139626283801524, guid: 7646533e1a67efa4c8176df6495e05a0, type: 3}
+  _mainScreenPrefab: {fileID: 6769122964477982112, guid: 6f88d7db11b8cb14091691acead9a8fc, type: 3}
+  _gamePausePrefab: {fileID: 8028152093521007387, guid: aa07f9a77a1473449a38e2c472692cf9, type: 3}
+  _gamePause: {fileID: 0}
+  _mainScreen: {fileID: 0}
   _endscreen: {fileID: 0}
 --- !u!4 &1204535930
 Transform:

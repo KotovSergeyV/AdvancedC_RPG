@@ -9,12 +9,12 @@ public class ManagerUI : BaseManager<ManagerUI>
 
     private new void Awake()
     {
-        playerCanvas = GameObject.Find("PlayerCanvas");
+        playerCanvas = GameObject.FindGameObjectWithTag("PlayerCanvas");
     }
 
     public override void Initialize()
     {
-        playerCanvas = GameObject.Find("PlayerCanvas");
+        playerCanvas = GameObject.FindGameObjectWithTag("PlayerCanvas");
 
         if (playerCanvas == null)
         {
@@ -81,7 +81,7 @@ public class ManagerUI : BaseManager<ManagerUI>
         }
         else
         {
-            Debug.LogError($"ManagerUI: HealthBar не найден для {manaSystem}");
+            Debug.LogError($"ManagerUI: ManaBar не найден для {manaSystem}");
         }
     }
 }
