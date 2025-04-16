@@ -2,15 +2,15 @@
     "data": [
         {
             "Position": {
-                "x": 28.61672019958496,
-                "y": -1.482070803642273,
-                "z": 52.222740173339847
+                "x": 0.18802887201309205,
+                "y": -1.4820706844329835,
+                "z": 10.918432235717774
             },
             "Rotation": {
                 "x": 0.0,
-                "y": -0.5933954119682312,
+                "y": 0.0009799236431717873,
                 "z": 0.0,
-                "w": 0.8049110770225525
+                "w": 0.9999995231628418
             },
             "EntityType": 0,
             "CoreData": {
@@ -20,7 +20,7 @@
                 },
                 "ManaData": {
                     "MaxMana": 100,
-                    "Mana": 100
+                    "Mana": 66
                 },
                 "StatData": {
                     "Attack": 1,
@@ -33,108 +33,15 @@
         },
         {
             "Position": {
-                "x": 6.5536208152771,
+                "x": 7.389205455780029,
                 "y": -1.495635986328125,
-                "z": 21.799650192260743
+                "z": 29.64067268371582
             },
             "Rotation": {
                 "x": 0.0,
-                "y": 0.9526094198226929,
+                "y": -0.4894846975803375,
                 "z": 0.0,
-                "w": 0.304196298122406
-            },
-            "EntityType": 1,
-            "CoreData": {
-                "HealthData": {
-                    "MaxHealth": 100,
-                    "Health": 100
-                },
-                "ManaData": {
-                    "MaxMana": 100,
-                    "Mana": 100
-                },
-                "StatData": {
-                    "Attack": 1,
-                    "Defence": 1,
-                    "Agility": 1,
-                    "Luck": 1,
-                    "Intelligence": 1
-                }
-            }
-        },
-        {
-            "Position": {
-                "x": 0.9424917697906494,
-                "y": -1.495635986328125,
-                "z": 29.12537384033203
-            },
-            "Rotation": {
-                "x": 0.0,
-                "y": 0.9500991106033325,
-                "z": 0.0,
-                "w": 0.31194818019866946
-            },
-            "EntityType": 1,
-            "CoreData": {
-                "HealthData": {
-                    "MaxHealth": 100,
-                    "Health": 100
-                },
-                "ManaData": {
-                    "MaxMana": 100,
-                    "Mana": 100
-                },
-                "StatData": {
-                    "Attack": 1,
-                    "Defence": 1,
-                    "Agility": 1,
-                    "Luck": 1,
-                    "Intelligence": 1
-                }
-            }
-        },
-        {
-            "Position": {
-                "x": 5.195425033569336,
-                "y": -1.495635986328125,
-                "z": 23.52574348449707
-            },
-            "Rotation": {
-                "x": 0.0,
-                "y": 0.951359212398529,
-                "z": 0.0,
-                "w": 0.30808383226394656
-            },
-            "EntityType": 1,
-            "CoreData": {
-                "HealthData": {
-                    "MaxHealth": 100,
-                    "Health": 100
-                },
-                "ManaData": {
-                    "MaxMana": 100,
-                    "Mana": 100
-                },
-                "StatData": {
-                    "Attack": 1,
-                    "Defence": 1,
-                    "Agility": 1,
-                    "Luck": 1,
-                    "Intelligence": 1
-                }
-            }
-        },
-        {
-            "Position": {
-                "x": -0.9676370620727539,
-                "y": -1.495635986328125,
-                "z": 31.531484603881837
-            },
-            "Rotation": {
-                "x": 0.0,
-                "y": 0.9493398666381836,
-                "z": 0.0,
-                "w": 0.31425127387046816
+                "w": 0.8720119595527649
             },
             "EntityType": 2,
             "CoreData": {
@@ -157,15 +64,15 @@
         },
         {
             "Position": {
-                "x": 2.994807481765747,
+                "x": -2.674055576324463,
                 "y": -1.495635986328125,
-                "z": 26.553865432739259
+                "z": 33.09833908081055
             },
             "Rotation": {
                 "x": 0.0,
-                "y": 0.951287567615509,
+                "y": 0.9466292262077332,
                 "z": 0.0,
-                "w": 0.30830493569374087
+                "w": 0.3223244845867157
             },
             "EntityType": 2,
             "CoreData": {
@@ -188,46 +95,15 @@
         },
         {
             "Position": {
-                "x": -2.4462599754333498,
+                "x": -3.315471649169922,
                 "y": -1.495635986328125,
-                "z": 32.564964294433597
+                "z": 34.37104797363281
             },
             "Rotation": {
                 "x": 0.0,
-                "y": 0.9456307888031006,
+                "y": 0.9483339786529541,
                 "z": 0.0,
-                "w": 0.3252421021461487
-            },
-            "EntityType": 2,
-            "CoreData": {
-                "HealthData": {
-                    "MaxHealth": 100,
-                    "Health": 100
-                },
-                "ManaData": {
-                    "MaxMana": 100,
-                    "Mana": 100
-                },
-                "StatData": {
-                    "Attack": 1,
-                    "Defence": 1,
-                    "Agility": 1,
-                    "Luck": 1,
-                    "Intelligence": 1
-                }
-            }
-        },
-        {
-            "Position": {
-                "x": 6.5536208152771,
-                "y": -1.495635986328125,
-                "z": 21.799650192260743
-            },
-            "Rotation": {
-                "x": 0.0,
-                "y": 0.9526094198226929,
-                "z": 0.0,
-                "w": 0.304196298122406
+                "w": 0.3172740042209625
             },
             "EntityType": 1,
             "CoreData": {
@@ -250,15 +126,15 @@
         },
         {
             "Position": {
-                "x": 0.9424917697906494,
+                "x": 11.614362716674805,
                 "y": -1.495635986328125,
-                "z": 29.12537384033203
+                "z": 27.06708335876465
             },
             "Rotation": {
                 "x": 0.0,
-                "y": 0.9500991106033325,
+                "y": -0.5094208717346191,
                 "z": 0.0,
-                "w": 0.31194818019866946
+                "w": 0.8605175018310547
             },
             "EntityType": 1,
             "CoreData": {
@@ -281,15 +157,15 @@
         },
         {
             "Position": {
-                "x": 5.195425033569336,
+                "x": 10.973237991333008,
                 "y": -1.495635986328125,
-                "z": 23.52574348449707
+                "z": 41.44032669067383
             },
             "Rotation": {
                 "x": 0.0,
-                "y": 0.951359212398529,
+                "y": -0.7681049704551697,
                 "z": 0.0,
-                "w": 0.30808383226394656
+                "w": 0.6403239965438843
             },
             "EntityType": 1,
             "CoreData": {
@@ -312,821 +188,15 @@
         },
         {
             "Position": {
-                "x": -0.9676370620727539,
+                "x": 8.108197212219239,
                 "y": -1.495635986328125,
-                "z": 31.531484603881837
+                "z": 40.88019561767578
             },
             "Rotation": {
                 "x": 0.0,
-                "y": 0.9493398666381836,
+                "y": -0.7673420310020447,
                 "z": 0.0,
-                "w": 0.31425127387046816
-            },
-            "EntityType": 2,
-            "CoreData": {
-                "HealthData": {
-                    "MaxHealth": 100,
-                    "Health": 100
-                },
-                "ManaData": {
-                    "MaxMana": 100,
-                    "Mana": 100
-                },
-                "StatData": {
-                    "Attack": 1,
-                    "Defence": 1,
-                    "Agility": 1,
-                    "Luck": 1,
-                    "Intelligence": 1
-                }
-            }
-        },
-        {
-            "Position": {
-                "x": 2.994807481765747,
-                "y": -1.495635986328125,
-                "z": 26.553865432739259
-            },
-            "Rotation": {
-                "x": 0.0,
-                "y": 0.951287567615509,
-                "z": 0.0,
-                "w": 0.30830493569374087
-            },
-            "EntityType": 2,
-            "CoreData": {
-                "HealthData": {
-                    "MaxHealth": 100,
-                    "Health": 100
-                },
-                "ManaData": {
-                    "MaxMana": 100,
-                    "Mana": 100
-                },
-                "StatData": {
-                    "Attack": 1,
-                    "Defence": 1,
-                    "Agility": 1,
-                    "Luck": 1,
-                    "Intelligence": 1
-                }
-            }
-        },
-        {
-            "Position": {
-                "x": -2.4462599754333498,
-                "y": -1.495635986328125,
-                "z": 32.564964294433597
-            },
-            "Rotation": {
-                "x": 0.0,
-                "y": 0.9456307888031006,
-                "z": 0.0,
-                "w": 0.3252421021461487
-            },
-            "EntityType": 2,
-            "CoreData": {
-                "HealthData": {
-                    "MaxHealth": 100,
-                    "Health": 100
-                },
-                "ManaData": {
-                    "MaxMana": 100,
-                    "Mana": 100
-                },
-                "StatData": {
-                    "Attack": 1,
-                    "Defence": 1,
-                    "Agility": 1,
-                    "Luck": 1,
-                    "Intelligence": 1
-                }
-            }
-        },
-        {
-            "Position": {
-                "x": 6.5536208152771,
-                "y": -1.495635986328125,
-                "z": 21.799650192260743
-            },
-            "Rotation": {
-                "x": 0.0,
-                "y": 0.9526094198226929,
-                "z": 0.0,
-                "w": 0.304196298122406
-            },
-            "EntityType": 1,
-            "CoreData": {
-                "HealthData": {
-                    "MaxHealth": 100,
-                    "Health": 100
-                },
-                "ManaData": {
-                    "MaxMana": 100,
-                    "Mana": 100
-                },
-                "StatData": {
-                    "Attack": 1,
-                    "Defence": 1,
-                    "Agility": 1,
-                    "Luck": 1,
-                    "Intelligence": 1
-                }
-            }
-        },
-        {
-            "Position": {
-                "x": 0.9424917697906494,
-                "y": -1.495635986328125,
-                "z": 29.12537384033203
-            },
-            "Rotation": {
-                "x": 0.0,
-                "y": 0.9500991106033325,
-                "z": 0.0,
-                "w": 0.31194818019866946
-            },
-            "EntityType": 1,
-            "CoreData": {
-                "HealthData": {
-                    "MaxHealth": 100,
-                    "Health": 100
-                },
-                "ManaData": {
-                    "MaxMana": 100,
-                    "Mana": 100
-                },
-                "StatData": {
-                    "Attack": 1,
-                    "Defence": 1,
-                    "Agility": 1,
-                    "Luck": 1,
-                    "Intelligence": 1
-                }
-            }
-        },
-        {
-            "Position": {
-                "x": 5.195425033569336,
-                "y": -1.495635986328125,
-                "z": 23.52574348449707
-            },
-            "Rotation": {
-                "x": 0.0,
-                "y": 0.951359212398529,
-                "z": 0.0,
-                "w": 0.30808383226394656
-            },
-            "EntityType": 1,
-            "CoreData": {
-                "HealthData": {
-                    "MaxHealth": 100,
-                    "Health": 100
-                },
-                "ManaData": {
-                    "MaxMana": 100,
-                    "Mana": 100
-                },
-                "StatData": {
-                    "Attack": 1,
-                    "Defence": 1,
-                    "Agility": 1,
-                    "Luck": 1,
-                    "Intelligence": 1
-                }
-            }
-        },
-        {
-            "Position": {
-                "x": -0.9676370620727539,
-                "y": -1.495635986328125,
-                "z": 31.531484603881837
-            },
-            "Rotation": {
-                "x": 0.0,
-                "y": 0.9493398666381836,
-                "z": 0.0,
-                "w": 0.31425127387046816
-            },
-            "EntityType": 2,
-            "CoreData": {
-                "HealthData": {
-                    "MaxHealth": 100,
-                    "Health": 100
-                },
-                "ManaData": {
-                    "MaxMana": 100,
-                    "Mana": 100
-                },
-                "StatData": {
-                    "Attack": 1,
-                    "Defence": 1,
-                    "Agility": 1,
-                    "Luck": 1,
-                    "Intelligence": 1
-                }
-            }
-        },
-        {
-            "Position": {
-                "x": 2.994807481765747,
-                "y": -1.495635986328125,
-                "z": 26.553865432739259
-            },
-            "Rotation": {
-                "x": 0.0,
-                "y": 0.951287567615509,
-                "z": 0.0,
-                "w": 0.30830493569374087
-            },
-            "EntityType": 2,
-            "CoreData": {
-                "HealthData": {
-                    "MaxHealth": 100,
-                    "Health": 100
-                },
-                "ManaData": {
-                    "MaxMana": 100,
-                    "Mana": 100
-                },
-                "StatData": {
-                    "Attack": 1,
-                    "Defence": 1,
-                    "Agility": 1,
-                    "Luck": 1,
-                    "Intelligence": 1
-                }
-            }
-        },
-        {
-            "Position": {
-                "x": -2.4462599754333498,
-                "y": -1.495635986328125,
-                "z": 32.564964294433597
-            },
-            "Rotation": {
-                "x": 0.0,
-                "y": 0.9456307888031006,
-                "z": 0.0,
-                "w": 0.3252421021461487
-            },
-            "EntityType": 2,
-            "CoreData": {
-                "HealthData": {
-                    "MaxHealth": 100,
-                    "Health": 100
-                },
-                "ManaData": {
-                    "MaxMana": 100,
-                    "Mana": 100
-                },
-                "StatData": {
-                    "Attack": 1,
-                    "Defence": 1,
-                    "Agility": 1,
-                    "Luck": 1,
-                    "Intelligence": 1
-                }
-            }
-        },
-        {
-            "Position": {
-                "x": 6.5536208152771,
-                "y": -1.495635986328125,
-                "z": 21.799650192260743
-            },
-            "Rotation": {
-                "x": 0.0,
-                "y": 0.9526094198226929,
-                "z": 0.0,
-                "w": 0.304196298122406
-            },
-            "EntityType": 1,
-            "CoreData": {
-                "HealthData": {
-                    "MaxHealth": 100,
-                    "Health": 100
-                },
-                "ManaData": {
-                    "MaxMana": 100,
-                    "Mana": 100
-                },
-                "StatData": {
-                    "Attack": 1,
-                    "Defence": 1,
-                    "Agility": 1,
-                    "Luck": 1,
-                    "Intelligence": 1
-                }
-            }
-        },
-        {
-            "Position": {
-                "x": 0.9424917697906494,
-                "y": -1.495635986328125,
-                "z": 29.12537384033203
-            },
-            "Rotation": {
-                "x": 0.0,
-                "y": 0.9500991106033325,
-                "z": 0.0,
-                "w": 0.31194818019866946
-            },
-            "EntityType": 1,
-            "CoreData": {
-                "HealthData": {
-                    "MaxHealth": 100,
-                    "Health": 100
-                },
-                "ManaData": {
-                    "MaxMana": 100,
-                    "Mana": 100
-                },
-                "StatData": {
-                    "Attack": 1,
-                    "Defence": 1,
-                    "Agility": 1,
-                    "Luck": 1,
-                    "Intelligence": 1
-                }
-            }
-        },
-        {
-            "Position": {
-                "x": 5.195425033569336,
-                "y": -1.495635986328125,
-                "z": 23.52574348449707
-            },
-            "Rotation": {
-                "x": 0.0,
-                "y": 0.951359212398529,
-                "z": 0.0,
-                "w": 0.30808383226394656
-            },
-            "EntityType": 1,
-            "CoreData": {
-                "HealthData": {
-                    "MaxHealth": 100,
-                    "Health": 100
-                },
-                "ManaData": {
-                    "MaxMana": 100,
-                    "Mana": 100
-                },
-                "StatData": {
-                    "Attack": 1,
-                    "Defence": 1,
-                    "Agility": 1,
-                    "Luck": 1,
-                    "Intelligence": 1
-                }
-            }
-        },
-        {
-            "Position": {
-                "x": -0.9676370620727539,
-                "y": -1.495635986328125,
-                "z": 31.531484603881837
-            },
-            "Rotation": {
-                "x": 0.0,
-                "y": 0.9493398666381836,
-                "z": 0.0,
-                "w": 0.31425127387046816
-            },
-            "EntityType": 2,
-            "CoreData": {
-                "HealthData": {
-                    "MaxHealth": 100,
-                    "Health": 100
-                },
-                "ManaData": {
-                    "MaxMana": 100,
-                    "Mana": 100
-                },
-                "StatData": {
-                    "Attack": 1,
-                    "Defence": 1,
-                    "Agility": 1,
-                    "Luck": 1,
-                    "Intelligence": 1
-                }
-            }
-        },
-        {
-            "Position": {
-                "x": 2.994807481765747,
-                "y": -1.495635986328125,
-                "z": 26.553865432739259
-            },
-            "Rotation": {
-                "x": 0.0,
-                "y": 0.951287567615509,
-                "z": 0.0,
-                "w": 0.30830493569374087
-            },
-            "EntityType": 2,
-            "CoreData": {
-                "HealthData": {
-                    "MaxHealth": 100,
-                    "Health": 100
-                },
-                "ManaData": {
-                    "MaxMana": 100,
-                    "Mana": 100
-                },
-                "StatData": {
-                    "Attack": 1,
-                    "Defence": 1,
-                    "Agility": 1,
-                    "Luck": 1,
-                    "Intelligence": 1
-                }
-            }
-        },
-        {
-            "Position": {
-                "x": -2.4462599754333498,
-                "y": -1.495635986328125,
-                "z": 32.564964294433597
-            },
-            "Rotation": {
-                "x": 0.0,
-                "y": 0.9456307888031006,
-                "z": 0.0,
-                "w": 0.3252421021461487
-            },
-            "EntityType": 2,
-            "CoreData": {
-                "HealthData": {
-                    "MaxHealth": 100,
-                    "Health": 100
-                },
-                "ManaData": {
-                    "MaxMana": 100,
-                    "Mana": 100
-                },
-                "StatData": {
-                    "Attack": 1,
-                    "Defence": 1,
-                    "Agility": 1,
-                    "Luck": 1,
-                    "Intelligence": 1
-                }
-            }
-        },
-        {
-            "Position": {
-                "x": 6.5536208152771,
-                "y": -1.495635986328125,
-                "z": 21.799650192260743
-            },
-            "Rotation": {
-                "x": 0.0,
-                "y": 0.9526094198226929,
-                "z": 0.0,
-                "w": 0.304196298122406
-            },
-            "EntityType": 1,
-            "CoreData": {
-                "HealthData": {
-                    "MaxHealth": 100,
-                    "Health": 100
-                },
-                "ManaData": {
-                    "MaxMana": 100,
-                    "Mana": 100
-                },
-                "StatData": {
-                    "Attack": 1,
-                    "Defence": 1,
-                    "Agility": 1,
-                    "Luck": 1,
-                    "Intelligence": 1
-                }
-            }
-        },
-        {
-            "Position": {
-                "x": 0.9424917697906494,
-                "y": -1.495635986328125,
-                "z": 29.12537384033203
-            },
-            "Rotation": {
-                "x": 0.0,
-                "y": 0.9500991106033325,
-                "z": 0.0,
-                "w": 0.31194818019866946
-            },
-            "EntityType": 1,
-            "CoreData": {
-                "HealthData": {
-                    "MaxHealth": 100,
-                    "Health": 100
-                },
-                "ManaData": {
-                    "MaxMana": 100,
-                    "Mana": 100
-                },
-                "StatData": {
-                    "Attack": 1,
-                    "Defence": 1,
-                    "Agility": 1,
-                    "Luck": 1,
-                    "Intelligence": 1
-                }
-            }
-        },
-        {
-            "Position": {
-                "x": 5.195425033569336,
-                "y": -1.495635986328125,
-                "z": 23.52574348449707
-            },
-            "Rotation": {
-                "x": 0.0,
-                "y": 0.951359212398529,
-                "z": 0.0,
-                "w": 0.30808383226394656
-            },
-            "EntityType": 1,
-            "CoreData": {
-                "HealthData": {
-                    "MaxHealth": 100,
-                    "Health": 100
-                },
-                "ManaData": {
-                    "MaxMana": 100,
-                    "Mana": 100
-                },
-                "StatData": {
-                    "Attack": 1,
-                    "Defence": 1,
-                    "Agility": 1,
-                    "Luck": 1,
-                    "Intelligence": 1
-                }
-            }
-        },
-        {
-            "Position": {
-                "x": -0.9676370620727539,
-                "y": -1.495635986328125,
-                "z": 31.531484603881837
-            },
-            "Rotation": {
-                "x": 0.0,
-                "y": 0.9493398666381836,
-                "z": 0.0,
-                "w": 0.31425127387046816
-            },
-            "EntityType": 2,
-            "CoreData": {
-                "HealthData": {
-                    "MaxHealth": 100,
-                    "Health": 100
-                },
-                "ManaData": {
-                    "MaxMana": 100,
-                    "Mana": 100
-                },
-                "StatData": {
-                    "Attack": 1,
-                    "Defence": 1,
-                    "Agility": 1,
-                    "Luck": 1,
-                    "Intelligence": 1
-                }
-            }
-        },
-        {
-            "Position": {
-                "x": 2.994807481765747,
-                "y": -1.495635986328125,
-                "z": 26.553865432739259
-            },
-            "Rotation": {
-                "x": 0.0,
-                "y": 0.951287567615509,
-                "z": 0.0,
-                "w": 0.30830493569374087
-            },
-            "EntityType": 2,
-            "CoreData": {
-                "HealthData": {
-                    "MaxHealth": 100,
-                    "Health": 100
-                },
-                "ManaData": {
-                    "MaxMana": 100,
-                    "Mana": 100
-                },
-                "StatData": {
-                    "Attack": 1,
-                    "Defence": 1,
-                    "Agility": 1,
-                    "Luck": 1,
-                    "Intelligence": 1
-                }
-            }
-        },
-        {
-            "Position": {
-                "x": -2.4462599754333498,
-                "y": -1.495635986328125,
-                "z": 32.564964294433597
-            },
-            "Rotation": {
-                "x": 0.0,
-                "y": 0.9456307888031006,
-                "z": 0.0,
-                "w": 0.3252421021461487
-            },
-            "EntityType": 2,
-            "CoreData": {
-                "HealthData": {
-                    "MaxHealth": 100,
-                    "Health": 100
-                },
-                "ManaData": {
-                    "MaxMana": 100,
-                    "Mana": 100
-                },
-                "StatData": {
-                    "Attack": 1,
-                    "Defence": 1,
-                    "Agility": 1,
-                    "Luck": 1,
-                    "Intelligence": 1
-                }
-            }
-        },
-        {
-            "Position": {
-                "x": 6.5536208152771,
-                "y": -1.495635986328125,
-                "z": 21.799650192260743
-            },
-            "Rotation": {
-                "x": 0.0,
-                "y": 0.9526094198226929,
-                "z": 0.0,
-                "w": 0.304196298122406
-            },
-            "EntityType": 1,
-            "CoreData": {
-                "HealthData": {
-                    "MaxHealth": 100,
-                    "Health": 100
-                },
-                "ManaData": {
-                    "MaxMana": 100,
-                    "Mana": 100
-                },
-                "StatData": {
-                    "Attack": 1,
-                    "Defence": 1,
-                    "Agility": 1,
-                    "Luck": 1,
-                    "Intelligence": 1
-                }
-            }
-        },
-        {
-            "Position": {
-                "x": 0.9424917697906494,
-                "y": -1.495635986328125,
-                "z": 29.12537384033203
-            },
-            "Rotation": {
-                "x": 0.0,
-                "y": 0.9500991106033325,
-                "z": 0.0,
-                "w": 0.31194818019866946
-            },
-            "EntityType": 1,
-            "CoreData": {
-                "HealthData": {
-                    "MaxHealth": 100,
-                    "Health": 100
-                },
-                "ManaData": {
-                    "MaxMana": 100,
-                    "Mana": 100
-                },
-                "StatData": {
-                    "Attack": 1,
-                    "Defence": 1,
-                    "Agility": 1,
-                    "Luck": 1,
-                    "Intelligence": 1
-                }
-            }
-        },
-        {
-            "Position": {
-                "x": 5.195425033569336,
-                "y": -1.495635986328125,
-                "z": 23.52574348449707
-            },
-            "Rotation": {
-                "x": 0.0,
-                "y": 0.951359212398529,
-                "z": 0.0,
-                "w": 0.30808383226394656
-            },
-            "EntityType": 1,
-            "CoreData": {
-                "HealthData": {
-                    "MaxHealth": 100,
-                    "Health": 100
-                },
-                "ManaData": {
-                    "MaxMana": 100,
-                    "Mana": 100
-                },
-                "StatData": {
-                    "Attack": 1,
-                    "Defence": 1,
-                    "Agility": 1,
-                    "Luck": 1,
-                    "Intelligence": 1
-                }
-            }
-        },
-        {
-            "Position": {
-                "x": -0.9676370620727539,
-                "y": -1.495635986328125,
-                "z": 31.531484603881837
-            },
-            "Rotation": {
-                "x": 0.0,
-                "y": 0.9493398666381836,
-                "z": 0.0,
-                "w": 0.31425127387046816
-            },
-            "EntityType": 2,
-            "CoreData": {
-                "HealthData": {
-                    "MaxHealth": 100,
-                    "Health": 100
-                },
-                "ManaData": {
-                    "MaxMana": 100,
-                    "Mana": 100
-                },
-                "StatData": {
-                    "Attack": 1,
-                    "Defence": 1,
-                    "Agility": 1,
-                    "Luck": 1,
-                    "Intelligence": 1
-                }
-            }
-        },
-        {
-            "Position": {
-                "x": 2.994807481765747,
-                "y": -1.495635986328125,
-                "z": 26.553865432739259
-            },
-            "Rotation": {
-                "x": 0.0,
-                "y": 0.951287567615509,
-                "z": 0.0,
-                "w": 0.30830493569374087
-            },
-            "EntityType": 2,
-            "CoreData": {
-                "HealthData": {
-                    "MaxHealth": 100,
-                    "Health": 100
-                },
-                "ManaData": {
-                    "MaxMana": 100,
-                    "Mana": 100
-                },
-                "StatData": {
-                    "Attack": 1,
-                    "Defence": 1,
-                    "Agility": 1,
-                    "Luck": 1,
-                    "Intelligence": 1
-                }
-            }
-        },
-        {
-            "Position": {
-                "x": -2.4462599754333498,
-                "y": -1.495635986328125,
-                "z": 32.564964294433597
-            },
-            "Rotation": {
-                "x": 0.0,
-                "y": 0.9456307888031006,
-                "z": 0.0,
-                "w": 0.3252421021461487
+                "w": 0.6412381529808044
             },
             "EntityType": 2,
             "CoreData": {

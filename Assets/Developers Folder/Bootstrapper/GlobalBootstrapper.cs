@@ -58,7 +58,9 @@ public class GlobalBootstrapper : MonoBehaviour
 
         _gamePause = Instantiate(_gamePausePrefab);
         _gamePause.SetActive(false);
-        _gamePause.GetComponentInChildren<Button>().onClick.AddListener(LoadMainScreen);
+        var btns1 = _gamePause.GetComponentsInChildren<Button>();
+        btns1[0].onClick.AddListener(LoadMainScreen);
+        btns1[1].onClick.AddListener(CloseInGameMenu);
 
 
         _mainScreen = Instantiate(_mainScreenPrefab);
@@ -110,11 +112,26 @@ public class GlobalBootstrapper : MonoBehaviour
     // DEBUG ---------------------------
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape)) { 
-            _gamePause.SetActive(true); 
-            Time.timeScale = 0;
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+
+            if (_gamePause.activeSelf == true)
+            {
+                CloseInGameMenu();
+            }
+            else
+            {
+                _gamePause.SetActive(true);
+                Time.timeScale = 0;
+            }
         }
     }
+
+    private void CloseInGameMenu()
+    {
+        _gamePause.SetActive(false);
+        Time.timeScale = 1;
+    }
+
     // ----------------------------
 
     public async Task Unload()
