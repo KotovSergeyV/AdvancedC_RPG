@@ -20,6 +20,8 @@ public class ManaSystem : IManaSystem
         _mana = currentMana == -1? maxMana : currentMana;
         _managerUI.RegisterManaBar(this, manaBar);
         _manaRegenTime = regenTime;
+
+        UpdateCanvas();
     }
 
     private async Task RegenAsync()

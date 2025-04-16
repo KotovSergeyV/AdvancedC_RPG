@@ -8,6 +8,7 @@ public class SceneBootstrapper
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void Initialize(ManagerSFX managerSFX, ManagerUI managerUI, List<EntitySaveData> data =null)
     {
+
         InitializeEnemies(managerSFX, managerUI, data);
     }
 

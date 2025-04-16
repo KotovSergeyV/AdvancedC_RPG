@@ -1,10 +1,10 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEditor.Overlays;
 using UnityEngine;
 
 public interface IRepository
 {
-    public void SaveData(List<EntitySaveData> data) { }
-
-    public List<EntitySaveData> LoadData() { return new List<EntitySaveData>(); }
+    Task SaveDataAsync(List<EntitySaveData> data);
+    Task<List<EntitySaveData>> LoadDataAsync();
 }

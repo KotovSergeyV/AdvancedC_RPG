@@ -1,39 +1,75 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using UnityEngine;
 
-public class RepositoryJson :IRepository
+public class RepositoryJson : IRepository
 {
     private readonly string _savePath = "Assets/Developers Folder/SaveLoad/SaveFiles/JSONSave";
-    public void SaveData(List<EntitySaveData> data)
+    public async Task SaveDataAsync(List<EntitySaveData> data)
     {
-        // Create wrapper object
-        var wrapper = new EntitySaveDataWrapper(data);
-
-        // Serialize the wrapper instead of raw list
-        string json = JsonUtility.ToJson(wrapper, true);
-
-        File.WriteAllText(_savePath, json);
-        Debug.Log($"Saved to {_savePath}\nJSON: {json}");
-    }
-
-
-    public List<EntitySaveData> LoadData() 
-    {
-        if (!File.Exists(_savePath)) return new List<EntitySaveData>();
-
+        Debug.LogWarning("Data count to save: " + data);
+        string tempPath = Path.GetTempFileName();
         try
         {
-            string json = File.ReadAllText(_savePath);
-            return JsonUtility.FromJson<EntitySaveDataWrapper>(json).data;
+            var wrapper = new EntitySaveDataWrapper(data);
+            string json = JsonUtility.ToJson(wrapper, true);
+
+            // True async file writing
+            await File.WriteAllTextAsync(tempPath, json);
+            if (!File.Exists(_savePath))
+            {
+                File.Move(tempPath, _savePath);
+                Debug.Log($"First save created at {_savePath}");
+                return;
+            }
+            // Atomic file replacement
+            File.Replace(tempPath, _savePath, null);
+
+            Debug.Log($"Saved to {_savePath}");
+            return;
         }
         catch (Exception ex)
         {
-            Debug.LogError($"Load failed: {ex.Message}");
+            Debug.LogError($"Save failed: {ex.Message}");
+            throw;
+        }
+
+    }
+
+
+    public async Task<List<EntitySaveData>> LoadDataAsync()
+    {
+        if (!File.Exists(_savePath))
+        {
+            Debug.LogWarning("No save file found at " + _savePath);
+            return new List<EntitySaveData>();
+        }
+
+        try
+        {
+            // Async file read
+            string json = await File.ReadAllTextAsync(_savePath);
+
+            // Note: JsonUtility isn't async, but the file operation is
+            var wrapper = JsonUtility.FromJson<EntitySaveDataWrapper>(json);
+
+            if (wrapper?.data == null)
+            {
+                Debug.LogError("Save file corrupted or invalid format");
+                return new List<EntitySaveData>();
+            }
+
+            return wrapper.data;
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"Load failed: {ex.GetType().Name} - {ex.Message}");
             return new List<EntitySaveData>();
         }
     }
+
 }
 
 

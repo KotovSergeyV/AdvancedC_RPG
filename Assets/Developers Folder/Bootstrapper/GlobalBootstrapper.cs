@@ -2,6 +2,8 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using UnityEditor.Overlays;
 using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -23,19 +25,28 @@ public class GlobalBootstrapper : MonoBehaviour
     [SerializeField] private GameObject _gamePause;
     [SerializeField] private GameObject _mainScreen;
     [SerializeField] private EndScreen _endscreen;
-
-    private ManagerSFX _managerSFX;
-    private ManagerVFX _managerVFX;
-    private ManagerUI _managerUI;
+    [Space(10)]
+    [SerializeField] private ManagerSFX _managerSFX;
+    [SerializeField] private ManagerVFX _managerVFX;
+    [SerializeField] private ManagerUI _managerUI;
 
     private SaveLoadManager _saveLoadManager;
 
+
+
+    List<EntitySaveData> __tempDataContainer;
 
     private void Awake()
     {
 
         //Manager Instantiation
-        _managerVFX = new ManagerVFX();
+        gameObject.AddComponent<ManagerSFX>();
+        gameObject.AddComponent<ManagerVFX>();
+        gameObject.AddComponent<ManagerUI>();
+
+        _managerSFX = gameObject.GetComponent<ManagerSFX>();
+        _managerVFX = gameObject.GetComponent<ManagerVFX>();
+        _managerUI = gameObject.GetComponent<ManagerUI>();
 
 
         _endscreen = Instantiate(_endscreenPrefab).GetComponent<EndScreen>();
@@ -46,30 +57,75 @@ public class GlobalBootstrapper : MonoBehaviour
 
 
         _gamePause = Instantiate(_gamePausePrefab);
-        _gamePause.GetComponentInChildren<Button>().onClick.AddListener(_saveLoadManager.SaveInRepo);
         _gamePause.SetActive(false);
+        _gamePause.GetComponentInChildren<Button>().onClick.AddListener(LoadMainScreen);
+
 
         _mainScreen = Instantiate(_mainScreenPrefab);
         Button[] btns = _mainScreen.GetComponentsInChildren<Button>();
 
-        var data = _saveLoadManager.LoadFromRepo();
-        if (data != null) { btns[0].onClick.AddListener(delegate { LoadFromSave(data); } ); }
-        else { btns[0].interactable = false;}
+        AssignLoadButton(btns[0]);
 
         btns[1].onClick.AddListener(LoadNewGame);
        // btns[2].onClick.AddListener();
         btns[3].onClick.AddListener(Application.Quit);
     }
 
+    private async void LoadMainScreen()
+    {
+        var data = EntityAgregator.GenerateSaveData();
+        Debug.LogWarning("Saving data:");
+        Debug.LogWarning(data.Count);
+
+        EntityAgregator.Clear();
+
+        _gamePause.SetActive(false);
+
+        await _saveLoadManager.SaveInRepoAsync(data);
+        await Unload();
+
+
+        Button[] btns = _mainScreen.GetComponentsInChildren<Button>();
+        AssignLoadButton(btns[0]);
+
+        _mainScreen.SetActive(true);
+
+        Time.timeScale = 1.0f;
+    }
+
+    private async void AssignLoadButton(Button btn)
+    {
+        btn.onClick.RemoveAllListeners();
+        var data = await _saveLoadManager.LoadFromRepo();
+        __tempDataContainer = new List<EntitySaveData>(data);
+        Debug.LogWarning("Assigned to button:" + data.Count);
+        if (data != null && data.Count > 0) { 
+            btn.onClick.AddListener(delegate { LoadFromSave(data); });
+            btn.interactable = true;
+        }
+        else { btn.interactable = false; }
+    }
+
+
+    // DEBUG ---------------------------
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape)) { _gamePause.SetActive(true); Time.timeScale = 0; }
+        if (Input.GetKeyDown(KeyCode.Escape)) { 
+            _gamePause.SetActive(true); 
+            Time.timeScale = 0;
+        }
+    }
+    // ----------------------------
+
+    public async Task Unload()
+    {
+        Destroy(_player);
+        await SceneManager.UnloadSceneAsync("CyberpunkScene");
     }
 
     public async void Reload()
-    { 
-        Destroy(_player);
-        await SceneManager.UnloadSceneAsync("CyberpunkScene");
+    {
+        await Unload();
         LoadNewGame();
     }
 
@@ -79,9 +135,6 @@ public class GlobalBootstrapper : MonoBehaviour
         EntityAgregator.Clear();
         _mainScreen.SetActive(false);
 
-        //Manager Instantiation
-        _managerVFX = new ManagerVFX();
-        _managerUI = new ManagerUI();
 
         // Player Instantiation
         _player = Instantiate(_playerPrefab, Vector3.up, Quaternion.identity);
@@ -98,17 +151,17 @@ public class GlobalBootstrapper : MonoBehaviour
 
     private void LoadFromSave(List<EntitySaveData> data)
     {
-        EntityAgregator.Clear();
         _mainScreen.SetActive(false);
 
-        //Manager Instantiation
-        _managerVFX = new ManagerVFX();
-        _managerUI = new ManagerUI();
+        Debug.LogWarning("DATA ON LOAD:");
+        Debug.LogWarning(data.Count);
 
-   
         EntitySaveData playerData = data
                 .FirstOrDefault(x => x.EntityType == Enum_EntityType.Player);
         data.Remove(playerData);
+        Debug.LogWarning(playerData);
+        Debug.LogWarning("ENEMY DATA ON LOAD:");
+        Debug.LogWarning(data.Count);
 
         _player = Instantiate(_playerPrefab, playerData.Position, playerData.Rotation);
         PlayerCreation(_player, playerData.CoreData);
@@ -128,14 +181,14 @@ public class GlobalBootstrapper : MonoBehaviour
     private void PlayerCreation(GameObject player, CoreData playerData = null)
     {
         // Entity Core
-        EntityCoreSystem entityCoreSystem = new EntityCoreSystem();
+        EntityCoreSystem entityCoreSystem;
         if (playerData != null)
         {
-            entityCoreSystem = PlayerCoreCreation(player, playerData);
+             entityCoreSystem = PlayerCoreCreation(player, playerData);
         }
         else 
         {
-            entityCoreSystem = PlayerCoreCreation(player);
+             entityCoreSystem = PlayerCoreCreation(player);
         }
 
         // EndScreen
@@ -209,9 +262,9 @@ public class GlobalBootstrapper : MonoBehaviour
         {
             SceneManager.sceneLoaded += OnNewSceneLoaded;
         }
-        else 
+        else
         {
-            UnityEngine.Events.UnityAction<UnityEngine.SceneManagement.Scene, LoadSceneMode> handler = (scene, mode) => OnSceneLoadedFromSave(scene, mode, data);
+            UnityEngine.Events.UnityAction<UnityEngine.SceneManagement.Scene, LoadSceneMode> handler = (scene, mode) => OnSceneLoadedFromSave(scene, mode, __tempDataContainer);
 
             SceneManager.sceneLoaded += handler;
         }
@@ -223,23 +276,26 @@ public class GlobalBootstrapper : MonoBehaviour
         if (scene.name == "CyberpunkScene")
         {
             SceneManager.sceneLoaded -= OnNewSceneLoaded;
-            _managerUI.Initialize();
+            
             SceneBootstrapper boot = new SceneBootstrapper();
             boot.Initialize(_managerSFX, _managerUI);
+            _managerUI.Initialize();
         }
     }
     private void OnSceneLoadedFromSave(UnityEngine.SceneManagement.Scene scene, LoadSceneMode mode, List<EntitySaveData> data)
     {
-        // Create the same Action signature to properly unsubscribe
-        UnityEngine.Events.UnityAction<UnityEngine.SceneManagement.Scene, LoadSceneMode> handler = (s, m) => OnSceneLoadedFromSave(s, m, data);
+        UnityEngine.Events.UnityAction<UnityEngine.SceneManagement.Scene, LoadSceneMode> handler =
+            (s, m) => OnSceneLoadedFromSave(s, m, __tempDataContainer);
         SceneManager.sceneLoaded -= handler;
 
         if (scene.name == "CyberpunkScene")
         {
-            _managerUI.Initialize();
             SceneBootstrapper boot = new SceneBootstrapper();
+            Debug.Log("!!!!!!!! "+_managerSFX + "   " + _managerUI + "   " + data);
             boot.Initialize(_managerSFX, _managerUI, data);
+            _managerUI.Initialize();
         }
+        __tempDataContainer = null;
     }
 
 }

@@ -21,6 +21,7 @@ public class HealthSystem : IHealthSystem
         _isDead = false;
 
         _managerUI.RegisterHealthBar(this, healthBar);
+        
         UpdateCanvas();
 
     }

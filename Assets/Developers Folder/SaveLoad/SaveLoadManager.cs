@@ -1,5 +1,7 @@
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using UnityEditor.Overlays;
 using UnityEngine;
 
 public class SaveLoadManager
@@ -11,15 +13,14 @@ public class SaveLoadManager
         _repo = repo;
     }
 
-    public void SaveInRepo()
+    public async Task SaveInRepoAsync(List<EntitySaveData> data)
     {
-        var data = EntityAgregator.GenerateSaveData();
-        Debug.Log(data);
-        _repo.SaveData(data);
+        await _repo.SaveDataAsync(data); 
     }
 
-    public List<EntitySaveData> LoadFromRepo()
+    public async Task<List<EntitySaveData>> LoadFromRepo()
     {
-        return _repo.LoadData();
+        var saveData = await _repo.LoadDataAsync(); 
+        return saveData;
     }
 }
