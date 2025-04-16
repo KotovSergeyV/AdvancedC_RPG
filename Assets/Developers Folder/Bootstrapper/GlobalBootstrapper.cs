@@ -4,20 +4,25 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using static UnityEngine.EventSystems.EventTrigger;
 
-public class Bootstrapper : MonoBehaviour
+public class GlobalBootstrapper : MonoBehaviour
 {
 
     [SerializeField] private GameObject _playerPrefab;
     private HealthBar _playerHealthBar;
     private ManaBar _playerManaBar;
     [SerializeField] private GameObject _player;
-    [SerializeField] private GameObject _endscreenPrefab;
 
+    [SerializeField] private GameObject _endscreenPrefab;
+    [SerializeField] private GameObject _gamePausePrefab;
+
+    [SerializeField] private GameObject _gamePause;
     [SerializeField] private EndScreen _endscreen;
 
     private ManagerSFX _managerSFX;
     private ManagerVFX _managerVFX;
     private ManagerUI _managerUI;
+
+    private SaveLoadManager _saveLoadManager;
 
 
     private void Awake()
@@ -26,7 +31,20 @@ public class Bootstrapper : MonoBehaviour
         _endscreen = Instantiate(_endscreenPrefab).GetComponent<EndScreen>();
         _endscreen.Initialize(this);
 
+
+        _saveLoadManager = new SaveLoadManager(new RepositoryJson());
+
+
+        _gamePause = Instantiate(_gamePausePrefab);
+        _gamePause.GetComponentInChildren<Button>().onClick.AddListener(_saveLoadManager.SaveInRepo);
+        _gamePause.SetActive(false);
+
         Load();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape)) { _gamePause.SetActive(true); Time.timeScale = 0; }
     }
 
     public async void Reload()
@@ -50,6 +68,8 @@ public class Bootstrapper : MonoBehaviour
         _player = Instantiate(_playerPrefab, Vector3.up, Quaternion.identity);
         PlayerCreation(_player);
 
+        EntityAgregator.AddEntity(_player, Enum_EntityType.Player);
+
         _playerHealthBar = GameObject.Find("HealthBar")?.GetComponent<HealthBar>();
         _playerManaBar = GameObject.Find("ManaBar")?.GetComponent<ManaBar>(); ;
 
@@ -60,7 +80,7 @@ public class Bootstrapper : MonoBehaviour
     private void PlayerCreation(GameObject player)
     {
         // Entity Core
-        EntityCoreSystem entityCoreSystem = EntityCoreCreation(player);
+        EntityCoreSystem entityCoreSystem = PlayerCoreCreation(player);
 
         // EndScreen
         IHealthSystem healthSystem = (entityCoreSystem.GetHealthSystem());
@@ -75,9 +95,10 @@ public class Bootstrapper : MonoBehaviour
         playerController.Initialize(magicCaster, _managerSFX);
         player.AddComponent<CameraController>();
         player.AddComponent<PlayerJump>();
+
     }
 
-    private EntityCoreSystem EntityCoreCreation(GameObject entity)
+    protected EntityCoreSystem PlayerCoreCreation(GameObject entity)
     {
         EntityCoreSystem entityCoreSystem = entity.AddComponent<EntityCoreSystem>();
 
@@ -111,19 +132,10 @@ public class Bootstrapper : MonoBehaviour
         {
             SceneManager.sceneLoaded -= OnSceneLoaded;
             _managerUI.Initialize();
-            InitializeEnemies();
+            SceneBootstrapper boot = new SceneBootstrapper();
+            boot.Initialize(_managerSFX, _managerUI);
         }
     }
 
-    private void InitializeEnemies()
-    {
-        foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("Enemy"))
-        {
-            EntityCoreCreation(enemy);
-            if (enemy.GetComponent<GunnerAI>())
-            {
-                enemy.GetComponent<GunnerAI>().Initialize(_managerSFX);
-            }
-        }
-    }
+    
 }

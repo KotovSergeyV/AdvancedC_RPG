@@ -4,13 +4,14 @@ using System;
 [Serializable]
 public class CoreData
 {
-    public HealthData HealthData;
-    public ManaData ManaData;
-    public StatData StatData;
-    public StateData StateData;
+    public HealthData HealthData = new HealthData();
+    public ManaData ManaData = new ManaData();
+    public StatData StatData = new StatData();
+    public StateData StateData = new StateData();
 
     public void Initialise(EntityCoreSystem core)
-    { 
+    {
+
         HealthData.MaxHealth = core.GetHealthSystem().GetMaxHp();
         HealthData.Health = core.GetHealthSystem().GetHp();
 

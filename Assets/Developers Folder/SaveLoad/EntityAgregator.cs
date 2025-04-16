@@ -5,14 +5,15 @@ using UnityEngine;
 
 public class EntityAgregator
 {
-    private static (GameObject, Enum_EntityType)[] Entities;
 
-    public void AddEntity(GameObject entity, Enum_EntityType type) 
+    private static List<(GameObject, Enum_EntityType)> Entities = new List<(GameObject, Enum_EntityType)>();
+
+    public static void AddEntity(GameObject entity, Enum_EntityType type) 
     {
-        Entities.Append((entity, type));
+        Entities.Add((entity, type));
     }
-     
-    public List<EntitySaveData> GenerateSaveData()
+
+    public static List<EntitySaveData> GenerateSaveData()
     {
         List<EntitySaveData> saveData = new List<EntitySaveData>();
         
