@@ -13,9 +13,11 @@ public class GlobalBootstrapper : MonoBehaviour
     [SerializeField] private GameObject _player;
 
     [SerializeField] private GameObject _endscreenPrefab;
+    [SerializeField] private GameObject _mainScreenPrefab;
     [SerializeField] private GameObject _gamePausePrefab;
 
     [SerializeField] private GameObject _gamePause;
+    [SerializeField] private GameObject _mainScreen;
     [SerializeField] private EndScreen _endscreen;
 
     private ManagerSFX _managerSFX;
@@ -30,7 +32,7 @@ public class GlobalBootstrapper : MonoBehaviour
 
         _endscreen = Instantiate(_endscreenPrefab).GetComponent<EndScreen>();
         _endscreen.Initialize(this);
-
+        _endscreen.Hide();
 
         _saveLoadManager = new SaveLoadManager(new RepositoryJson());
 
@@ -39,7 +41,12 @@ public class GlobalBootstrapper : MonoBehaviour
         _gamePause.GetComponentInChildren<Button>().onClick.AddListener(_saveLoadManager.SaveInRepo);
         _gamePause.SetActive(false);
 
-        Load();
+        _mainScreen = Instantiate(_mainScreenPrefab);
+        Button[] btns = _mainScreen.GetComponentsInChildren<Button>();
+        btns[0].interactable = false;
+        btns[1].onClick.AddListener(Load);
+       // btns[2].onClick.AddListener();
+        btns[3].onClick.AddListener(Application.Quit);
     }
 
     private void Update()
@@ -56,8 +63,9 @@ public class GlobalBootstrapper : MonoBehaviour
 
     private void Load()
     {
-        
-        _endscreen.Hide();
+
+        _mainScreen.SetActive(false);
+
 
         //Manager Instantiation
         _managerVFX = new ManagerVFX();
