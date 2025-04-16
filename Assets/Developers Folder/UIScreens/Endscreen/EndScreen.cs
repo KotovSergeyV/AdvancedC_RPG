@@ -3,9 +3,9 @@ using UnityEngine;
 public class EndScreen : MonoBehaviour
 {
 
-    [SerializeField] Bootstrapper _bootstrapper;
+    [SerializeField] GlobalBootstrapper _bootstrapper;
 
-    public void Initialize(Bootstrapper bootstrapper)
+    public void Initialize(GlobalBootstrapper bootstrapper)
     {
         _bootstrapper = bootstrapper;
     }

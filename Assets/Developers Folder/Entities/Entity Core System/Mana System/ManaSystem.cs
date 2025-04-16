@@ -13,13 +13,15 @@ public class ManaSystem : IManaSystem
 
     ManagerUI _managerUI;
 
-    public ManaSystem(ManagerUI managerUI, int maxMana, float regenTime, ManaBar manaBar) 
+    public ManaSystem(ManagerUI managerUI, int maxMana, float regenTime, ManaBar manaBar, int currentMana = -1) 
     {
         _managerUI = managerUI;
         _maxMana = maxMana;
-        _mana = maxMana;
+        _mana = currentMana == -1? maxMana : currentMana;
         _managerUI.RegisterManaBar(this, manaBar);
         _manaRegenTime = regenTime;
+
+        UpdateCanvas();
     }
 
     private async Task RegenAsync()
@@ -40,7 +42,8 @@ public class ManaSystem : IManaSystem
     }
 
     // Functions from interface
-    public int GetMana()    { UpdateCanvas(); Debug.Log("Мана " + _mana); return _mana; }
+    public int GetMana()    {  return _mana; }
+    public int GetMaxMana() { return _maxMana; }
     public int RemoveMana(int amount)   
     {
         UpdateCanvas();
