@@ -13,17 +13,18 @@ public class HealthSystem : IHealthSystem
 
     private ManagerUI _managerUI;
 
-    public HealthSystem(ManagerUI managerUI, int maxHp, HealthBar healthBar)
+    public HealthSystem(ManagerUI managerUI, int maxHp, HealthBar healthBar, int currentHealth=-1)
     {
         _managerUI = managerUI;
         _maxHealth = maxHp;
-        _health = maxHp;
+        _health = currentHealth == -1 ? maxHp : currentHealth;
         _isDead = false;
 
         _managerUI.RegisterHealthBar(this, healthBar);
         UpdateCanvas();
 
     }
+
 
     private void UpdateCanvas()
     {

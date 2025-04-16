@@ -1,3 +1,7 @@
+using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -30,6 +34,10 @@ public class GlobalBootstrapper : MonoBehaviour
     private void Awake()
     {
 
+        //Manager Instantiation
+        _managerVFX = new ManagerVFX();
+
+
         _endscreen = Instantiate(_endscreenPrefab).GetComponent<EndScreen>();
         _endscreen.Initialize(this);
         _endscreen.Hide();
@@ -43,8 +51,12 @@ public class GlobalBootstrapper : MonoBehaviour
 
         _mainScreen = Instantiate(_mainScreenPrefab);
         Button[] btns = _mainScreen.GetComponentsInChildren<Button>();
-        btns[0].interactable = false;
-        btns[1].onClick.AddListener(Load);
+
+        var data = _saveLoadManager.LoadFromRepo();
+        if (data != null) { btns[0].onClick.AddListener(delegate { LoadFromSave(data); } ); }
+        else { btns[0].interactable = false;}
+
+        btns[1].onClick.AddListener(LoadNewGame);
        // btns[2].onClick.AddListener();
         btns[3].onClick.AddListener(Application.Quit);
     }
@@ -58,18 +70,17 @@ public class GlobalBootstrapper : MonoBehaviour
     { 
         Destroy(_player);
         await SceneManager.UnloadSceneAsync("CyberpunkScene");
-        Load();
+        LoadNewGame();
     }
 
-    private void Load()
+    private void LoadNewGame()
     {
 
+        EntityAgregator.Clear();
         _mainScreen.SetActive(false);
-
 
         //Manager Instantiation
         _managerVFX = new ManagerVFX();
-        _managerSFX = new ManagerSFX();
         _managerUI = new ManagerUI();
 
         // Player Instantiation
@@ -85,10 +96,47 @@ public class GlobalBootstrapper : MonoBehaviour
         LoadGameScene();
     }
 
-    private void PlayerCreation(GameObject player)
+    private void LoadFromSave(List<EntitySaveData> data)
+    {
+        EntityAgregator.Clear();
+        _mainScreen.SetActive(false);
+
+        //Manager Instantiation
+        _managerVFX = new ManagerVFX();
+        _managerUI = new ManagerUI();
+
+   
+        EntitySaveData playerData = data
+                .FirstOrDefault(x => x.EntityType == Enum_EntityType.Player);
+        data.Remove(playerData);
+
+        _player = Instantiate(_playerPrefab, playerData.Position, playerData.Rotation);
+        PlayerCreation(_player, playerData.CoreData);
+
+        EntityAgregator.AddEntity(_player, Enum_EntityType.Player);
+
+        _playerHealthBar = GameObject.Find("HealthBar")?.GetComponent<HealthBar>();
+        _playerManaBar = GameObject.Find("ManaBar")?.GetComponent<ManaBar>(); ;
+
+        // Game Load
+        LoadGameScene(data);
+    }
+
+
+
+
+    private void PlayerCreation(GameObject player, CoreData playerData = null)
     {
         // Entity Core
-        EntityCoreSystem entityCoreSystem = PlayerCoreCreation(player);
+        EntityCoreSystem entityCoreSystem = new EntityCoreSystem();
+        if (playerData != null)
+        {
+            entityCoreSystem = PlayerCoreCreation(player, playerData);
+        }
+        else 
+        {
+            entityCoreSystem = PlayerCoreCreation(player);
+        }
 
         // EndScreen
         IHealthSystem healthSystem = (entityCoreSystem.GetHealthSystem());
@@ -106,7 +154,7 @@ public class GlobalBootstrapper : MonoBehaviour
 
     }
 
-    protected EntityCoreSystem PlayerCoreCreation(GameObject entity)
+    private EntityCoreSystem PlayerCoreCreation(GameObject entity)
     {
         EntityCoreSystem entityCoreSystem = entity.AddComponent<EntityCoreSystem>();
 
@@ -128,22 +176,70 @@ public class GlobalBootstrapper : MonoBehaviour
         return entityCoreSystem;
     }
 
-    private void LoadGameScene()
+    private EntityCoreSystem PlayerCoreCreation(GameObject entity, CoreData coreData)
     {
-        SceneManager.sceneLoaded += OnSceneLoaded;
+        EntityCoreSystem entityCoreSystem = entity.AddComponent<EntityCoreSystem>();
+
+        HealthBar healthBar = entity?.GetComponentInChildren<HealthBar>();
+        ManaBar manaBar = entity?.GetComponentInChildren<ManaBar>();
+
+        entityCoreSystem.Initialize(new HealthSystem(_managerUI, coreData.HealthData.MaxHealth,healthBar, coreData.HealthData.Health),
+            new DamageCalculationSystem(),
+            new ManaSystem(_managerUI, coreData.ManaData.MaxMana, 0.5f, manaBar, coreData.ManaData.Mana ),
+            new StatSystem(coreData.StatData.Agility, coreData.StatData.Attack, coreData.StatData.Luck, coreData.StatData.Defence, coreData.StatData.Intelligence),
+            new EntityStatesSystem(), // <---- current state here after it released in game
+            new Movable());
+        try
+        {
+            IHealthSystem healthSystem = (entityCoreSystem.GetHealthSystem());
+            ((HealthSystem)healthSystem).OnDamaged += entity.GetComponent<AnimatorController>().PlayHitAnimation;
+            ((HealthSystem)healthSystem).OnDead += entity.GetComponent<AnimatorController>().PlayDeathAnimation;
+
+            Debug.Log("Initial HP:" + healthSystem.GetHp());
+        }
+        catch { Debug.Log("Damage/Death anim assignation error!"); }
+
+
+        return entityCoreSystem;
+    }
+
+    private void LoadGameScene(List<EntitySaveData> data = null)
+    {
+        if (data == null)
+        {
+            SceneManager.sceneLoaded += OnNewSceneLoaded;
+        }
+        else 
+        {
+            UnityEngine.Events.UnityAction<UnityEngine.SceneManagement.Scene, LoadSceneMode> handler = (scene, mode) => OnSceneLoadedFromSave(scene, mode, data);
+
+            SceneManager.sceneLoaded += handler;
+        }
         SceneManager.LoadScene("CyberpunkScene", LoadSceneMode.Additive);
     }
 
-    private void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, LoadSceneMode mode)
+    private void OnNewSceneLoaded(UnityEngine.SceneManagement.Scene scene, LoadSceneMode mode)
     {
         if (scene.name == "CyberpunkScene")
         {
-            SceneManager.sceneLoaded -= OnSceneLoaded;
+            SceneManager.sceneLoaded -= OnNewSceneLoaded;
             _managerUI.Initialize();
             SceneBootstrapper boot = new SceneBootstrapper();
             boot.Initialize(_managerSFX, _managerUI);
         }
     }
+    private void OnSceneLoadedFromSave(UnityEngine.SceneManagement.Scene scene, LoadSceneMode mode, List<EntitySaveData> data)
+    {
+        // Create the same Action signature to properly unsubscribe
+        UnityEngine.Events.UnityAction<UnityEngine.SceneManagement.Scene, LoadSceneMode> handler = (s, m) => OnSceneLoadedFromSave(s, m, data);
+        SceneManager.sceneLoaded -= handler;
 
-    
+        if (scene.name == "CyberpunkScene")
+        {
+            _managerUI.Initialize();
+            SceneBootstrapper boot = new SceneBootstrapper();
+            boot.Initialize(_managerSFX, _managerUI, data);
+        }
+    }
+
 }

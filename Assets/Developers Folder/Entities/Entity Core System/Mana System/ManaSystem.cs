@@ -13,11 +13,11 @@ public class ManaSystem : IManaSystem
 
     ManagerUI _managerUI;
 
-    public ManaSystem(ManagerUI managerUI, int maxMana, float regenTime, ManaBar manaBar) 
+    public ManaSystem(ManagerUI managerUI, int maxMana, float regenTime, ManaBar manaBar, int currentMana = -1) 
     {
         _managerUI = managerUI;
         _maxMana = maxMana;
-        _mana = maxMana;
+        _mana = currentMana == -1? maxMana : currentMana;
         _managerUI.RegisterManaBar(this, manaBar);
         _manaRegenTime = regenTime;
     }

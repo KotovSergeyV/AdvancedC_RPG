@@ -25,6 +25,11 @@ public class EntityCoreSystem : MonoBehaviour
         _moveSystem = moveSystem;
     }
 
+    public void AssignData(CoreData data)
+    {
+
+    }
+
     public IHealthSystem GetHealthSystem() { return _healthSystem; }
     public IManaSystem GetManaSystem() { return _manaSystem; }
     public IDamageCalculationSystem GetDamageCalculationSystem() { return _damageCalculationSystem; }

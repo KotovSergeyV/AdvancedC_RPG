@@ -12,6 +12,7 @@ public class EntityAgregator
     {
         Entities.Add((entity, type));
     }
+    public static void Clear() { Entities.Clear(); }
 
     public static List<EntitySaveData> GenerateSaveData()
     {

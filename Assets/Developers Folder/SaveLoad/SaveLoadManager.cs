@@ -1,3 +1,5 @@
+using NUnit.Framework;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class SaveLoadManager
@@ -14,5 +16,10 @@ public class SaveLoadManager
         var data = EntityAgregator.GenerateSaveData();
         Debug.Log(data);
         _repo.SaveData(data);
+    }
+
+    public List<EntitySaveData> LoadFromRepo()
+    {
+        return _repo.LoadData();
     }
 }

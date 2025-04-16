@@ -17,6 +17,23 @@ public class RepositoryJson :IRepository
         File.WriteAllText(_savePath, json);
         Debug.Log($"Saved to {_savePath}\nJSON: {json}");
     }
+
+
+    public List<EntitySaveData> LoadData() 
+    {
+        if (!File.Exists(_savePath)) return new List<EntitySaveData>();
+
+        try
+        {
+            string json = File.ReadAllText(_savePath);
+            return JsonUtility.FromJson<EntitySaveDataWrapper>(json).data;
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"Load failed: {ex.Message}");
+            return new List<EntitySaveData>();
+        }
+    }
 }
 
 
