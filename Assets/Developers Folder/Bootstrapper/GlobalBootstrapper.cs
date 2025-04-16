@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using UnityEditor.Overlays;
 using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using static UnityEngine.EventSystems.EventTrigger;
@@ -24,6 +25,7 @@ public class GlobalBootstrapper : MonoBehaviour
 
     [SerializeField] private GameObject _gamePause;
     [SerializeField] private GameObject _mainScreen;
+    [SerializeField] private GameObject _settingsScreen;
     [SerializeField] private EndScreen _endscreen;
     [Space(10)]
     [SerializeField] private ManagerSFX _managerSFX;
@@ -64,13 +66,21 @@ public class GlobalBootstrapper : MonoBehaviour
 
 
         _mainScreen = Instantiate(_mainScreenPrefab);
+        _settingsScreen = Instantiate(_settingsScreen);
+        _settingsScreen.SetActive(false);
         Button[] btns = _mainScreen.GetComponentsInChildren<Button>();
 
         AssignLoadButton(btns[0]);
 
         btns[1].onClick.AddListener(LoadNewGame);
-       // btns[2].onClick.AddListener();
+        btns[2].onClick.AddListener(Setting);
         btns[3].onClick.AddListener(Application.Quit);
+    }
+
+    private void Setting()
+    {
+        _settingsScreen.SetActive(true);
+        _mainScreen.SetActive(false);
     }
 
     private async void LoadMainScreen()

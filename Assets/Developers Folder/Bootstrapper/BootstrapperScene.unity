@@ -276,7 +276,11 @@ MonoBehaviour:
   _gamePausePrefab: {fileID: 8028152093521007387, guid: aa07f9a77a1473449a38e2c472692cf9, type: 3}
   _gamePause: {fileID: 0}
   _mainScreen: {fileID: 0}
+  _settingsScreen: {fileID: 7370377097560949917, guid: 2ef13e3c5b362e646ad9e3464b969bf9, type: 3}
   _endscreen: {fileID: 0}
+  _managerSFX: {fileID: 0}
+  _managerVFX: {fileID: 0}
+  _managerUI: {fileID: 0}
 --- !u!4 &1204535930
 Transform:
   m_ObjectHideFlags: 0
