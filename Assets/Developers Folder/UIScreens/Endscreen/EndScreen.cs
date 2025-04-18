@@ -1,16 +1,20 @@
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
 
-public class EndScreen : MonoBehaviour
+public class EndScreen
 {
+    private GameObject _endScreen;
 
-    [SerializeField] GlobalBootstrapper _bootstrapper;
-
-    public void Initialize(GlobalBootstrapper bootstrapper)
+    public void Initialize(GameObject endScreen, UnityAction ReloadGameAction)
     {
-        _bootstrapper = bootstrapper;
+        _endScreen = GameObject.Instantiate(endScreen);
+        Button[] btns = _endScreen.GetComponentsInChildren<Button>();
+        btns[0].onClick.AddListener(ReloadGameAction);
     }
-    public void Hide() { gameObject.SetActive(false); }
-    public void Show() { gameObject.SetActive(true); }
-
-    public void ReloadGame() { _bootstrapper.Reload(); }
+    public void Hide() { _endScreen.SetActive(false); }
+    public void Show() 
+    { 
+        _endScreen.SetActive(true);
+    }
 }

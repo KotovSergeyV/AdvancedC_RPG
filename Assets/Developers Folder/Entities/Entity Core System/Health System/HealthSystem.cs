@@ -38,6 +38,8 @@ public class HealthSystem : IHealthSystem
     public bool GetIsDead()    { return _isDead; }
     public int Damage(int amount)   
     {
+        if (_isDead) return 0;
+
         GetHp();
 
         _health = Mathf.Max(_health-amount, 0);

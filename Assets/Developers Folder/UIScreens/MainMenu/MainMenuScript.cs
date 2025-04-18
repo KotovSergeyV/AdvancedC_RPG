@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class MainMenuScript
 {
-    [SerializeField] private GameObject _mainScreen;
+    private GameObject _mainScreen;
 
 
     // Префаб экрана, объект settingsScreen  (будет заменен на Script позже),

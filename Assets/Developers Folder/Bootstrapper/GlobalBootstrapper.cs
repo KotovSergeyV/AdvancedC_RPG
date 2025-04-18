@@ -19,15 +19,18 @@ public class GlobalBootstrapper : MonoBehaviour
     private ManaBar _playerManaBar;
     [SerializeField] private GameObject _player;
 
+
+    [SerializeField][Tooltip("Префаб начального экрана")]
+    private GameObject _mainScreenPrefab;
     [SerializeField] private GameObject _endscreenPrefab;
     [SerializeField] private GameObject _gamePausePrefab;
+    [SerializeField] private GameObject _settingsScreen;
 
-    [SerializeField][Tooltip("Префаб начального экрана")] private GameObject _mainScreenPrefab;
 
     [SerializeField] private GameObject _gamePause;
 
-    [SerializeField] private GameObject _settingsScreen;
-    [SerializeField] private EndScreen _endscreen;
+
+
     [Space(10)]
     [SerializeField] private ManagerSFX _managerSFX;
     [SerializeField] private ManagerVFX _managerVFX;
@@ -43,11 +46,14 @@ public class GlobalBootstrapper : MonoBehaviour
     event Action mainScr_onLoadWithData;
     event Action mainScr_onLoadWithoutData;
 
+    // Ивенты Show/Hide окна EndGame
+    event Action ACT_endScr_Hide;
+    event Action ACT_endScr_Show;
 
     private void Awake()
     {
 
-        //Manager Instantiation
+// Manager Instantiation
         gameObject.AddComponent<ManagerSFX>();
         gameObject.AddComponent<ManagerVFX>();
         gameObject.AddComponent<ManagerUI>();
@@ -56,22 +62,26 @@ public class GlobalBootstrapper : MonoBehaviour
         _managerVFX = gameObject.GetComponent<ManagerVFX>();
         _managerUI = gameObject.GetComponent<ManagerUI>();
 
-
-        _endscreen = Instantiate(_endscreenPrefab).GetComponent<EndScreen>();
-        _endscreen.Initialize(this);
-        _endscreen.Hide();
-
         _saveLoadManager = new SaveLoadManager(new RepositoryJson());
 
+// EndScreen Instantiate
+        EndScreen endscreen = new EndScreen();
+        endscreen.Initialize(_endscreenPrefab, Reload);
+        ACT_endScr_Hide += endscreen.Hide;
+        ACT_endScr_Show += endscreen.Show;
+        ACT_endScr_Hide.Invoke();
 
+// SettingsScreen Instantiate 
+        var settings = Instantiate(_settingsScreen);
+        settings.SetActive(false);
 
-// - MainScreen Init-
-        
+//  MainScreen Init
+
         var mainSc = new MainMenuScript();
 
         // Параметры: Префаб экрана, объект settingsScreen  (будет заменен на Script позже),
         // Ссылка на функцию кнопки "новая игра", Ссылка на функцию кнопки "Продолжить"
-        mainSc.Initialize(_mainScreenPrefab, _settingsScreen, LoadNewGame,
+        mainSc.Initialize(_mainScreenPrefab, settings, LoadNewGame,
             delegate { LoadFromSave(__LoadDataContainer); });
 
         // Бинд кнопки "Продолжить" для загрузки с данными/без данных
@@ -82,21 +92,12 @@ public class GlobalBootstrapper : MonoBehaviour
         mainScr_onLoadWithData += mainSc.ShowScreen;
         mainScr_onLoadWithoutData += mainSc.ShowScreen;
 
-// ------------------
-
-
-
 
         _gamePause = Instantiate(_gamePausePrefab);
         _gamePause.SetActive(false);
         var btns1 = _gamePause.GetComponentsInChildren<Button>();
         btns1[0].onClick.AddListener(ExitWithSave);
         btns1[1].onClick.AddListener(CloseInGameMenu);
-
-
-        _settingsScreen = Instantiate(_settingsScreen);
-        _settingsScreen.SetActive(false);
-
 
         // Загрузить начальный экран
         LoadMainScreen();
@@ -160,6 +161,7 @@ public class GlobalBootstrapper : MonoBehaviour
     }
     public async void Reload()
     {
+        ACT_endScr_Hide.Invoke();
         await Unload();
         LoadNewGame();
     }
@@ -237,7 +239,7 @@ public class GlobalBootstrapper : MonoBehaviour
 
         // EndScreen
         IHealthSystem healthSystem = (entityCoreSystem.GetHealthSystem());
-        ((HealthSystem)healthSystem).OnDead += _endscreen.Show;
+        ((HealthSystem)healthSystem).OnDead += ACT_endScr_Show.Invoke;
 
         // Magic System
         MagicCaster magicCaster = player.AddComponent<MagicCaster>();
