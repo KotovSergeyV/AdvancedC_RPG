@@ -192,7 +192,7 @@ public class PlayerController : Movable, IPlayerControlled
                     _agent.isStopped = false;
 
                     transform.LookAt(_target);
-                    _managerSFX.PlaySFX(_spoteClips[Random.Range(0, _spoteClips.Count)], transform.position, null, false, 1, 0);
+                    _managerSFX.PlaySFX(_spoteClips[Random.Range(0, _spoteClips.Count)], transform.position, ManagerSFX.MixerGroupType.Voice, null, false, 1, 0);
             }
             
 

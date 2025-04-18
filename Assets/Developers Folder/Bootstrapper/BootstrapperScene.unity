@@ -272,15 +272,17 @@ MonoBehaviour:
   _playerPrefab: {fileID: 5194816544369008159, guid: 5c9723286f00a674ea0a9b2e5c865ee8, type: 3}
   _player: {fileID: 0}
   _endscreenPrefab: {fileID: 2087139626283801524, guid: 7646533e1a67efa4c8176df6495e05a0, type: 3}
-  _mainScreenPrefab: {fileID: 6769122964477982112, guid: 6f88d7db11b8cb14091691acead9a8fc, type: 3}
   _gamePausePrefab: {fileID: 8028152093521007387, guid: aa07f9a77a1473449a38e2c472692cf9, type: 3}
+  _mainScreenPrefab: {fileID: 6769122964477982112, guid: 6f88d7db11b8cb14091691acead9a8fc, type: 3}
   _gamePause: {fileID: 0}
-  _mainScreen: {fileID: 0}
   _settingsScreen: {fileID: 7370377097560949917, guid: 2ef13e3c5b362e646ad9e3464b969bf9, type: 3}
   _endscreen: {fileID: 0}
   _managerSFX: {fileID: 0}
   _managerVFX: {fileID: 0}
   _managerUI: {fileID: 0}
+  _musicClip:
+  - {fileID: 8300000, guid: 28059c48b9d148f4ea835c1c498b03d1, type: 3}
+  - {fileID: 8300000, guid: 6e95a15b45cad7247a23765680293d71, type: 3}
 --- !u!4 &1204535930
 Transform:
   m_ObjectHideFlags: 0
