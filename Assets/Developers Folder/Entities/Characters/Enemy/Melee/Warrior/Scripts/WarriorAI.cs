@@ -11,6 +11,7 @@ public class WarriorAI : EnemyAIBase
         _lastAttackTime = -_attackCooldown;
     }
 
+
     protected override void Update()
     {
         base.Update();
@@ -41,6 +42,7 @@ public class WarriorAI : EnemyAIBase
         float distance = Vector3.Distance(transform.position, player.transform.position);
         if (distance <= _spotRange)
         {
+            _managerSFX.PlaySFX(_spoteClips?[Random.Range(0, _spoteClips.Length)], transform.position, ManagerSFX.MixerGroupType.Voice, null, true, 1, 0);
             _target = player.transform;
             _currentState = States.Attacking;
         }

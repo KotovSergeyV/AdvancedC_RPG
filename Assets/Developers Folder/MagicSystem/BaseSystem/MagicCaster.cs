@@ -60,7 +60,7 @@ public class MagicCaster : MonoBehaviour
 
         yield return new WaitForSeconds(_magicToCast.CastTime);
 
-        _managerSFX.PlaySFX(_magicToCast.Clip, transform.position, null, false, 1, 0);
+        _managerSFX.PlaySFX(_magicToCast.Clip, transform.position, ManagerSFX.MixerGroupType.SFX, null, false, 1, 0);
        
         _managerVFX.PlayVFX(_partical, transform.position, -1.5f);
 
