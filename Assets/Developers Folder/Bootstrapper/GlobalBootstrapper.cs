@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using UnityEditor.Overlays;
 using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -24,7 +25,7 @@ public class GlobalBootstrapper : MonoBehaviour
     [SerializeField] private GameObject _player;
 
 
-    [SerializeField][Tooltip("Префаб начального экрана")]
+    [SerializeField][Tooltip("пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ")]
     private GameObject _mainScreenPrefab;
     [SerializeField] private GameObject _endscreenPrefab;
     [SerializeField] private GameObject _gamePausePrefab;
@@ -36,21 +37,23 @@ public class GlobalBootstrapper : MonoBehaviour
     [SerializeField] private ManagerVFX _managerVFX;
     [SerializeField] private ManagerUI _managerUI;
 
+    [SerializeField] private AudioClip[] _musicClip;
+
     private SaveLoadManager _saveLoadManager;
 
 
-    // Контейнер данных для загрузки для кнопки "Продолжить"
+    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
     List<EntitySaveData> __LoadDataContainer;
 
-    // Ивенты загрузки MainScreen с данными/без данных
+    // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ MainScreen пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ/пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
     event Action mainScr_onLoadWithData;
     event Action mainScr_onLoadWithoutData;
 
-    // Ивенты Show/Hide окна EndGame
+    // пїЅпїЅпїЅпїЅпїЅпїЅ Show/Hide пїЅпїЅпїЅпїЅ EndGame
     event Action ACT_endScr_Hide;
     event Action ACT_endScr_Show;
 
-    // Ивенты Show/Hide окна IngamePause
+    // пїЅпїЅпїЅпїЅпїЅпїЅ Show/Hide пїЅпїЅпїЅпїЅ IngamePause
     event Action ACT_pauseScr_Hide;
     event Action ACT_pauseScr_Show;
 
@@ -87,16 +90,17 @@ public class GlobalBootstrapper : MonoBehaviour
 
         var mainSc = new MainMenuScript();
 
-        // Параметры: Префаб экрана, объект settingsScreen  (будет заменен на Script позже),
-        // Ссылка на функцию кнопки "новая игра", Ссылка на функцию кнопки "Продолжить"
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅ settingsScreen  (пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ Script пїЅпїЅпїЅпїЅпїЅ),
+        // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ "пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ", пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
         mainSc.Initialize(_mainScreenPrefab, settings, LoadNewGame,
+
             delegate { LoadFromSave(__LoadDataContainer); });
 
-        // Бинд кнопки "Продолжить" для загрузки с данными/без данных
+        // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ" пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ/пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
         mainScr_onLoadWithData += delegate { mainSc.SetLoadBtnInteractable(true); };
         mainScr_onLoadWithoutData += delegate { mainSc.SetLoadBtnInteractable(false); };
 
-        // Бинд загрузки начального экрана при выходе из сцены
+        // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
         mainScr_onLoadWithData += mainSc.ShowScreen;
         mainScr_onLoadWithoutData += mainSc.ShowScreen;
 
@@ -109,8 +113,8 @@ public class GlobalBootstrapper : MonoBehaviour
         ACT_pauseScr_Hide.Invoke();
 
 
-
-        // Загрузить начальный экран
+        _managerSFX.PlaySFX(_musicClip[0], transform.position, ManagerSFX.MixerGroupType.Music, null, false, 1, 0);
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
         LoadMainScreen();
     }
 
@@ -157,23 +161,24 @@ public class GlobalBootstrapper : MonoBehaviour
 
     #region SceneManagement
 
-    //Функция на кнопку "Сохранить и выйти" (внутриигровая пауза)
+    //пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ" (пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ)
     private async void ExitWithSave()
     {
-        // Генерация данных для сохранения+очистка отслеживаемых сущностей
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ+пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         var data = EntityAgregator.GenerateSaveData();
         EntityAgregator.Clear();
 
-        // Спрятать экран паузы
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
         ACT_pauseScr_Hide.Invoke();
 
-        // Сохранение данных в репозиторий
+
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         await _saveLoadManager.SaveInRepoAsync(data);
 
-        // Unload текущей сцены
+        // Unload пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
         await Unload();
 
-        // Загрузка главного меню
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
         await LoadMainScreen();
 
         Time.timeScale = 1.0f;
@@ -187,11 +192,14 @@ public class GlobalBootstrapper : MonoBehaviour
 
     private async Task LoadMainScreen()
     {
-        // Обновление данных контейнера для функции "Продолжить"
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
         var dataForLoading = await _saveLoadManager.LoadFromRepo();
         __LoadDataContainer = new List<EntitySaveData>(dataForLoading);
 
-        // Вызов главного меню
+        _managerSFX.StopAllSFX();
+        _managerSFX.PlaySFX(_musicClip[0], transform.position, ManagerSFX.MixerGroupType.Music, null, false, 1, 0);
+
+        // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
         if (__LoadDataContainer != null && __LoadDataContainer.Count > 0) mainScr_onLoadWithData?.Invoke();
         else mainScr_onLoadWithoutData?.Invoke();
     }
@@ -207,6 +215,9 @@ public class GlobalBootstrapper : MonoBehaviour
         PlayerCreation(_player);
 
         EntityAgregator.AddEntity(_player, Enum_EntityType.Player);
+
+        _managerSFX.StopAllSFX();
+        _managerSFX.PlaySFX(_musicClip[1], transform.position, ManagerSFX.MixerGroupType.Music, null, false, 1, 0);
 
         _playerHealthBar = GameObject.Find("HealthBar")?.GetComponent<HealthBar>();
         _playerManaBar = GameObject.Find("ManaBar")?.GetComponent<ManaBar>(); ;
@@ -235,6 +246,9 @@ public class GlobalBootstrapper : MonoBehaviour
 
         _playerHealthBar = GameObject.Find("HealthBar")?.GetComponent<HealthBar>();
         _playerManaBar = GameObject.Find("ManaBar")?.GetComponent<ManaBar>(); ;
+
+        _managerSFX.StopAllSFX();
+        _managerSFX.PlaySFX(_musicClip[1], transform.position, ManagerSFX.MixerGroupType.Music, null, false, 1, 0);
 
         // Game Load
         LoadGameScene(data);

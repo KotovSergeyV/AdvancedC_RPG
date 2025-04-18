@@ -8,8 +8,8 @@ public class MainMenuScript
     private GameObject _mainScreen;
 
 
-    // Префаб экрана, объект settingsScreen  (будет заменен на Script позже),
-    // Ссылка на функцию кнопки "новая игра", Ссылка на функцию кнопки "Продолжить"
+    // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅ settingsScreen  (пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ Script пїЅпїЅпїЅпїЅпїЅ),
+    // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ "пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ", пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
     public void Initialize(GameObject mainScreenPrefab, GameObject settingsScreen,
         UnityAction LoadNewGame, UnityAction LoadGame)
     {

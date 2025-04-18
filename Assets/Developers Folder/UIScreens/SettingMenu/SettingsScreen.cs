@@ -1,7 +1,8 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using System.Collections.Generic;
+using UnityEngine.Audio;
 
 public class SettingsScreen : MonoBehaviour
 {
@@ -10,6 +11,14 @@ public class SettingsScreen : MonoBehaviour
     [SerializeField] private Toggle fullscreenToggle;
     [SerializeField] private TMP_Dropdown qualityDropdown;
     [SerializeField] private Button closeButton;
+
+    [SerializeField] private Slider musicVolumeSlider;
+    [SerializeField] private Slider sfxVolumeSlider;
+    [SerializeField] private Slider masterVolumeSlider;
+    [SerializeField] private Slider voiceVolumeSlider;
+
+    [Header("Audio Mixer")]
+    [SerializeField] private AudioMixer audioMixer;
 
     [SerializeField] private GameObject _mainScreen;
 
@@ -31,6 +40,16 @@ public class SettingsScreen : MonoBehaviour
         qualityDropdown.onValueChanged.AddListener(SetQuality);
 
         closeButton.onClick.AddListener(CloseSettings);
+
+        musicVolumeSlider.onValueChanged.AddListener(SetMusicVolume);
+        sfxVolumeSlider.onValueChanged.AddListener(SetSFXVolume);
+        masterVolumeSlider.onValueChanged.AddListener(SetMasterVolume);
+        voiceVolumeSlider.onValueChanged.AddListener(SetVoiceVolume);
+
+        musicVolumeSlider.value = PlayerPrefs.GetFloat("MusicVolume", 1f);
+        sfxVolumeSlider.value = PlayerPrefs.GetFloat("SFXVolume", 1f);
+        masterVolumeSlider.value = PlayerPrefs.GetFloat("MasterVolume", 1f);
+        voiceVolumeSlider.value = PlayerPrefs.GetFloat("VoiceVolume", 1f);
     }
 
     private void OnEnable()
@@ -95,6 +114,59 @@ public class SettingsScreen : MonoBehaviour
     private void SetQuality(int index)
     {
         QualitySettings.SetQualityLevel(index);
+    }
+
+
+    private void SetMusicVolume(float volume)
+    {
+        if (volume == 0)
+        {
+            audioMixer.SetFloat("MusicVolume", -80);
+            PlayerPrefs.SetFloat("MusicVolume", volume);
+        }
+        else{
+            audioMixer.SetFloat("MusicVolume", Mathf.Log10(volume) * 40);
+            PlayerPrefs.SetFloat("MusicVolume", volume);
+        }
+    }
+
+    private void SetSFXVolume(float volume)
+    {
+        if (volume == 0)
+        {
+            audioMixer.SetFloat("SFXVolume", -80);
+            PlayerPrefs.SetFloat("SFXVolume", volume);
+        }
+        else{
+            audioMixer.SetFloat("SFXVolume", Mathf.Log10(volume) * 40);
+            PlayerPrefs.SetFloat("SFXVolume", volume);
+        }
+    }
+
+    private void SetMasterVolume(float volume)
+    {
+        if (volume == 0)
+        {
+            audioMixer.SetFloat("MasterVolume", -80);
+            PlayerPrefs.SetFloat("MasterVolume", volume);
+        }
+        else{
+            audioMixer.SetFloat("MasterVolume", Mathf.Log10(volume) * 40);
+            PlayerPrefs.SetFloat("MasterVolume", volume);
+        }
+    }
+
+    private void SetVoiceVolume(float volume)
+    {
+        if (volume == 0)
+        {
+            audioMixer.SetFloat("VoiceVolume", -80);
+            PlayerPrefs.SetFloat("VoiceVolume", volume);
+        }
+        else{
+            audioMixer.SetFloat("VoiceVolume", Mathf.Log10(volume) * 40);
+            PlayerPrefs.SetFloat("VoiceVolume", volume);
+        }
     }
 
     private void CloseSettings()

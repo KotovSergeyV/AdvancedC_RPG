@@ -18,13 +18,15 @@ public class SceneBootstrapper
         foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("Enemy"))
         {
             GunnerAI gunner = enemy.GetComponent<GunnerAI>();
+            WarriorAI warrior = enemy.GetComponent<WarriorAI>();
             if (gunner)
             {
                 gunner.Initialize(managerSFX);
                 EntityAgregator.AddEntity(enemy, Enum_EntityType.Range);
             }
-            else
+            else if (warrior)
             {
+                warrior.Initialize(managerSFX);
                 EntityAgregator.AddEntity(enemy, Enum_EntityType.Melee);
             }
             if (data != null) {
