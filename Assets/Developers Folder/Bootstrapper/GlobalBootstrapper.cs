@@ -7,12 +7,16 @@ using UnityEditor.Overlays;
 using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using static UnityEngine.EventSystems.EventTrigger;
+using static UnityEngine.Timeline.DirectorControlPlayable;
 
 public class GlobalBootstrapper : MonoBehaviour
 {
+    [SerializeField] private InputActionAsset inputActions;
+
 
     [SerializeField] private GameObject _playerPrefab;
     private HealthBar _playerHealthBar;
@@ -25,10 +29,6 @@ public class GlobalBootstrapper : MonoBehaviour
     [SerializeField] private GameObject _endscreenPrefab;
     [SerializeField] private GameObject _gamePausePrefab;
     [SerializeField] private GameObject _settingsScreen;
-
-
-    [SerializeField] private GameObject _gamePause;
-
 
 
     [Space(10)]
@@ -49,6 +49,14 @@ public class GlobalBootstrapper : MonoBehaviour
     // Ивенты Show/Hide окна EndGame
     event Action ACT_endScr_Hide;
     event Action ACT_endScr_Show;
+
+    // Ивенты Show/Hide окна IngamePause
+    event Action ACT_pauseScr_Hide;
+    event Action ACT_pauseScr_Show;
+
+
+    bool _isPaused = false;
+
 
     private void Awake()
     {
@@ -93,11 +101,14 @@ public class GlobalBootstrapper : MonoBehaviour
         mainScr_onLoadWithoutData += mainSc.ShowScreen;
 
 
-        _gamePause = Instantiate(_gamePausePrefab);
-        _gamePause.SetActive(false);
-        var btns1 = _gamePause.GetComponentsInChildren<Button>();
-        btns1[0].onClick.AddListener(ExitWithSave);
-        btns1[1].onClick.AddListener(CloseInGameMenu);
+//  IngamePauseScreen Init
+        IngamePause ingamePause = new IngamePause();
+        ingamePause.Initialize(_gamePausePrefab, ExitWithSave, CloseInGameMenu);
+        ACT_pauseScr_Hide += ingamePause.Hide;
+        ACT_pauseScr_Show += ingamePause.Show;
+        ACT_pauseScr_Hide.Invoke();
+
+
 
         // Загрузить начальный экран
         LoadMainScreen();
@@ -108,23 +119,30 @@ public class GlobalBootstrapper : MonoBehaviour
     // DEBUG ---------------------------
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape)) {
-
-            if (_gamePause.activeSelf == true)
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (_isPaused)
             {
+                _isPaused = false;
                 CloseInGameMenu();
             }
             else
             {
-                _gamePause.SetActive(true);
-                Time.timeScale = 0;
+                _isPaused = true;
+                ShowInGameMenu();
             }
         }
+
+    }
+    private void ShowInGameMenu()
+    {
+        ACT_pauseScr_Show.Invoke();
+        Time.timeScale = 0;
     }
 
     private void CloseInGameMenu()
     {
-        _gamePause.SetActive(false);
+        ACT_pauseScr_Hide.Invoke();
         Time.timeScale = 1;
     }
 
@@ -146,7 +164,8 @@ public class GlobalBootstrapper : MonoBehaviour
         var data = EntityAgregator.GenerateSaveData();
         EntityAgregator.Clear();
 
-        _gamePause.SetActive(false);    // заменится позже
+        // Спрятать экран паузы
+        ACT_pauseScr_Hide.Invoke();
 
         // Сохранение данных в репозиторий
         await _saveLoadManager.SaveInRepoAsync(data);

@@ -81,7 +81,7 @@ public class ManagerUI : BaseManager<ManagerUI>
         }
         else
         {
-            Debug.LogError($"ManagerUI: ManaBar не найден для {manaSystem}");
+            //Debug.LogError($"ManagerUI: ManaBar не найден для {manaSystem}");
         }
     }
 }

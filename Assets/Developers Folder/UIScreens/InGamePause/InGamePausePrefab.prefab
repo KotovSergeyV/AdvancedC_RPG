@@ -634,8 +634,8 @@ GameObject:
   - component: {fileID: 3600330009322559440}
   - component: {fileID: 4127333823135023906}
   m_Layer: 5
-  m_Name: InGamePause
-  m_TagString: Untagged
+  m_Name: InGamePausePrefab
+  m_TagString: PauseScreen
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
