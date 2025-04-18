@@ -17,9 +17,11 @@ public class ManagerSFX : BaseManager<ManagerSFX>
         Debug.Log("SFXManager initialized.");
     }
 
-    public void PlaySFX(AudioClip clip, Vector3 position, MixerGroupType mixerGroup = MixerGroupType.Master, AudioSource template = null, bool is3D = true, float volume = 1f, float pitchVariation = 0.1f)
+    public void PlaySFX(AudioClip clip, Vector3 position, MixerGroupType mixerGroupType, AudioSource template = null, bool is3D = true, float volume = 1f, float pitchVariation = 0.1f)
     {
         if (clip == null) return;
+
+        AudioMixerGroup mixerGroup = GetMixerGroup(mixerGroupType);
 
         AudioSource newSource = (template != null)
             ? Instantiate(template, position, Quaternion.identity)
@@ -30,9 +32,7 @@ public class ManagerSFX : BaseManager<ManagerSFX>
         newSource.pitch = 1f + Random.Range(-pitchVariation, pitchVariation);
         newSource.spatialBlend = is3D ? 1f : 0f;
 
-        AudioMixerGroup mixerType = GetMixerGroup(mixerGroup);
-
-        newSource.outputAudioMixerGroup = mixerType;
+        newSource.outputAudioMixerGroup = mixerGroup;
 
         activeSFXSources.Add(newSource);
         newSource.Play();
@@ -51,15 +51,18 @@ public class ManagerSFX : BaseManager<ManagerSFX>
     }
 
     public void StopAllSFX()
+{
+    foreach (var source in activeSFXSources)
     {
-        foreach (var source in activeSFXSources)
+        if (source != null)
         {
-            if (source != null)
-                source.Stop();
+            source.Stop();
+            Destroy(source.gameObject);
         }
-
-        activeSFXSources.Clear();
     }
+    activeSFXSources.Clear();
+}
+
 
     public enum MixerGroupType
     {
