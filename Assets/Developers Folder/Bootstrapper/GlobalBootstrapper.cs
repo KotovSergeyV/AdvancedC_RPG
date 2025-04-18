@@ -8,27 +8,30 @@ using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using static UnityEngine.EventSystems.EventTrigger;
+using static UnityEngine.Timeline.DirectorControlPlayable;
 
 public class GlobalBootstrapper : MonoBehaviour
 {
+    [SerializeField] private InputActionAsset inputActions;
+
 
     [SerializeField] private GameObject _playerPrefab;
     private HealthBar _playerHealthBar;
     private ManaBar _playerManaBar;
     [SerializeField] private GameObject _player;
 
+
+    [SerializeField][Tooltip("������ ���������� ������")]
+    private GameObject _mainScreenPrefab;
     [SerializeField] private GameObject _endscreenPrefab;
     [SerializeField] private GameObject _gamePausePrefab;
-
-    [SerializeField][Tooltip("������ ���������� ������")] private GameObject _mainScreenPrefab;
-
-    [SerializeField] private GameObject _gamePause;
-
     [SerializeField] private GameObject _settingsScreen;
-    [SerializeField] private EndScreen _endscreen;
+
+
     [Space(10)]
     [SerializeField] private ManagerSFX _managerSFX;
     [SerializeField] private ManagerVFX _managerVFX;
@@ -46,11 +49,22 @@ public class GlobalBootstrapper : MonoBehaviour
     event Action mainScr_onLoadWithData;
     event Action mainScr_onLoadWithoutData;
 
+    // ������ Show/Hide ���� EndGame
+    event Action ACT_endScr_Hide;
+    event Action ACT_endScr_Show;
+
+    // ������ Show/Hide ���� IngamePause
+    event Action ACT_pauseScr_Hide;
+    event Action ACT_pauseScr_Show;
+
+
+    bool _isPaused = false;
+
 
     private void Awake()
     {
 
-        //Manager Instantiation
+// Manager Instantiation
         gameObject.AddComponent<ManagerSFX>();
         gameObject.AddComponent<ManagerVFX>();
         gameObject.AddComponent<ManagerUI>();
@@ -59,22 +73,27 @@ public class GlobalBootstrapper : MonoBehaviour
         _managerVFX = gameObject.GetComponent<ManagerVFX>();
         _managerUI = gameObject.GetComponent<ManagerUI>();
 
-
-        _endscreen = Instantiate(_endscreenPrefab).GetComponent<EndScreen>();
-        _endscreen.Initialize(this);
-        _endscreen.Hide();
-
         _saveLoadManager = new SaveLoadManager(new RepositoryJson());
 
+// EndScreen Instantiate
+        EndScreen endscreen = new EndScreen();
+        endscreen.Initialize(_endscreenPrefab, Reload);
+        ACT_endScr_Hide += endscreen.Hide;
+        ACT_endScr_Show += endscreen.Show;
+        ACT_endScr_Hide.Invoke();
 
+// SettingsScreen Instantiate 
+        var settings = Instantiate(_settingsScreen);
+        settings.SetActive(false);
 
-// - MainScreen Init-
-        
+//  MainScreen Init
+
         var mainSc = new MainMenuScript();
 
         // ���������: ������ ������, ������ settingsScreen  (����� ������� �� Script �����),
         // ������ �� ������� ������ "����� ����", ������ �� ������� ������ "����������"
-        mainSc.Initialize(_mainScreenPrefab, _settingsScreen, LoadNewGame,
+        mainSc.Initialize(_mainScreenPrefab, settings, LoadNewGame,
+
             delegate { LoadFromSave(__LoadDataContainer); });
 
         // ���� ������ "����������" ��� �������� � �������/��� ������
@@ -85,20 +104,14 @@ public class GlobalBootstrapper : MonoBehaviour
         mainScr_onLoadWithData += mainSc.ShowScreen;
         mainScr_onLoadWithoutData += mainSc.ShowScreen;
 
-// ------------------
 
+//  IngamePauseScreen Init
+        IngamePause ingamePause = new IngamePause();
+        ingamePause.Initialize(_gamePausePrefab, ExitWithSave, CloseInGameMenu);
+        ACT_pauseScr_Hide += ingamePause.Hide;
+        ACT_pauseScr_Show += ingamePause.Show;
+        ACT_pauseScr_Hide.Invoke();
 
-
-
-        _gamePause = Instantiate(_gamePausePrefab);
-        _gamePause.SetActive(false);
-        var btns1 = _gamePause.GetComponentsInChildren<Button>();
-        btns1[0].onClick.AddListener(ExitWithSave);
-        btns1[1].onClick.AddListener(CloseInGameMenu);
-
-
-        _settingsScreen = Instantiate(_settingsScreen);
-        _settingsScreen.SetActive(false);
 
         _managerSFX.PlaySFX(_musicClip[0], transform.position, ManagerSFX.MixerGroupType.Music, null, false, 1, 0);
         // ��������� ��������� �����
@@ -110,23 +123,30 @@ public class GlobalBootstrapper : MonoBehaviour
     // DEBUG ---------------------------
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape)) {
-
-            if (_gamePause.activeSelf == true)
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (_isPaused)
             {
+                _isPaused = false;
                 CloseInGameMenu();
             }
             else
             {
-                _gamePause.SetActive(true);
-                Time.timeScale = 0;
+                _isPaused = true;
+                ShowInGameMenu();
             }
         }
+
+    }
+    private void ShowInGameMenu()
+    {
+        ACT_pauseScr_Show.Invoke();
+        Time.timeScale = 0;
     }
 
     private void CloseInGameMenu()
     {
-        _gamePause.SetActive(false);
+        ACT_pauseScr_Hide.Invoke();
         Time.timeScale = 1;
     }
 
@@ -148,7 +168,9 @@ public class GlobalBootstrapper : MonoBehaviour
         var data = EntityAgregator.GenerateSaveData();
         EntityAgregator.Clear();
 
-        _gamePause.SetActive(false);    // ��������� �����
+        // �������� ����� �����
+        ACT_pauseScr_Hide.Invoke();
+
 
         // ���������� ������ � �����������
         await _saveLoadManager.SaveInRepoAsync(data);
@@ -163,6 +185,7 @@ public class GlobalBootstrapper : MonoBehaviour
     }
     public async void Reload()
     {
+        ACT_endScr_Hide.Invoke();
         await Unload();
         LoadNewGame();
     }
@@ -249,7 +272,7 @@ public class GlobalBootstrapper : MonoBehaviour
 
         // EndScreen
         IHealthSystem healthSystem = (entityCoreSystem.GetHealthSystem());
-        ((HealthSystem)healthSystem).OnDead += _endscreen.Show;
+        ((HealthSystem)healthSystem).OnDead += ACT_endScr_Show.Invoke;
 
         // Magic System
         MagicCaster magicCaster = player.AddComponent<MagicCaster>();

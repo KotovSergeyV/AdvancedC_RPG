@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class MainMenuScript
 {
-    [SerializeField] private GameObject _mainScreen;
+    private GameObject _mainScreen;
 
 
     // ������ ������, ������ settingsScreen  (����� ������� �� Script �����),
