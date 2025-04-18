@@ -20,11 +20,12 @@ public class GlobalBootstrapper : MonoBehaviour
     [SerializeField] private GameObject _player;
 
     [SerializeField] private GameObject _endscreenPrefab;
-    [SerializeField] private GameObject _mainScreenPrefab;
     [SerializeField] private GameObject _gamePausePrefab;
 
+    [SerializeField][Description("Префаб начального экрана")] private GameObject _mainScreenPrefab;
+
     [SerializeField] private GameObject _gamePause;
-    [SerializeField] private GameObject _mainScreen;
+
     [SerializeField] private GameObject _settingsScreen;
     [SerializeField] private EndScreen _endscreen;
     [Space(10)]
@@ -35,8 +36,13 @@ public class GlobalBootstrapper : MonoBehaviour
     private SaveLoadManager _saveLoadManager;
 
 
+    // Контейнер данных для загрузки для кнопки "Продолжить"
+    List<EntitySaveData> __LoadDataContainer;
 
-    List<EntitySaveData> __tempDataContainer;
+    // Ивенты загрузки MainScreen с данными/без данных
+    event Action mainScr_onLoadWithData;
+    event Action mainScr_onLoadWithoutData;
+
 
     private void Awake()
     {
@@ -58,65 +64,44 @@ public class GlobalBootstrapper : MonoBehaviour
         _saveLoadManager = new SaveLoadManager(new RepositoryJson());
 
 
+
+// - MainScreen Init-
+        
+        var mainSc = new MainMenuScript();
+
+        // Параметры: Префаб экрана, объект settingsScreen  (будет заменен на Script позже),
+        // Ссылка на функцию кнопки "новая игра", Ссылка на функцию кнопки "Продолжить"
+        mainSc.Initialize(_mainScreenPrefab, _settingsScreen, LoadNewGame,
+            delegate { LoadFromSave(__LoadDataContainer); });
+
+        // Бинд кнопки "Продолжить" для загрузки с данными/без данных
+        mainScr_onLoadWithData += delegate { mainSc.SetLoadBtnInteractable(true); };
+        mainScr_onLoadWithoutData += delegate { mainSc.SetLoadBtnInteractable(false); };
+
+        // Бинд загрузки начального экрана при выходе из сцены
+        mainScr_onLoadWithData += mainSc.ShowScreen;
+        mainScr_onLoadWithoutData += mainSc.ShowScreen;
+
+// ------------------
+
+
+
+
         _gamePause = Instantiate(_gamePausePrefab);
         _gamePause.SetActive(false);
         var btns1 = _gamePause.GetComponentsInChildren<Button>();
-        btns1[0].onClick.AddListener(LoadMainScreen);
+        btns1[0].onClick.AddListener(ExitWithSave);
         btns1[1].onClick.AddListener(CloseInGameMenu);
 
 
-        _mainScreen = Instantiate(_mainScreenPrefab);
         _settingsScreen = Instantiate(_settingsScreen);
         _settingsScreen.SetActive(false);
-        Button[] btns = _mainScreen.GetComponentsInChildren<Button>();
 
-        AssignLoadButton(btns[0]);
 
-        btns[1].onClick.AddListener(LoadNewGame);
-        btns[2].onClick.AddListener(Setting);
-        btns[3].onClick.AddListener(Application.Quit);
+        // Загрузить начальный экран
+        LoadMainScreen();
     }
 
-    private void Setting()
-    {
-        _settingsScreen.SetActive(true);
-        _mainScreen.SetActive(false);
-    }
-
-    private async void LoadMainScreen()
-    {
-        var data = EntityAgregator.GenerateSaveData();
-        Debug.LogWarning("Saving data:");
-        Debug.LogWarning(data.Count);
-
-        EntityAgregator.Clear();
-
-        _gamePause.SetActive(false);
-
-        await _saveLoadManager.SaveInRepoAsync(data);
-        await Unload();
-
-
-        Button[] btns = _mainScreen.GetComponentsInChildren<Button>();
-        AssignLoadButton(btns[0]);
-
-        _mainScreen.SetActive(true);
-
-        Time.timeScale = 1.0f;
-    }
-
-    private async void AssignLoadButton(Button btn)
-    {
-        btn.onClick.RemoveAllListeners();
-        var data = await _saveLoadManager.LoadFromRepo();
-        __tempDataContainer = new List<EntitySaveData>(data);
-        Debug.LogWarning("Assigned to button:" + data.Count);
-        if (data != null && data.Count > 0) { 
-            btn.onClick.AddListener(delegate { LoadFromSave(data); });
-            btn.interactable = true;
-        }
-        else { btn.interactable = false; }
-    }
 
 
     // DEBUG ---------------------------
@@ -150,17 +135,50 @@ public class GlobalBootstrapper : MonoBehaviour
         await SceneManager.UnloadSceneAsync("CyberpunkScene");
     }
 
+
+    #region SceneManagement
+
+    //Функция на кнопку "Сохранить и выйти" (внутриигровая пауза)
+    private async void ExitWithSave()
+    {
+        // Генерация данных для сохранения+очистка отслеживаемых сущностей
+        var data = EntityAgregator.GenerateSaveData();
+        EntityAgregator.Clear();
+
+        _gamePause.SetActive(false);    // заменится позже
+
+        // Сохранение данных в репозиторий
+        await _saveLoadManager.SaveInRepoAsync(data);
+
+        // Unload текущей сцены
+        await Unload();
+
+        // Загрузка главного меню
+        await LoadMainScreen();
+
+        Time.timeScale = 1.0f;
+    }
     public async void Reload()
     {
         await Unload();
         LoadNewGame();
     }
 
+    private async Task LoadMainScreen()
+    {
+        // Обновление данных контейнера для функции "Продолжить"
+        var dataForLoading = await _saveLoadManager.LoadFromRepo();
+        __LoadDataContainer = new List<EntitySaveData>(dataForLoading);
+
+        // Вызов главного меню
+        if (__LoadDataContainer != null && __LoadDataContainer.Count > 0) mainScr_onLoadWithData?.Invoke();
+        else mainScr_onLoadWithoutData?.Invoke();
+    }
+
     private void LoadNewGame()
     {
 
         EntityAgregator.Clear();
-        _mainScreen.SetActive(false);
 
 
         // Player Instantiation
@@ -178,7 +196,6 @@ public class GlobalBootstrapper : MonoBehaviour
 
     private void LoadFromSave(List<EntitySaveData> data)
     {
-        _mainScreen.SetActive(false);
 
         Debug.LogWarning("DATA ON LOAD:");
         Debug.LogWarning(data.Count);
@@ -202,7 +219,7 @@ public class GlobalBootstrapper : MonoBehaviour
         LoadGameScene(data);
     }
 
-
+    #endregion
 
 
     private void PlayerCreation(GameObject player, CoreData playerData = null)
@@ -291,7 +308,7 @@ public class GlobalBootstrapper : MonoBehaviour
         }
         else
         {
-            UnityEngine.Events.UnityAction<UnityEngine.SceneManagement.Scene, LoadSceneMode> handler = (scene, mode) => OnSceneLoadedFromSave(scene, mode, __tempDataContainer);
+            UnityEngine.Events.UnityAction<UnityEngine.SceneManagement.Scene, LoadSceneMode> handler = (scene, mode) => OnSceneLoadedFromSave(scene, mode, __LoadDataContainer);
 
             SceneManager.sceneLoaded += handler;
         }
@@ -312,7 +329,7 @@ public class GlobalBootstrapper : MonoBehaviour
     private void OnSceneLoadedFromSave(UnityEngine.SceneManagement.Scene scene, LoadSceneMode mode, List<EntitySaveData> data)
     {
         UnityEngine.Events.UnityAction<UnityEngine.SceneManagement.Scene, LoadSceneMode> handler =
-            (s, m) => OnSceneLoadedFromSave(s, m, __tempDataContainer);
+            (s, m) => OnSceneLoadedFromSave(s, m, __LoadDataContainer);
         SceneManager.sceneLoaded -= handler;
 
         if (scene.name == "CyberpunkScene")
@@ -322,7 +339,7 @@ public class GlobalBootstrapper : MonoBehaviour
             boot.Initialize(_managerSFX, _managerUI, data);
             _managerUI.Initialize();
         }
-        __tempDataContainer = null;
+        __LoadDataContainer = null;
     }
 
 }
