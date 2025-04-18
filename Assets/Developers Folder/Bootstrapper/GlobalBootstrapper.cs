@@ -22,7 +22,7 @@ public class GlobalBootstrapper : MonoBehaviour
     [SerializeField] private GameObject _endscreenPrefab;
     [SerializeField] private GameObject _gamePausePrefab;
 
-    [SerializeField][Description("Префаб начального экрана")] private GameObject _mainScreenPrefab;
+    [SerializeField][Tooltip("Префаб начального экрана")] private GameObject _mainScreenPrefab;
 
     [SerializeField] private GameObject _gamePause;
 
