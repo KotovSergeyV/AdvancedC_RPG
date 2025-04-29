@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Enemy
   - Waypoint
+  - PlayerCanvas
+  - PauseScreen
   layers:
   - Default
   - TransparentFX

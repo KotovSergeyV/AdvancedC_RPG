@@ -8,5 +8,7 @@ public interface IHealthSystem
     void Heal(int amount);
     bool GetIsDead();
     int GetHp();
+    int GetMaxHp();
+
 
 }

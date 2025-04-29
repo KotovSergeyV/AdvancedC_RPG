@@ -1,3 +1,7 @@
+using System;
+
+
+[Serializable]
 public enum Enum_EntityStates
 {
     Idle, 

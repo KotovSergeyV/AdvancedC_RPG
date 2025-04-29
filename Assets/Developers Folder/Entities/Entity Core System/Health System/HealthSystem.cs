@@ -1,4 +1,4 @@
-using System;
+ using System;
 using UnityEngine;
 
 public class HealthSystem : IHealthSystem
@@ -13,17 +13,19 @@ public class HealthSystem : IHealthSystem
 
     private ManagerUI _managerUI;
 
-    public HealthSystem(ManagerUI managerUI, int maxHp, HealthBar healthBar)
+    public HealthSystem(ManagerUI managerUI, int maxHp, HealthBar healthBar, int currentHealth=-1)
     {
         _managerUI = managerUI;
         _maxHealth = maxHp;
-        _health = maxHp;
+        _health = currentHealth == -1 ? maxHp : currentHealth;
         _isDead = false;
 
         _managerUI.RegisterHealthBar(this, healthBar);
+        
         UpdateCanvas();
 
     }
+
 
     private void UpdateCanvas()
     {
@@ -31,10 +33,13 @@ public class HealthSystem : IHealthSystem
     }
 
     // Functions from interface
-    public int GetHp()    { UpdateCanvas();  return _health; }
+    public int GetHp()    {  return _health; }
+    public int GetMaxHp()    {  return _maxHealth; }
     public bool GetIsDead()    { return _isDead; }
     public int Damage(int amount)   
     {
+        if (_isDead) return 0;
+
         GetHp();
 
         _health = Mathf.Max(_health-amount, 0);

@@ -8,6 +8,7 @@ public abstract class EnemyAIBase : Movable
     protected Transform[] _waypoints;
     protected int _currentWaypointIndex = 0;
     protected States _currentState;
+    protected ManagerSFX _managerSFX;
 
 
     [SerializeField] protected AudioClip[] _takeDamageClips;
@@ -17,6 +18,8 @@ public abstract class EnemyAIBase : Movable
     {
         base.Awake();
     }
+
+    public void Initialize(ManagerSFX managerSFX) { _managerSFX = managerSFX; }
 
     protected virtual void Start()
     {

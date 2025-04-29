@@ -4,7 +4,7 @@ public class StatSystem : IStatSystem
 {
     int _agility;
     int _attack;
-    int _luack;
+    int _luck;
     int _defence;
     int _intelligence;
 
@@ -12,14 +12,14 @@ public class StatSystem : IStatSystem
     {
         _agility = agi;
         _attack = atc;  
-        _luack = luck;
+        _luck = luck;
         _defence = def;
         _intelligence = luck;
     }
 
     public int GetAgility() { return _agility; }
     public int GetAttack() { return _attack; }
-    public int GetLuck() { return _luack; }
+    public int GetLuck() { return _luck; }
     public int GetDefence() { return _defence; }
     public int GetInteligence() { return _intelligence; }
 }
