@@ -18,14 +18,14 @@ public class WarriorAI : EnemyAIBase
 
         switch (_currentState)
         {
-            case States.Patrolling:
+            case AI_States.Patrolling:
                 LookForTarget();
                 break;
-            case States.Attacking:
+            case AI_States.Attacking:
                 transform.LookAt(_target);
                 Attack();
                 break;
-            case States.Dead:
+            case AI_States.Dead:
                 Dead();
                 break;
         }
@@ -44,7 +44,7 @@ public class WarriorAI : EnemyAIBase
         {
             _managerSFX.PlaySFX(_spoteClips?[Random.Range(0, _spoteClips.Length)], transform.position, ManagerSFX.MixerGroupType.Voice, null, true, 1, 0);
             _target = player.transform;
-            _currentState = States.Attacking;
+            _currentState = AI_States.Attacking;
         }
     }
 
@@ -57,7 +57,7 @@ public class WarriorAI : EnemyAIBase
         switch (distance)
         {
             case var d when d > _spotRange:
-                _currentState = States.Patrolling;
+                _currentState = AI_States.Patrolling;
                 Patrol();
                 break;
 

@@ -7,7 +7,7 @@ public abstract class EnemyAIBase : Movable
     [SerializeField] protected float _spotRange;
     protected Transform[] _waypoints;
     protected int _currentWaypointIndex = 0;
-    protected States _currentState;
+    protected AI_States _currentState;
     protected ManagerSFX _managerSFX;
 
 
@@ -23,7 +23,7 @@ public abstract class EnemyAIBase : Movable
 
     protected virtual void Start()
     {
-        _currentState = States.Patrolling;
+        _currentState = AI_States.Patrolling;
         Patrol();
         FindWaypoints();
     }
@@ -63,7 +63,7 @@ public abstract class EnemyAIBase : Movable
 
     protected virtual void Update()
     {
-        if (_currentState == States.Patrolling)
+        if (_currentState == AI_States.Patrolling)
         {
             UpdatePatrol();
         }
@@ -73,7 +73,7 @@ public abstract class EnemyAIBase : Movable
             _dead = core.GetHealthSystem().GetIsDead();
             if (_dead)
             {
-                _currentState = States.Dead;
+                _currentState = AI_States.Dead;
                 //AnimatorController.PlayDeathAnimation(_dead);
             }
         }
@@ -91,7 +91,7 @@ public abstract class EnemyAIBase : Movable
 
 }
 
-public enum States
+public enum AI_States
 {
     Patrolling,
     Attacking,

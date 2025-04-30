@@ -201,7 +201,6 @@ public class PlayerController : Movable, IPlayerControlled
 
     public void OnCastMagic(InputAction.CallbackContext context)
     {
-        Debug.Log("Cast!");
         CastHeal();
     }
 

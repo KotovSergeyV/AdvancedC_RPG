@@ -23,7 +23,6 @@ public class HealthSystem : IHealthSystem
         _managerUI.RegisterHealthBar(this, healthBar);
         
         UpdateCanvas();
-
     }
 
 
@@ -57,12 +56,7 @@ public class HealthSystem : IHealthSystem
     }
     public void Heal(int amount)
     {
-
-        Debug.Log("Current hp: "+ _health);
-
         _health = Mathf.Min(_health+amount, _maxHealth);
         UpdateCanvas();
-        Debug.Log("Healed on " + amount + "hp");
-        Debug.Log("New current hp: " + _health);
     }
 }

@@ -12,29 +12,22 @@ public class EntityCoreSystem : MonoBehaviour
     IManaSystem _manaSystem;
     IStatSystem _statSystem;
     IEntityStatesSystem _statesSystem;
-    IMovable _moveSystem;
 
     public void Initialize(IHealthSystem healthSystem, IDamageCalculationSystem damageCalculationSystem,
-        IManaSystem manaSystem, IStatSystem statSystem, IEntityStatesSystem statesSystem, IMovable moveSystem)
+        IManaSystem manaSystem, IStatSystem statSystem, IEntityStatesSystem statesSystem)
     {
         _healthSystem = healthSystem;
         _damageCalculationSystem = damageCalculationSystem;
         _manaSystem = manaSystem;
         _statSystem = statSystem;
         _statesSystem = statesSystem;
-        _moveSystem = moveSystem;
     }
 
-    public void AssignData(CoreData data)
-    {
-
-    }
 
     public IHealthSystem GetHealthSystem() { return _healthSystem; }
     public IManaSystem GetManaSystem() { return _manaSystem; }
     public IDamageCalculationSystem GetDamageCalculationSystem() { return _damageCalculationSystem; }
     public IStatSystem GetStatSystem() { return _statSystem; }
     public IEntityStatesSystem GetStatesSystem() { return _statesSystem; }
-    public IMovable GetMoveSystem() { return _moveSystem; }
 
 }

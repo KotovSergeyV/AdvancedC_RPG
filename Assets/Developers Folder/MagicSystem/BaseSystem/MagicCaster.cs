@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MagicCaster : MonoBehaviour
 {
-    [SerializeField] private MagicBase _magicToCast; // Assign this in code
+    [SerializeField] private MagicBase _magicToCast; // Future me, assign this in code! Se :)
     [SerializeField] private bool _needMana;
     [SerializeField] private GameObject _target;
 

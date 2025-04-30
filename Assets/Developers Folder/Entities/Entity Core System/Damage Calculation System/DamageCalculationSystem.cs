@@ -44,7 +44,7 @@ public class DamageCalculationSystem : IDamageCalculationSystem
             {
                 SetTargetState(targetCore.GetStatesSystem(), damageData.Responce);
                 Debug.Log("DamagedBlocked");
-                return ApplyDamage(target.GetComponent<HealthSystem>(), defence, damageData.DamageAmount * 0.1f);
+                return ApplyDamage(targetCore.GetHealthSystem(), defence, damageData.DamageAmount * 0.1f);
             }
 
         }

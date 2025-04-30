@@ -58,14 +58,13 @@ public class SceneBootstrapper
         ManaBar manaBar = entity?.GetComponentInChildren<ManaBar>();
 
         entityCoreSystem.Initialize(new HealthSystem(managerUI, 100, healthBar), new DamageCalculationSystem(), new ManaSystem(managerUI, 100, 0.5f, manaBar),
-            new StatSystem(1, 1, 1, 1, 1), new EntityStatesSystem(), new Movable());
+            new StatSystem(1, 1, 1, 1, 1), new EntityStatesSystem());
         try
         {
             IHealthSystem healthSystem = (entityCoreSystem.GetHealthSystem());
             ((HealthSystem)healthSystem).OnDamaged += entity.GetComponent<AnimatorController>().PlayHitAnimation;
             ((HealthSystem)healthSystem).OnDead += entity.GetComponent<AnimatorController>().PlayDeathAnimation;
 
-            Debug.Log("Initial HP:" + healthSystem.GetHp());
         }
         catch { Debug.Log("Damage/Death anim assignation error!"); }
 
@@ -84,15 +83,14 @@ public class SceneBootstrapper
             new DamageCalculationSystem(),
             new ManaSystem(managerUI, coreData.ManaData.MaxMana, 0.5f, manaBar, coreData.ManaData.Mana),
             new StatSystem(coreData.StatData.Agility, coreData.StatData.Attack, coreData.StatData.Luck, coreData.StatData.Defence, coreData.StatData.Intelligence),
-            new EntityStatesSystem(), // <---- current state here after it released in game
-            new Movable());
+            new EntityStatesSystem() // <---- current state here after it released in game
+            );
         try
         {
             IHealthSystem healthSystem = (entityCoreSystem.GetHealthSystem());
             ((HealthSystem)healthSystem).OnDamaged += entity.GetComponent<AnimatorController>().PlayHitAnimation;
             ((HealthSystem)healthSystem).OnDead += entity.GetComponent<AnimatorController>().PlayDeathAnimation;
 
-            Debug.Log("Initial HP:" + healthSystem.GetHp());
         }
         catch { Debug.Log("Damage/Death anim assignation error!"); }
 

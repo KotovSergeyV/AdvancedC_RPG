@@ -20,8 +20,6 @@ public class GlobalBootstrapper : MonoBehaviour
 
 
     [SerializeField] private GameObject _playerPrefab;
-    private HealthBar _playerHealthBar;
-    private ManaBar _playerManaBar;
     [SerializeField] private GameObject _player;
 
 
@@ -219,9 +217,6 @@ public class GlobalBootstrapper : MonoBehaviour
         _managerSFX.StopAllSFX();
         _managerSFX.PlaySFX(_musicClip[1], transform.position, ManagerSFX.MixerGroupType.Music, null, false, 1, 0);
 
-        _playerHealthBar = GameObject.Find("HealthBar")?.GetComponent<HealthBar>();
-        _playerManaBar = GameObject.Find("ManaBar")?.GetComponent<ManaBar>(); ;
-
         // Game Load
         LoadGameScene();
     }
@@ -229,23 +224,14 @@ public class GlobalBootstrapper : MonoBehaviour
     private void LoadFromSave(List<EntitySaveData> data)
     {
 
-        Debug.LogWarning("DATA ON LOAD:");
-        Debug.LogWarning(data.Count);
-
         EntitySaveData playerData = data
                 .FirstOrDefault(x => x.EntityType == Enum_EntityType.Player);
         data.Remove(playerData);
-        Debug.LogWarning(playerData);
-        Debug.LogWarning("ENEMY DATA ON LOAD:");
-        Debug.LogWarning(data.Count);
 
         _player = Instantiate(_playerPrefab, playerData.Position, playerData.Rotation);
         PlayerCreation(_player, playerData.CoreData);
 
         EntityAgregator.AddEntity(_player, Enum_EntityType.Player);
-
-        _playerHealthBar = GameObject.Find("HealthBar")?.GetComponent<HealthBar>();
-        _playerManaBar = GameObject.Find("ManaBar")?.GetComponent<ManaBar>(); ;
 
         _managerSFX.StopAllSFX();
         _managerSFX.PlaySFX(_musicClip[1], transform.position, ManagerSFX.MixerGroupType.Music, null, false, 1, 0);
@@ -294,7 +280,7 @@ public class GlobalBootstrapper : MonoBehaviour
         ManaBar manaBar = entity?.GetComponentInChildren<ManaBar>();
 
         entityCoreSystem.Initialize(new HealthSystem(_managerUI, 100, healthBar), new DamageCalculationSystem(), new ManaSystem(_managerUI, 100, 0.5f, manaBar),
-            new StatSystem(1, 1, 1, 1, 1), new EntityStatesSystem(), new Movable());
+            new StatSystem(1, 1, 1, 1, 1), new EntityStatesSystem());
         try {
             IHealthSystem healthSystem = (entityCoreSystem.GetHealthSystem());
             ((HealthSystem)healthSystem).OnDamaged += entity.GetComponent<AnimatorController>().PlayHitAnimation;
@@ -319,8 +305,8 @@ public class GlobalBootstrapper : MonoBehaviour
             new DamageCalculationSystem(),
             new ManaSystem(_managerUI, coreData.ManaData.MaxMana, 0.5f, manaBar, coreData.ManaData.Mana ),
             new StatSystem(coreData.StatData.Agility, coreData.StatData.Attack, coreData.StatData.Luck, coreData.StatData.Defence, coreData.StatData.Intelligence),
-            new EntityStatesSystem(), // <---- current state here after it released in game
-            new Movable());
+            new EntityStatesSystem() // <---- current state here after it released in game
+            );
         try
         {
             IHealthSystem healthSystem = (entityCoreSystem.GetHealthSystem());
