@@ -4,21 +4,25 @@ using UnityEngine;
 
 public class BehaviorTask : IBehaviorNode
 {
+
+    ///  <summary>Task priority</summary>
     Priority _priority;
-    Action Payload;
+    ///  <summary>Methods embeded in task</summary>
+    Action Payload;         
 
-    Action ExecutionFinished;
+    public Action ExecutionFinished { get; set; }
 
-    public Action Initialize(Priority priority, params Action[] payloadMethods)
+
+    ///  <summary>Initialize task</summary>
+    public void Initialize(Priority priority, params Action[] payloadMethods)
     {
         _priority = priority;
 
         foreach (var method in payloadMethods)
         {
-            Payload += method; 
+            Payload += method.Invoke; 
         }
 
-        return ExecutionFinished;
     }
 
     public virtual void Execute()
@@ -27,16 +31,19 @@ public class BehaviorTask : IBehaviorNode
         ExecutionFinished?.Invoke();
     }
 
+    /// <summary>Invoke payload methods</summary>
     void StartPayload() { Payload?.Invoke(); }
 
     public Priority GetPriority() { return _priority; }
+
 }
 
 
 
 public enum Priority
 {
-    Low ,
+    Minus,  //system default for overwriting, do not assign to ingame actions.
+    Low,
     Basic,
     Advanced,
     High,

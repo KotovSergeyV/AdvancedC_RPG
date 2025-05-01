@@ -7,9 +7,11 @@ public class BehaviorTaskSequence : IBehaviorNode
 
     List<IBehaviorNode> _taskExecutionQueue;
     IBehaviorNode _currentTask;
-    Action ExecutionFinished;
+    public Action ExecutionFinished { get; set; }
 
-
+    /// <summary>
+    /// Initialize tasks sequence
+    /// </summary>
     public void Initialize(List<IBehaviorNode> taskExecutionQueue)
     {
         _taskExecutionQueue = taskExecutionQueue;
@@ -25,7 +27,9 @@ public class BehaviorTaskSequence : IBehaviorNode
         return _currentTask.GetPriority();
     }
 
-
+    /// <summary>
+    /// Start next method in sequence
+    /// </summary>
     void Next()
     {
         if (_taskExecutionQueue.Count == 0) { ExecutionFinished?.Invoke(); return; }
@@ -33,10 +37,14 @@ public class BehaviorTaskSequence : IBehaviorNode
         _currentTask = _taskExecutionQueue[0];
         _taskExecutionQueue.RemoveAt(0);
 
+        _currentTask.ExecutionFinished += Next;
         _currentTask.Execute();
     }
 
-    public void Cancel()
+    /// <summary>
+    /// Interupt current sequence
+    /// </summary>
+    public void InteruptPayload()
     {
         if (_currentTask is BehaviorTask_Async) {
             ((BehaviorTask_Async)_currentTask).InteruptPayload();
