@@ -6,9 +6,9 @@ public class BehaviorTask : IBehaviorNode
 {
 
     ///  <summary>Task priority</summary>
-    Priority _priority;
+    protected Priority _priority;
     ///  <summary>Methods embeded in task</summary>
-    Action Payload;         
+    protected Action Payload;         
 
     public Action ExecutionFinished { get; set; }
 
@@ -32,7 +32,7 @@ public class BehaviorTask : IBehaviorNode
     }
 
     /// <summary>Invoke payload methods</summary>
-    void StartPayload() { Payload?.Invoke(); }
+    protected virtual void StartPayload() { Payload?.Invoke(); }
 
     public Priority GetPriority() { return _priority; }
 

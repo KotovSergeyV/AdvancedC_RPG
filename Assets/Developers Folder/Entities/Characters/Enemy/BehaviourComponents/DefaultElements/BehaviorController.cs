@@ -7,7 +7,7 @@ using UnityEngine;
 public class BehaviorController
 {
 
-    List<Instruction> ControlData = new List<Instruction>();
+    //List<Instruction> ControlData = new List<Instruction>();
 
     IBehaviorNode _currentTask;
     BehaviorTask _defaultTask;
@@ -27,12 +27,11 @@ public class BehaviorController
         CreateDefault();
         _currentTask = _defaultTask;
 
-        ControlData = controlData;
+        //ControlData = controlData;
         foreach (Instruction instruction in controlData)
         {
            // Subscription to execTask, becxause Action<Action> to link to original event.
            instruction.Trigger(() => ExecTaskCommand(instruction.Node));
-           
         }
     }
 
@@ -56,7 +55,7 @@ public class BehaviorController
         if (newTask == null) { newTask = _defaultTask; }
 
         if (_currentTask is BehaviorTaskSequence) { ((BehaviorTaskSequence)_currentTask).InteruptPayload(); }
-        else if (_currentTask is BehaviorTask_Async) { ((BehaviorTask_Async)_currentTask).InteruptPayload(); }
+        //else if (_currentTask is BehaviorTask_Async) { ((BehaviorTask_Async)_currentTask).InteruptPayload(); }
         
         _currentTask = newTask;
         _currentTask.ExecutionFinished += ClearTask;
