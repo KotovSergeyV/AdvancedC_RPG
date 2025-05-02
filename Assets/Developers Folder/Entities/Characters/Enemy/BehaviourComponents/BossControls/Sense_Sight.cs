@@ -1,10 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Sense_Sight : MonoBehaviour
@@ -13,9 +9,10 @@ public class Sense_Sight : MonoBehaviour
     public event Action playerExitOutOfRange ;
     public event Action playerLost;
 
-
-    [SerializeField] float rangeOfView;
+    [SerializeField] float rangeOfView = 10f;
+    [SerializeField] float fieldOfViewAngle = 110f;
     [SerializeField] Transform player;
+    [SerializeField] LayerMask obstructionMask;
     [SerializeField] bool canSee;
 
     BehaviorController behaviourController = new BehaviorController();
@@ -51,24 +48,46 @@ public class Sense_Sight : MonoBehaviour
 
         behaviourController.Initialize(BehaviorInstructions);
 
-
     }
 
     private void Update()
     {
-        if (Vector3.Distance(transform.position, player.position) <= rangeOfView && !canSee) 
+        if (IsPlayerInSight())
         {
-            canSee = !canSee;
-            playerEnterInRange.Invoke();
-    
+            if (!canSee)
+            {
+                canSee = true;
+                playerEnterInRange.Invoke();
+            }
         }
-        else if (Vector3.Distance(transform.position, player.position) > rangeOfView && canSee)
+        else
         {
-            canSee = !canSee;
-            playerExitOutOfRange.Invoke();
+            if (canSee)
+            {
+                canSee = false;
+                playerExitOutOfRange.Invoke();
+                StartCoroutine(LostTimeCount());
+            }
+        }
+    }
 
-            StartCoroutine(LostTimeCount());
+    bool IsPlayerInSight()
+    {
+        Vector3 directionToPlayer = player.position - transform.position;
+        float distanceToPlayer = directionToPlayer.magnitude;
+
+        if (distanceToPlayer > rangeOfView) return false;
+
+        float angle = Vector3.Angle(transform.forward, directionToPlayer.normalized);
+        if (angle < fieldOfViewAngle / 2f)
+        {
+            if (!Physics.Raycast(transform.position, directionToPlayer.normalized, distanceToPlayer, obstructionMask))
+            {
+                return true;
+            }
         }
+
+        return false;
     }
 
     IEnumerator LostTimeCount()
