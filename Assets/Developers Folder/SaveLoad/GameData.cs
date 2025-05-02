@@ -16,5 +16,6 @@ public enum Enum_EntityType
 {
     Player, 
     Melee, 
-    Range
+    Range,
+    Civilian
 }

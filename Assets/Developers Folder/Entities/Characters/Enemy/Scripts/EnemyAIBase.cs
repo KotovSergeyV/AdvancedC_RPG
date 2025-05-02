@@ -1,6 +1,5 @@
 using System.Linq;
 using UnityEngine;
-using UnityEngine.AI;
 
 public abstract class EnemyAIBase : Movable
 {
@@ -9,6 +8,8 @@ public abstract class EnemyAIBase : Movable
     protected int _currentWaypointIndex = 0;
     protected AI_States _currentState;
     protected ManagerSFX _managerSFX;
+    protected bool isFriendly;
+    protected Transform PlayerTarget;
 
 
     [SerializeField] protected AudioClip[] _takeDamageClips;
@@ -26,6 +27,7 @@ public abstract class EnemyAIBase : Movable
         _currentState = AI_States.Patrolling;
         Patrol();
         FindWaypoints();
+        PlayerTarget = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     /// <summary>
@@ -59,7 +61,10 @@ public abstract class EnemyAIBase : Movable
         }
     }
 
-    protected abstract void Attack();
+    protected virtual void Attack()
+    {
+        ;
+    }
 
     protected virtual void Update()
     {
@@ -68,14 +73,40 @@ public abstract class EnemyAIBase : Movable
             UpdatePatrol();
         }
 
-        bool _dead;
+        int currentHp;
+        int maxHp;
         if (TryGetComponent<EntityCoreSystem>(out EntityCoreSystem core)) {
+            currentHp = core.GetHealthSystem().GetHp();
+            maxHp = core.GetHealthSystem().GetMaxHp();
+            if ((currentHp <= maxHp / 2) && isFriendly)
+            {
+                _currentState = AI_States.Fallback;
+                //AnimatorController.PlayDeathAnimation(_dead);
+            }
+        }
+
+        bool _dead;
+        if (TryGetComponent<EntityCoreSystem>(out core)) {
             _dead = core.GetHealthSystem().GetIsDead();
             if (_dead)
             {
                 _currentState = AI_States.Dead;
                 //AnimatorController.PlayDeathAnimation(_dead);
             }
+        }
+    }
+
+    protected void LookForTarget()
+    {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player == null) return;
+
+        float distance = Vector3.Distance(transform.position, player.transform.position);
+        if (distance <= _spotRange)
+        {
+            _managerSFX.PlaySFX(_spoteClips?[Random.Range(0, _spoteClips.Length)], transform.position, ManagerSFX.MixerGroupType.Voice, null, true, 1, 0);
+            _target = player.transform;
+            _currentState = AI_States.Attacking;
         }
     }
 
@@ -88,6 +119,24 @@ public abstract class EnemyAIBase : Movable
         this.enabled = false;
     }
 
+    protected virtual void RunBack()
+    {
+        if (PlayerTarget == null) return;
+
+        Vector3 directionAwayFromPlayer = (transform.position - PlayerTarget.position).normalized;
+
+        Vector3 runToPosition = transform.position + directionAwayFromPlayer * 10f;
+
+        GameObject tempTarget = new GameObject("TargetToAway");
+        tempTarget.transform.position = runToPosition;
+
+        base.GoToTarget(tempTarget.transform, _runSpeed);
+
+        Destroy(tempTarget, 1f);
+
+        Debug.Log("AAAAAAAAAA");
+    }
+
 
 }
 
@@ -95,5 +144,7 @@ public enum AI_States
 {
     Patrolling,
     Attacking,
-    Dead
+    Dead,
+    Fallback,
+    Idle
 }

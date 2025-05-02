@@ -9,6 +9,7 @@ public class WarriorAI : EnemyAIBase
     {
         base.Start();
         _lastAttackTime = -_attackCooldown;
+        isFriendly = false;
     }
 
 
@@ -25,27 +26,18 @@ public class WarriorAI : EnemyAIBase
                 transform.LookAt(_target);
                 Attack();
                 break;
+            case AI_States.Fallback:
+                RunBack();
+                break;
             case AI_States.Dead:
                 Dead();
                 break;
         }
     }
 
-    /// <summary>
-    /// Spot Range to find Player
-    /// </summary>
-    private void LookForTarget()
+    private new void LookForTarget()
     {
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        if (player == null) return;
-
-        float distance = Vector3.Distance(transform.position, player.transform.position);
-        if (distance <= _spotRange)
-        {
-            _managerSFX.PlaySFX(_spoteClips?[Random.Range(0, _spoteClips.Length)], transform.position, ManagerSFX.MixerGroupType.Voice, null, true, 1, 0);
-            _target = player.transform;
-            _currentState = AI_States.Attacking;
-        }
+        base.LookForTarget();
     }
 
     protected override void Attack()

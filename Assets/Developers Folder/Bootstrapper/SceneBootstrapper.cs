@@ -8,7 +8,6 @@ public class SceneBootstrapper
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void Initialize(ManagerSFX managerSFX, ManagerUI managerUI, List<EntitySaveData> data =null)
     {
-
         InitializeEnemies(managerSFX, managerUI, data);
     }
 
@@ -19,6 +18,7 @@ public class SceneBootstrapper
         {
             GunnerAI gunner = enemy.GetComponent<GunnerAI>();
             WarriorAI warrior = enemy.GetComponent<WarriorAI>();
+            CivilianAI civilian = enemy.GetComponent<CivilianAI>();
             if (gunner)
             {
                 gunner.Initialize(managerSFX);
@@ -29,6 +29,12 @@ public class SceneBootstrapper
                 warrior.Initialize(managerSFX);
                 EntityAgregator.AddEntity(enemy, Enum_EntityType.Melee);
             }
+            else if (civilian)
+            {
+                civilian.Initialize(managerSFX);
+                EntityAgregator.AddEntity(enemy, Enum_EntityType.Civilian);
+            }
+
             if (data != null) {
                 EntitySaveData entityData;
                 if (gunner) {
@@ -48,7 +54,6 @@ public class SceneBootstrapper
             else EntityCoreCreation(enemy, managerUI);
         } 
     }
-    
 
     private EntityCoreSystem EntityCoreCreation(GameObject entity, ManagerUI managerUI)
     {
@@ -57,7 +62,7 @@ public class SceneBootstrapper
         HealthBar healthBar = entity?.GetComponentInChildren<HealthBar>();
         ManaBar manaBar = entity?.GetComponentInChildren<ManaBar>();
 
-        entityCoreSystem.Initialize(new HealthSystem(managerUI, 100, healthBar), new DamageCalculationSystem(), new ManaSystem(managerUI, 100, 0.5f, manaBar),
+        entityCoreSystem.Initialize(new HealthSystem(managerUI, 50, healthBar), new DamageCalculationSystem(), new ManaSystem(managerUI, 100, 0.5f, manaBar),
             new StatSystem(1, 1, 1, 1, 1), new EntityStatesSystem());
         try
         {
