@@ -19,7 +19,7 @@ public class DEBUG_AttackSphere : MonoBehaviour
         damageData.isInneviåtable = false;
         damageData.isBlockable = false;
 
-        gameObject.GetComponent<IDamageCalculationSystem>().Damage(collider.gameObject, damageData);
+        //gameObject.GetComponent<IDamageCalculationSystem>().Damage(gameobject, collider.gameObject, damageData);
         Destroy(gameObject);
     }
 }

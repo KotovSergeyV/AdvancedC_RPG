@@ -7,7 +7,7 @@ using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Sense_Sight : MonoBehaviour
+public class DebugSense_Sight : MonoBehaviour
 {
     public event Action playerEnterInRange;
     public event Action playerExitOutOfRange ;

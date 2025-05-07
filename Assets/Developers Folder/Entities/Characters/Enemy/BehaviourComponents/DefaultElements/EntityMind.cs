@@ -1,9 +1,10 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class EntityMind
+public abstract class EntityMind : MonoBehaviour
 {
-    public void Initialize(GameObject entity, )
-    {
-        
-    }
+    protected BehaviorController _controller = new BehaviorController();
+
+    
 }

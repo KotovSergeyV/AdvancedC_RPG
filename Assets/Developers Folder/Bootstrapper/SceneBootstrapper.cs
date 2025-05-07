@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using static UnityEditor.Experimental.GraphView.GraphView;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class SceneBootstrapper 
 {
@@ -10,6 +11,13 @@ public class SceneBootstrapper
     {
 
         InitializeEnemies(managerSFX, managerUI, data);
+        InitializeBoss(managerSFX, managerUI);
+    }
+
+    private void InitializeBoss(ManagerSFX managerSFX, ManagerUI managerUI)
+    {
+        GameObject boss = GameObject.FindGameObjectWithTag("Boss");
+        EntityCoreCreation(boss, managerUI);
     }
 
     private void InitializeEnemies(ManagerSFX managerSFX, ManagerUI managerUI, List<EntitySaveData> data)

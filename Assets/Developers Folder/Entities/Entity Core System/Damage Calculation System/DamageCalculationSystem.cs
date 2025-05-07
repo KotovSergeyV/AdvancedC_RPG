@@ -5,9 +5,8 @@ using static UnityEngine.GraphicsBuffer;
 
 public class DamageCalculationSystem : IDamageCalculationSystem
 {
-    public int Damage(GameObject target, Struct_DamageData damageData, IStatSystem ownerStats=null) 
+    public int Damage(GameObject instigator, GameObject target, Struct_DamageData damageData, IStatSystem ownerStats=null) 
     {
-        Debug.Log("DamageStarted");
         if (CheckNull(target))
         { 
             Debug.Log("No target");
@@ -36,24 +35,30 @@ public class DamageCalculationSystem : IDamageCalculationSystem
 
             if (dodgeChance >= Random.Range(1, 100))
             {
-                Debug.Log("Dodged");
                 return 0;
             }
 
             else if (targetCore.GetStatesSystem().GetEntityState() == Enum_EntityStates.Blocking && damageData.isBlockable)
             {
                 SetTargetState(targetCore.GetStatesSystem(), damageData.Responce);
-                Debug.Log("DamagedBlocked");
+                TriggerDamaged(instigator, target);
                 return ApplyDamage(targetCore.GetHealthSystem(), defence, damageData.DamageAmount * 0.1f);
             }
 
         }
 
         SetTargetState(targetCore.GetStatesSystem(), damageData.Responce);
-        Debug.Log("DamagedFull: "+ damageData.DamageAmount);
+        TriggerDamaged(instigator, target);
         return ApplyDamage(targetCore.GetHealthSystem(), defence, damageData.DamageAmount);
 
 
+    }
+
+    private void TriggerDamaged(GameObject instigator, GameObject target)
+    {
+        BehaviorSense_Damaged damagedComp;
+        if (target.TryGetComponent(out damagedComp))
+        { damagedComp.Trigger(instigator); }
     }
 
     private int ApplyDamage(IHealthSystem target, int targetsDefence, float damage)
