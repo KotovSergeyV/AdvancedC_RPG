@@ -36,11 +36,10 @@ public class WeaponSystem : MonoBehaviour
         if (target.layer != _physicLayer && _canDamage)
         {
             _canDamage = false;
-            Debug.Log("OnWeaponDamage started");
             
                 Debug.Log(target);
                 EntityCoreSystem coreSystem = _rootOwner.GetComponent<EntityCoreSystem>();
-                coreSystem.GetDamageCalculationSystem().Damage(target, _weaponDamageData, coreSystem.GetStatSystem());
+                coreSystem.GetDamageCalculationSystem().Damage(_rootOwner, target, _weaponDamageData, coreSystem.GetStatSystem());
 
             StartCoroutine(ReloadCanDamage());
             

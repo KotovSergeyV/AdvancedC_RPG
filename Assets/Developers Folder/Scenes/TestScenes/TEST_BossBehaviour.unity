@@ -132,6 +132,8 @@ GameObject:
   - component: {fileID: 273705570}
   - component: {fileID: 273705569}
   - component: {fileID: 273705573}
+  - component: {fileID: 273705574}
+  - component: {fileID: 273705575}
   m_Layer: 0
   m_Name: TEST_Boss
   m_TagString: Untagged
@@ -239,12 +241,39 @@ MonoBehaviour:
   m_GameObject: {fileID: 273705568}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66cb97888ade8e54c9b7ae720d2a4663, type: 3}
+  m_Script: {fileID: 11500000, guid: 6052cfc9aecfc1c4aadd83a5c61b4ec7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rangeOfView: 10
-  player: {fileID: 1042182902}
-  canSee: 0
+  _distance: 50
+  _viewAngle: 90
+  _viewOffset: {x: 0, y: 0, z: 0}
+  _targetList:
+  - {fileID: 1042182898}
+--- !u!114 &273705574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 273705568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d7d2b36a9f641b4584434b947a900d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &273705575
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 273705568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67a7b1c0628a5ab47b22cbc61fd37daf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _attackRange: 2
 --- !u!1 &469540582
 GameObject:
   m_ObjectHideFlags: 0
