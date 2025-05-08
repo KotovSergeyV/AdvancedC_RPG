@@ -17,35 +17,43 @@ public class BehaviorSense_Sight : BehaviorSense
     [SerializeField] List<GameObject> _targetList;
 
     public Action<GameObject> ViewFieldEntered = delegate { };
-    public Action<GameObject> ViewFieldExited = delegate { };
+    public Action ViewFieldExited = delegate { };
    
 
     void Start()
     {
         _targetList.Add(GameObject.FindGameObjectWithTag("Player"));
-        _viewTrasnsform = gameObject.transform.position + _viewOffset;
+        _canSee = false;
     }
 
     void Update()
     {
-        foreach (var target in _targetList) 
+        foreach (var target in _targetList)
         {
-            if (!_canSee && Vector3.Distance(_viewTrasnsform, target.transform.position) <= _distance &&
-                Vector3.Angle(transform.forward, target.transform.position) <= _viewAngle)
+            _viewTrasnsform = gameObject.transform.position + _viewOffset;
+            Vector3 raycastTarget = target.transform.position - _viewTrasnsform;
+
+            LayerMask layerMask = LayerMask.GetMask("Default");
+
+            RaycastHit hit;
+            Physics.Raycast(_viewTrasnsform, raycastTarget, out hit, _distance, layerMask);
+            Debug.DrawRay(_viewTrasnsform, raycastTarget, new Color(255, 0, 0));
+
+            if (!_canSee && hit.collider != null && hit.collider.gameObject == target &&
+                Vector3.Angle(transform.forward, raycastTarget) <= _viewAngle)
             {
-                Debug.DrawLine(transform.position, target.transform.position);
-                Debug.DrawLine(transform.position, transform.position +  transform.forward * 100);
-                Debug.Log("See1!");
+                Debug.Log("See!");
                 _canSee = true;
                 ViewFieldEntered.Invoke(target);
             }
-            else if (_canSee && (Vector3.Distance(_viewTrasnsform, target.transform.position) > _distance ||
-                Vector3.Angle(transform.forward, target.transform.position) > _viewAngle))
+
+            else if (_canSee && (hit.collider == null || !hit.collider.gameObject == target ||
+                Vector3.Angle(transform.forward, raycastTarget) > _viewAngle))
             {
 
                 _canSee = false;
                 Debug.Log("Unsee!");
-                ViewFieldExited.Invoke(target);
+                ViewFieldExited.Invoke();
             }
         }
     }

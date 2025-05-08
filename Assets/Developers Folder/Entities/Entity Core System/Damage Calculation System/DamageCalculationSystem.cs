@@ -67,7 +67,6 @@ public class DamageCalculationSystem : IDamageCalculationSystem
 
         int summarisedDamage = (int)(damage - (targetsDefence * 0.5f));
         summarisedDamage = Mathf.Max(summarisedDamage, 0);
-        Debug.Log(target.Damage(summarisedDamage));
         return target.Damage(summarisedDamage);
     }
 
