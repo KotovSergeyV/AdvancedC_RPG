@@ -1,21 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
 
 public class EntityMind_Boss : EntityMind
 {
-    // Movement Params
-    float _runSpeed = 2.5f;
-    float _walkSpeed = 2.5f;
-    bool _destinationReached = false;
-    float _seekDistMutiplier = 10f;
-    float _minSeekDistPercent = .5f;
-
-    // Inner Utils
-    //bool _isMovementBlocked = false;
 
     // Outer Components
     IAnimatorController _animatorController;
@@ -24,17 +16,26 @@ public class EntityMind_Boss : EntityMind
     // MEMTimers (in seconds)
     float MEMTimer_SeekTargetForget = 60f;
 
+    // Flags
+    bool _seekFlag;
+    bool _followFlag;
+
+
     // Keys
     GameObject Key_target;
-    Vector3 Key_lastTargetPosition;
+    Vector3 Key_targetLastPosition;
 
     float Key_distanceOfAttack = 3f;
 
 
     // Mind Control Triggers
-    public event Action MindControlTrigger_SightTriggered;
-    public event Action MindControlTrigger_SightExitTriggered;
-    public event Action MindControlTrigger_DamagedTriggered;
+    public event Action MindControlTrigger_Sight;
+    public event Action MindControlTrigger_SightExit;
+
+    public event Action MindControlTrigger_NewSeekDestination;
+
+    public event Action MindControlTrigger_Damaged;
+
     public event Action MindControlTrigger_AttackTriggered;
 
 
@@ -49,6 +50,9 @@ public class EntityMind_Boss : EntityMind
 
     public void Initialize(BehaviorSense_Sight sight, BehaviorSense_Damaged damage)
     {
+        ACS_Movement acs_movement = gameObject.AddComponent<ACS_Movement>();
+        acs_movement.Initialize(2.5f, 2.5f, 10, .5f, _navMeshAgent);
+
 
         // Sense assigning
         sight.ViewFieldEntered += SightHandle;
@@ -62,23 +66,48 @@ public class EntityMind_Boss : EntityMind
         BehaviorTask Task_followTarget = new BehaviorTask();
         Task_followTarget.Initialize(Priority.Advanced,
             // Logic
-            delegate { StartCoroutine(Follow(_runSpeed)); },
+            delegate {
+                Debug.Log("Task_followTarget");
+                SetFlag(0);
+                acs_movement.Follow(Key_target);
+                StartCoroutine(FollowRoutine());
+            },
             // Animation
-            delegate { _animatorController.PlayWalkAnimation(false); },
-            delegate { _animatorController.PlayRunAnimation(true); }
+            delegate { _animatorController.PlayWalkAnimation(false);
+                       _animatorController.PlayRunAnimation(true); }
+        );
+
+
+        BehaviorTask Task_seekAroundLastPosition = new BehaviorTask();
+        Task_seekAroundLastPosition.Initialize(Priority.Basic,
+            // Logic
+            delegate {
+                Debug.Log("Task_seekAroundLastPosition");
+                       acs_movement.StopFollow();
+
+                       acs_movement.Seek(Key_targetLastPosition);
+                       SetFlag(1);
+                       StartCoroutine(SeekRoutine());
+            },
+            // Animation
+            delegate {
+                _animatorController.PlayRunAnimation(false);
+                _animatorController.PlayWalkAnimation(true);
+            }
         );
 
         BehaviorTask Task_startForgetTarget = new BehaviorTask();
         Task_startForgetTarget.Initialize(Priority.Basic,
-            // Logic
-            delegate { StartCoroutine(Seek(_walkSpeed)); },
             // Memo
             delegate { _memory.WriteMemory(
-                                delegate { 
-                                    Key_lastTargetPosition = Vector3.zero;
+                                delegate {
+                                    _seekFlag = false;
                                     _animatorController.PlayWalkAnimation(false); 
                                 },  MEMTimer_SeekTargetForget); }
         );
+
+        BehaviorTaskSequence TaskSeq_SeekAndForget = new BehaviorTaskSequence();
+        TaskSeq_SeekAndForget.Initialize(new List<IBehaviorNode>() { Task_seekAroundLastPosition, Task_startForgetTarget });
 
         BehaviorTask Task_attackTarget = new BehaviorTask();
         Task_attackTarget.Initialize(Priority.High,
@@ -91,37 +120,71 @@ public class EntityMind_Boss : EntityMind
         // Controller initialize
         _controller.Initialize(new List<Instruction>()
         {
-            new Instruction((callback) => MindControlTrigger_SightTriggered += callback, Task_followTarget),
-            new Instruction((callback) => MindControlTrigger_DamagedTriggered += callback, Task_followTarget),
-            new Instruction((callback) => MindControlTrigger_SightExitTriggered += callback, Task_startForgetTarget),
+            new Instruction((callback) => MindControlTrigger_Sight += callback, Task_followTarget),
+            new Instruction((callback) => MindControlTrigger_Damaged += callback, Task_followTarget),
+
+            new Instruction((callback) => MindControlTrigger_SightExit += callback, TaskSeq_SeekAndForget),
+            new Instruction((callback) => MindControlTrigger_NewSeekDestination += callback, Task_seekAroundLastPosition),
+
             new Instruction((callback) => MindControlTrigger_AttackTriggered += callback, Task_attackTarget),
         });
     }
+
 
 
     #region SenseHandling
     private void SightHandle(GameObject target)
     {
         Key_target = target;
-        MindControlTrigger_SightTriggered.Invoke();
+        MindControlTrigger_Sight.Invoke();
     }
     private void SightExitHandle()
     {
-        if (Key_target == null) return;
-        Key_lastTargetPosition = Key_target.transform.position;
+        Key_targetLastPosition = Key_target.transform.position;
         Key_target = null;
-        MindControlTrigger_SightExitTriggered.Invoke();
+        Debug.Log("MindControlTrigger_SightExit.Invoke");
+        MindControlTrigger_SightExit.Invoke();
     }
 
     private void DamagedHandle(GameObject target)
     {
         Key_target = target;
-        MindControlTrigger_DamagedTriggered.Invoke();
+        MindControlTrigger_Damaged.Invoke();
+    }
+
+    #endregion
+
+    #region Continuous actions routine
+
+    IEnumerator OnAttackRangeReached() 
+    {
+        yield return null; 
+    }
+
+    IEnumerator FollowRoutine()
+    {
+        yield return null;
+        //while (_followFlag)
+        //{
+        //    yield return null;
+        //}
+    }
+
+    IEnumerator SeekRoutine() 
+    {
+        while (_seekFlag)
+        {
+            if (Vector3.Distance(transform.position, _navMeshAgent.destination) < 2f) MindControlTrigger_NewSeekDestination.Invoke();
+            yield return null;
+        }
     }
     #endregion
 
+    //private void TargetDistanceAnalysys()
+    //{
 
-    //---- Note for future me: probably better to move "attacking" and "movement" to another scripts 
+    //}
+
     #region Attacking
 
     public void Attack()
@@ -134,88 +197,8 @@ public class EntityMind_Boss : EntityMind
     #endregion
 
 
-    #region Movement
-    public IEnumerator Follow(float speed=2.5f)
-    {
-        _animatorController.PlayRunAnimation(true);
-        _animatorController.PlayWalkAnimation(false);
-        _navMeshAgent.speed = speed;
-
-        while (Key_target)
-        {
-                
-                if (Key_target.transform != null)
-                {
-                    transform.LookAt(Key_target.transform.position);
-                }
-
-                if (_navMeshAgent == null || Key_target.transform == null) Key_target = null;
-                else
-                {
-                    _navMeshAgent.SetDestination(Key_target.transform.position);
-
-                    if (Vector3.Distance(Key_target.transform.position, transform.position) < Key_distanceOfAttack)
-                    { 
-                    MindControlTrigger_AttackTriggered.Invoke();
-                    Debug.Log("Attack"); 
-                     
-                    }
-                }
-            
-            yield return new WaitForEndOfFrame();
-        }
-    }
-
-
-    public IEnumerator Seek(float speed=2.5f)
-    {
-        _animatorController.PlayRunAnimation(false);
-        _animatorController.PlayWalkAnimation(true);
-
-        _navMeshAgent.speed = speed;
-
-        while (Key_lastTargetPosition != Vector3.zero)
-        {
-            if (_navMeshAgent == null || Key_lastTargetPosition == null) { 
-                Key_lastTargetPosition = Vector3.zero;
-            }
-            else
-            {
-                if (_destinationReached)
-                {
-                    Vector3 randomDirection;
-                    randomDirection = UnityEngine.Random.insideUnitSphere;
-                    while (randomDirection.sqrMagnitude  < _minSeekDistPercent * _minSeekDistPercent) randomDirection = UnityEngine.Random.insideUnitCircle;
-                    randomDirection *= _seekDistMutiplier;
-                    randomDirection += Key_lastTargetPosition;
-
-                    NavMeshHit hit;
-                    if (NavMesh.SamplePosition(randomDirection, out hit, _seekDistMutiplier, NavMesh.AllAreas))
-                    {
-                        if (_navMeshAgent.SetDestination(hit.position)) _destinationReached = false;
-                        Debug.DrawLine(hit.position, hit.position+Vector3.up*100f, new Color(255, 255, 0), 15f);
-
-                    }
-                }
-                else
-                {
-                    if (Vector3.Distance(transform.position, _navMeshAgent.destination) < 1f) _destinationReached = true;
-                }
-            }
-            yield return new WaitForEndOfFrame();
-        }
-    }
-    #endregion
 
     #region Utils
-
-    //private IEnumerator BlockMovement()
-    //{
-    //    _isMovementBlocked = true;
-    //    yield return new WaitForSeconds(_animatorController.GetLengthOfClip());
-    //    _isMovementBlocked = false;
-
-    //}
 
     private void StopMovement()
     {
@@ -223,6 +206,15 @@ public class EntityMind_Boss : EntityMind
 
         _animatorController.PlayRunAnimation(false);
         _animatorController.PlayWalkAnimation(false);
+    }
+
+    private void SetFlag(int flagIdx)
+    {
+        bool[] flags = new bool[] { _followFlag, _seekFlag };
+        for (int i=0; i< flags.Length; i++) 
+        {
+            flags[i] = flagIdx == i;
+        }
     }
     #endregion
 
