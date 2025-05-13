@@ -10,4 +10,6 @@ internal interface IAnimatorController
     public void PlayJumpAnimation();
     public void PlayDeathAnimation();
     public void PlayHitAnimation();
+
+    public float GetLengthOfClip();
 }

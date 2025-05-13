@@ -37,7 +37,6 @@ public class WeaponSystem : MonoBehaviour
         {
             _canDamage = false;
             
-                Debug.Log(target);
                 EntityCoreSystem coreSystem = _rootOwner.GetComponent<EntityCoreSystem>();
                 coreSystem.GetDamageCalculationSystem().Damage(_rootOwner, target, _weaponDamageData, coreSystem.GetStatSystem());
 

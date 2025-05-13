@@ -191,7 +191,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _canSee: 0
-  _distance: 5
+  _distance: 15
   _viewAngle: 110
   _viewOffset: {x: 0, y: 3, z: 0}
   _targetList: []

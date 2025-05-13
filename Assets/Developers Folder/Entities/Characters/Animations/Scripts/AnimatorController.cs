@@ -54,4 +54,6 @@ public class AnimatorController : MonoBehaviour, IAnimatorController
     {
         _animator.SetTrigger("Hit");
     }
+
+    public float GetLengthOfClip() { return _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length; }
 }
