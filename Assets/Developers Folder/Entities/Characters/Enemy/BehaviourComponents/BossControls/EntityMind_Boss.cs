@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
@@ -26,6 +27,7 @@ public class EntityMind_Boss : EntityMind
     Vector3 Key_targetLastPosition;
 
     float Key_distanceOfAttack = 3f;
+    float Key_seekAcceptanceRange = 2.5f;
 
 
     // Mind Control Triggers
@@ -102,8 +104,10 @@ public class EntityMind_Boss : EntityMind
             delegate { _memory.WriteMemory(
                                 delegate {
                                     _seekFlag = false;
+                                    _navMeshAgent.speed = 0;
                                     _animatorController.PlayWalkAnimation(false); 
-                                },  MEMTimer_SeekTargetForget); }
+                                },  
+                                MEMTimer_SeekTargetForget); }
         );
 
         BehaviorTaskSequence TaskSeq_SeekAndForget = new BehaviorTaskSequence();
@@ -174,7 +178,12 @@ public class EntityMind_Boss : EntityMind
     {
         while (_seekFlag)
         {
-            if (Vector3.Distance(transform.position, _navMeshAgent.destination) < 2f) MindControlTrigger_NewSeekDestination.Invoke();
+            if (Vector3.Distance(transform.position, _navMeshAgent.destination) < Key_seekAcceptanceRange)
+            { 
+                MindControlTrigger_NewSeekDestination.Invoke();
+                Debug.DrawRay(_navMeshAgent.destination, Vector3.up*100, Color.yellow, 5);
+                Debug.Log("MindControlTrigger_NewSeekDestination.Invoke");
+            }
             yield return null;
         }
     }
@@ -210,11 +219,9 @@ public class EntityMind_Boss : EntityMind
 
     private void SetFlag(int flagIdx)
     {
-        bool[] flags = new bool[] { _followFlag, _seekFlag };
-        for (int i=0; i< flags.Length; i++) 
-        {
-            flags[i] = flagIdx == i;
-        }
+        List<string> flags = new List<string>() { "_followFlag", "_seekFlag" };
+        _followFlag = flagIdx == flags.IndexOf("_followFlag");
+        _seekFlag = flagIdx == flags.IndexOf("_seekFlag");
     }
     #endregion
 
