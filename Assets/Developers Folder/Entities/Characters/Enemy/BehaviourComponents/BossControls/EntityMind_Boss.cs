@@ -10,6 +10,9 @@ using UnityEngine.AI;
 public class EntityMind_Boss : EntityMind
 {
 
+    int LOGGER_PARAM___FOLLOW_ROUTINE_COUNT = 0;
+    int LOGGER_PARAM___SEEK_ROUTINE_COUNT = 0;
+    
     // Outer Components
     IAnimatorController _animatorController;
     NavMeshAgent _navMeshAgent;
@@ -21,13 +24,16 @@ public class EntityMind_Boss : EntityMind
     bool _seekFlag;
     bool _followFlag;
 
+    // Timers
+    float _lastStrikeTime = 0;
 
     // Keys
     GameObject Key_target;
     Vector3 Key_targetLastPosition;
 
-    float Key_distanceOfAttack = 3f;
-    float Key_seekAcceptanceRange = 2.5f;
+    float Key_distanceOfAttack = 2.5f;
+    float Key_seekAcceptanceRange = 2f;
+    float Key_AttackCooldown = 5f;
 
 
     // Mind Control Triggers
@@ -52,8 +58,11 @@ public class EntityMind_Boss : EntityMind
 
     public void Initialize(BehaviorSense_Sight sight, BehaviorSense_Damaged damage)
     {
+        // Action Components creation
         ACS_Movement acs_movement = gameObject.AddComponent<ACS_Movement>();
         acs_movement.Initialize(2.5f, 2.5f, 10, .5f, _navMeshAgent);
+        ACS_Attacking acs_attacking = gameObject.AddComponent<ACS_Attacking>();
+
 
 
         // Sense assigning
@@ -66,13 +75,17 @@ public class EntityMind_Boss : EntityMind
         #region Task creation
 
         BehaviorTask Task_followTarget = new BehaviorTask();
-        Task_followTarget.Initialize(Priority.Advanced,
+        Task_followTarget.Initialize("Task_followTarget", Priority.Advanced,
             // Logic
             delegate {
                 Debug.Log("Task_followTarget");
-                SetFlag(0);
+
                 acs_movement.Follow(Key_target);
-                StartCoroutine(FollowRoutine());
+                if (!_followFlag)
+                {
+                    SetFlag(0);
+                    StartCoroutine(FollowRoutine());
+                }
             },
             // Animation
             delegate { _animatorController.PlayWalkAnimation(false);
@@ -81,16 +94,16 @@ public class EntityMind_Boss : EntityMind
 
 
         BehaviorTask Task_seekAroundLastPosition = new BehaviorTask();
-        Task_seekAroundLastPosition.Initialize(Priority.Basic,
+        Task_seekAroundLastPosition.Initialize("Task_seekAroundLastPosition",Priority.Basic,
             // Logic
             delegate {
                 Debug.Log("Task_seekAroundLastPosition");
                        acs_movement.StopFollow();
-
                        acs_movement.Seek(Key_targetLastPosition);
-                       SetFlag(1);
-                       StartCoroutine(SeekRoutine());
-            },
+                       if (!_seekFlag) {
+                            SetFlag(1);
+                            StartCoroutine(SeekRoutine());}
+                       },
             // Animation
             delegate {
                 _animatorController.PlayRunAnimation(false);
@@ -99,7 +112,7 @@ public class EntityMind_Boss : EntityMind
         );
 
         BehaviorTask Task_startForgetTarget = new BehaviorTask();
-        Task_startForgetTarget.Initialize(Priority.Basic,
+        Task_startForgetTarget.Initialize("Task_startForgetTarget",Priority.Basic,
             // Memo
             delegate { _memory.WriteMemory(
                                 delegate {
@@ -111,13 +124,16 @@ public class EntityMind_Boss : EntityMind
         );
 
         BehaviorTaskSequence TaskSeq_SeekAndForget = new BehaviorTaskSequence();
-        TaskSeq_SeekAndForget.Initialize(new List<IBehaviorNode>() { Task_seekAroundLastPosition, Task_startForgetTarget });
+        TaskSeq_SeekAndForget.Initialize("TaskSeq_SeekAndForget",new List<IBehaviorNode>() { Task_seekAroundLastPosition, Task_startForgetTarget });
 
-        BehaviorTask Task_attackTarget = new BehaviorTask();
-        Task_attackTarget.Initialize(Priority.High,
+        BehaviorTask_DelayedFinishExec Task_attackTarget = new BehaviorTask_DelayedFinishExec();
+        Task_attackTarget.Initialize("Task_attackTarget",Priority.High, (callback) => acs_attacking.StrikeFinished += callback,
             // Logic
-            Attack
+            delegate {
+                StartCoroutine(acs_attacking.Attack());
+            }
         );
+
 
         #endregion
 
@@ -139,6 +155,7 @@ public class EntityMind_Boss : EntityMind
     #region SenseHandling
     private void SightHandle(GameObject target)
     {
+        
         Key_target = target;
         MindControlTrigger_Sight.Invoke();
     }
@@ -146,7 +163,6 @@ public class EntityMind_Boss : EntityMind
     {
         Key_targetLastPosition = Key_target.transform.position;
         Key_target = null;
-        Debug.Log("MindControlTrigger_SightExit.Invoke");
         MindControlTrigger_SightExit.Invoke();
     }
 
@@ -159,55 +175,48 @@ public class EntityMind_Boss : EntityMind
     #endregion
 
     #region Continuous actions routine
-
-    IEnumerator OnAttackRangeReached() 
-    {
-        yield return null; 
-    }
-
+    
     IEnumerator FollowRoutine()
     {
-        yield return null;
-        //while (_followFlag)
-        //{
-        //    yield return null;
-        //}
+        LOGGER_PARAM___FOLLOW_ROUTINE_COUNT += 1;
+        while (_followFlag)
+        {
+            if (DistanceLessThanRadius(Key_distanceOfAttack) && Time.time - _lastStrikeTime >= Key_AttackCooldown)
+            {
+                _lastStrikeTime = Time.time;
+                _followFlag = false;
+                break;
+            }
+
+            yield return null;
+        }
+        MindControlTrigger_AttackTriggered.Invoke();
+        LOGGER_PARAM___FOLLOW_ROUTINE_COUNT -= 1;
     }
 
     IEnumerator SeekRoutine() 
     {
+        LOGGER_PARAM___SEEK_ROUTINE_COUNT += 1;
         while (_seekFlag)
         {
-            if (Vector3.Distance(transform.position, _navMeshAgent.destination) < Key_seekAcceptanceRange)
-            { 
+            if (DistanceLessThanRadius(Key_seekAcceptanceRange))
+            {
                 MindControlTrigger_NewSeekDestination.Invoke();
-                Debug.DrawRay(_navMeshAgent.destination, Vector3.up*100, Color.yellow, 5);
-                Debug.Log("MindControlTrigger_NewSeekDestination.Invoke");
             }
+
             yield return null;
         }
+        LOGGER_PARAM___SEEK_ROUTINE_COUNT -= 1;
     }
-    #endregion
-
-    //private void TargetDistanceAnalysys()
-    //{
-
-    //}
-
-    #region Attacking
-
-    public void Attack()
-    {
-        //StartCoroutine(BlockMovement());
-        StopMovement();
-        _animatorController.PlayAttackAnimationByTrigger();
-    }
-
     #endregion
 
 
 
     #region Utils
+    private bool DistanceLessThanRadius(float acceptanceRadius)
+    {
+        return Vector3.Distance(transform.position, _navMeshAgent.destination) < acceptanceRadius;
+    }
 
     private void StopMovement()
     {
@@ -217,6 +226,10 @@ public class EntityMind_Boss : EntityMind
         _animatorController.PlayWalkAnimation(false);
     }
 
+    /// <summary>
+    /// 0: _followFlag <br/>
+    /// 1: _seekFlag <br/>
+    /// </summary>
     private void SetFlag(int flagIdx)
     {
         List<string> flags = new List<string>() { "_followFlag", "_seekFlag" };

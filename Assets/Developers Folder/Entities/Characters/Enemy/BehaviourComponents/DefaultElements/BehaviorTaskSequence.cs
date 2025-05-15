@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class BehaviorTaskSequence : IBehaviorNode
 {
-
+    public string Name;
     List<IBehaviorNode> _taskExecutionQueue;
     List<IBehaviorNode> _taskExecutionQueueCopy = new List<IBehaviorNode>();
     IBehaviorNode _currentTask;
@@ -14,12 +14,14 @@ public class BehaviorTaskSequence : IBehaviorNode
     /// <summary>
     /// Initialize tasks sequence
     /// </summary>
-    public void Initialize(List<IBehaviorNode> taskExecutionQueue)
+    public void Initialize(string name, List<IBehaviorNode> taskExecutionQueue)
     {
+        Name = name;
         _taskExecutionQueue = taskExecutionQueue;
     }
+    
 
-
+    public string GetName() {return Name;}
     public void Execute()
     {
         _taskExecutionQueueCopy.AddRange(_taskExecutionQueue);

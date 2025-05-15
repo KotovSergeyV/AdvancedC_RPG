@@ -33,16 +33,16 @@ public class DebugSense_Sight : MonoBehaviour
         Action[] cb = new Action[] { Lost2 };
 
         BehaviorTask a1 = new BehaviorTask();
-        a1.Initialize(Priority.High, a);
+        a1.Initialize("a", Priority.High, a);
         BehaviorTask b1 = new BehaviorTask();
-        b1.Initialize(Priority.Low, b);
+        b1.Initialize("a",Priority.Low, b);
 
         BehaviorTask c1 = new BehaviorTask();
-        c1.Initialize(Priority.Basic, ca);
+        c1.Initialize("a",Priority.Basic, ca);
         BehaviorTask_Delayed c2 = new BehaviorTask_Delayed();
-        c2.Initialize(Priority.Basic, 3, cb);
+        c2.Initialize("a",Priority.Basic, 3, cb);
         BehaviorTaskSequence c_seq = new BehaviorTaskSequence();
-        c_seq.Initialize(new List<IBehaviorNode>() { c1, c2 });
+        c_seq.Initialize("a",new List<IBehaviorNode>() { c1, c2 });
 
         //  (callback) => trigger event += callback. Only like this. No other way.
         BehaviorInstructions.Add(new Instruction((callback) => playerEnterInRange += callback, a1));

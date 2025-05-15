@@ -5,6 +5,8 @@ using UnityEngine;
 public class BehaviorTask : IBehaviorNode
 {
 
+    ///  <summary>Task name</summary>
+    public string Name;
     ///  <summary>Task priority</summary>
     protected Priority _priority;
     ///  <summary>Methods embeded in task</summary>
@@ -14,8 +16,9 @@ public class BehaviorTask : IBehaviorNode
 
 
     ///  <summary>Initialize task</summary>
-    public void Initialize(Priority priority, params Action[] payloadMethods)
+    public void Initialize(string name, Priority priority, params Action[] payloadMethods)
     {
+        Name = name;
         _priority = priority;
 
         foreach (var method in payloadMethods)
@@ -24,12 +27,14 @@ public class BehaviorTask : IBehaviorNode
         }
 
     }
-
+    public string GetName() {return Name;}
+    
     public virtual void Execute()
     {
         StartPayload();
         ExecutionFinished?.Invoke();
     }
+
 
     /// <summary>Invoke payload methods</summary>
     protected virtual void StartPayload() { Payload?.Invoke(); }

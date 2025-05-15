@@ -57,4 +57,6 @@ public class BehaviorSense_Sight : BehaviorSense
             }
         }
     }
+
+    public bool InViewField() { return _canSee; }
 }

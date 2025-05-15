@@ -22,8 +22,6 @@ public class ACS_Movement : MonoBehaviour
     NavMeshAgent _navMeshAgent;
 
 
-
-
     public void Initialize(float walkSpeed, float runSpeed, float seekDistMutiplier, 
         float minSeekDistPercent, NavMeshAgent navAgent)
     {
