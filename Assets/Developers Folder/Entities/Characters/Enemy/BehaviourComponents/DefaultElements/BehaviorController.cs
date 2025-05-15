@@ -76,8 +76,9 @@ public class BehaviorController
 
     void CaptureWaitingTask()
     {
-        ExecTaskCommand(_waitingTask);
+        IBehaviorNode task = _waitingTask;
         _waitingTask = _defaultTask;
+        ExecTaskCommand(task);
     }
 
     void ClearTask() { _currentTask = _defaultTask; }

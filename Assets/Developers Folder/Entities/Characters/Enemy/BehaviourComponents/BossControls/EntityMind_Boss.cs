@@ -16,6 +16,10 @@ public class EntityMind_Boss : EntityMind
     // Outer Components
     IAnimatorController _animatorController;
     NavMeshAgent _navMeshAgent;
+    
+    // Outer function links
+    
+    public  Action OuterTrigger_RestartSightFieldFlag;
 
     // MEMTimers (in seconds)
     float MEMTimer_SeekTargetForget = 60f;
@@ -69,6 +73,9 @@ public class EntityMind_Boss : EntityMind
         sight.ViewFieldEntered += SightHandle;
         sight.ViewFieldExited += SightExitHandle;
         damage.DamagedTriggered += DamagedHandle;
+        
+        OuterTrigger_RestartSightFieldFlag += sight.RefreshSence;
+        acs_attacking.StrikeFinished += delegate { OuterTrigger_RestartSightFieldFlag.Invoke(); };
 
 
         // Tasking
@@ -79,7 +86,7 @@ public class EntityMind_Boss : EntityMind
             // Logic
             delegate {
                 Debug.Log("Task_followTarget");
-
+                _memory.WriteMemory(delegate { }, 0f);
                 acs_movement.Follow(Key_target);
                 if (!_followFlag)
                 {
