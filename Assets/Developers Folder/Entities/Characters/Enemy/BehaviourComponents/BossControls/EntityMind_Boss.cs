@@ -35,7 +35,7 @@ public class EntityMind_Boss : EntityMind
     GameObject Key_target;
     Vector3 Key_targetLastPosition;
 
-    float Key_distanceOfAttack = 2.5f;
+    float Key_distanceOfAttack = 3f;
     float Key_seekAcceptanceRange = 2f;
     float Key_AttackCooldown = 5f;
 
@@ -64,7 +64,7 @@ public class EntityMind_Boss : EntityMind
     {
         // Action Components creation
         ACS_Movement acs_movement = gameObject.AddComponent<ACS_Movement>();
-        acs_movement.Initialize(2.5f, 2.5f, 10, .5f, _navMeshAgent);
+        acs_movement.Initialize(2f, 5f, 10, .5f, _navMeshAgent);
         ACS_Attacking acs_attacking = gameObject.AddComponent<ACS_Attacking>();
 
 
@@ -137,6 +137,7 @@ public class EntityMind_Boss : EntityMind
         Task_attackTarget.Initialize("Task_attackTarget",Priority.High, (callback) => acs_attacking.StrikeFinished += callback,
             // Logic
             delegate {
+                _navMeshAgent.speed = 0;
                 StartCoroutine(acs_attacking.Attack());
             }
         );
