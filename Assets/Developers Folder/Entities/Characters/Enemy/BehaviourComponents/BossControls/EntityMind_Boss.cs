@@ -25,6 +25,7 @@ public class EntityMind_Boss : EntityMind
     float MEMTimer_SeekTargetForget = 60f;
 
     // Flags
+    bool _isPeaceful;
     bool _seekFlag;
     bool _followFlag;
 
@@ -62,6 +63,10 @@ public class EntityMind_Boss : EntityMind
 
     public void Initialize(BehaviorSense_Sight sight, BehaviorSense_Damaged damage)
     {
+        // Temp (I'll make this go through boot later)
+        _isPeaceful = FindAnyObjectByType<Peacemode>().PeacefulMode;
+        // Temp
+        
         // Action Components creation
         ACS_Movement acs_movement = gameObject.AddComponent<ACS_Movement>();
         acs_movement.Initialize(2f, 5f, 10, .5f, _navMeshAgent);
@@ -163,19 +168,25 @@ public class EntityMind_Boss : EntityMind
     #region SenseHandling
     private void SightHandle(GameObject target)
     {
-        
-        Key_target = target;
-        MindControlTrigger_Sight.Invoke();
+        if (!_isPeaceful)
+        {
+            Key_target = target;
+            MindControlTrigger_Sight.Invoke();
+        }
     }
     private void SightExitHandle()
     {
-        Key_targetLastPosition = Key_target.transform.position;
-        Key_target = null;
-        MindControlTrigger_SightExit.Invoke();
+        if (!_isPeaceful)
+        {
+            Key_targetLastPosition = Key_target.transform.position;
+            Key_target = null;
+            MindControlTrigger_SightExit.Invoke();
+        }
     }
 
     private void DamagedHandle(GameObject target)
     {
+        _isPeaceful = false;
         Key_target = target;
         MindControlTrigger_Damaged.Invoke();
     }
