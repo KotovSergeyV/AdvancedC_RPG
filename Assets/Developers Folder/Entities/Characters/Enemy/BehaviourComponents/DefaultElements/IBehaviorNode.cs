@@ -5,6 +5,9 @@ using UnityEngine;
 
 public interface IBehaviorNode
 {
+    /// <summary>Get name of task/seq</summary>
+    public string GetName();
+    
     /// <summary>On Task Finished Event to controller/sequence</summary>
     public Action ExecutionFinished { get; set; }
 

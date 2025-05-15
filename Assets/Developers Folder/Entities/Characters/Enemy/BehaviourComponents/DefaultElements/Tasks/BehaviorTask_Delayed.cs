@@ -6,9 +6,9 @@ using UnityEngine;
 public class BehaviorTask_Delayed : BehaviorTask
 {
     public float TaskDelay { get; private set; }
-    public void Initialize(Priority priority, float taskDelay, params Action[] payloadMethods)
+    public void Initialize(string name, Priority priority, float taskDelay, params Action[] payloadMethods)
     {
-        base.Initialize(priority, payloadMethods);
+        base.Initialize(name, priority, payloadMethods);
         TaskDelay = taskDelay;
     }
 

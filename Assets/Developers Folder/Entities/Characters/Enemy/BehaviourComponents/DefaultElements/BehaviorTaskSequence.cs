@@ -5,22 +5,27 @@ using UnityEngine;
 
 public class BehaviorTaskSequence : IBehaviorNode
 {
-
+    public string Name;
     List<IBehaviorNode> _taskExecutionQueue;
+    List<IBehaviorNode> _taskExecutionQueueCopy = new List<IBehaviorNode>();
     IBehaviorNode _currentTask;
     public Action ExecutionFinished { get; set; }
 
     /// <summary>
     /// Initialize tasks sequence
     /// </summary>
-    public void Initialize(List<IBehaviorNode> taskExecutionQueue)
+    public void Initialize(string name, List<IBehaviorNode> taskExecutionQueue)
     {
+        Name = name;
         _taskExecutionQueue = taskExecutionQueue;
     }
+    
 
-
+    public string GetName() {return Name;}
     public void Execute()
     {
+        _taskExecutionQueueCopy.AddRange(_taskExecutionQueue);
+
         Next();
     }
 
@@ -35,10 +40,10 @@ public class BehaviorTaskSequence : IBehaviorNode
     /// </summary>
     async void Next()
     {
-        if (_taskExecutionQueue.Count == 0) { ExecutionFinished?.Invoke(); return; }
+        if (_taskExecutionQueueCopy.Count == 0) { ExecutionFinished?.Invoke(); return; }
 
-        _currentTask = _taskExecutionQueue[0];
-        _taskExecutionQueue.RemoveAt(0);
+        _currentTask = _taskExecutionQueueCopy[0];
+        _taskExecutionQueueCopy.RemoveAt(0);
 
         if (_currentTask is BehaviorTask_Delayed) { await Task.Delay((int)((BehaviorTask_Delayed)_currentTask).TaskDelay * 1000); }
 
