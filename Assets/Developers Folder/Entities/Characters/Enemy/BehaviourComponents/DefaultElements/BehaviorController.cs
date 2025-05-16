@@ -61,7 +61,7 @@ public class BehaviorController
         LOGGER_PARAM___EXEC_COUNTER += 1;
         if (newTask == null) { newTask = _defaultTask; }
 
-        if (_currentTask is BehaviorTaskSequence) { ((BehaviorTaskSequence)_currentTask).InteruptPayload(); }
+        //if (_currentTask is BehaviorTaskSequence) { ((BehaviorTaskSequence)_currentTask).InteruptPayload(); }
         //else if (_currentTask is BehaviorTask_Async) { ((BehaviorTask_Async)_currentTask).InteruptPayload(); }
         
         _currentTask = newTask;

@@ -14,6 +14,8 @@ public abstract class EnemyAIBase : Movable
     [SerializeField] protected AudioClip[] _takeDamageClips;
     [SerializeField] protected AudioClip[] _spoteClips;
 
+    protected bool _isDead;
+
     protected bool _isPeaceful = true;
 
     protected override void Awake()
@@ -87,10 +89,9 @@ public abstract class EnemyAIBase : Movable
             }
         }
 
-        bool _dead;
         if (TryGetComponent<EntityCoreSystem>(out core)) {
-            _dead = core.GetHealthSystem().GetIsDead();
-            if (_dead)
+            _isDead = core.GetHealthSystem().GetIsDead();
+            if (_isDead)
             {
                 _currentState = AI_States.Dead;
                 //AnimatorController.PlayDeathAnimation(_dead);
@@ -114,6 +115,8 @@ public abstract class EnemyAIBase : Movable
 
     protected virtual void Dead() 
     {
+        _agent.speed = 0;
+        _target = null;
         Rigidbody _rb = GetComponent<Rigidbody>();
         Destroy(_rb);
         Collider _col = GetComponent<Collider>();
@@ -123,7 +126,7 @@ public abstract class EnemyAIBase : Movable
 
     protected virtual void RunBack()
     {
-        if (_isPeaceful)
+        if (_isPeaceful && !_isDead)
         {
             if (PlayerTarget == null) return;
 

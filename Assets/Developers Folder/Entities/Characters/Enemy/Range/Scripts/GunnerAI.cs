@@ -57,7 +57,7 @@ public class GunnerAI : EnemyAIBase
                 break;
 
             default:
-                if ((Time.time - _lastAttackTime >= _attackCooldown) && _isPeaceful)
+                if (Time.time - _lastAttackTime >= _attackCooldown)
                 {
                     _lastAttackTime = Time.time;
                     AnimatorController?.PlayAttackAnimationByTrigger();

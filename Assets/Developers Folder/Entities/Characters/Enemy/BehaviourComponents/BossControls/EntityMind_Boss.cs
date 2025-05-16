@@ -228,8 +228,6 @@ public class EntityMind_Boss : EntityMind
     }
     #endregion
 
-
-
     #region Utils
     private bool DistanceLessThanRadius(float acceptanceRadius)
     {

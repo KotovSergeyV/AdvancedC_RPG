@@ -285,7 +285,7 @@ public class GlobalBootstrapper : MonoBehaviour
         ManaBar manaBar = entity?.GetComponentInChildren<ManaBar>();
 
         entityCoreSystem.Initialize(new HealthSystem(_managerUI, 100, healthBar), new DamageCalculationSystem(), new ManaSystem(_managerUI, 100, 0.5f, manaBar),
-            new StatSystem(1, 1, 1, 1, 1), new EntityStatesSystem());
+            new StatSystem(1, 20, 1, 1, 1), new EntityStatesSystem());
         try {
             IHealthSystem healthSystem = (entityCoreSystem.GetHealthSystem());
             ((HealthSystem)healthSystem).OnDamaged += entity.GetComponent<AnimatorController>().PlayHitAnimation;

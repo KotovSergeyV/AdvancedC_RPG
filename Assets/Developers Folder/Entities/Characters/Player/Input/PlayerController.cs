@@ -35,6 +35,7 @@ public class PlayerController : Movable, IPlayerControlled
         _inputs = new InputSystem_Actions();
         base.Awake();
         _pursuit = false;
+        _attackRange = 1.5f;
     }
     public void Initialize(MagicCaster magicCaster, ManagerSFX managerSFX)
     {
