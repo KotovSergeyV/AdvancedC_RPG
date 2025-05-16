@@ -27,13 +27,16 @@ public class PlayerController : Movable, IPlayerControlled
 
     private AsyncOperationHandle<AudioClip> _clipHandle;
 
+    private bool _pursuit;
+
 
     protected override void Awake()
     {
         _inputs = new InputSystem_Actions();
         base.Awake();
+        _pursuit = false;
     }
-    public void Initialize(MagicCaster magicCaster, ManagerSFX managerSFX) 
+    public void Initialize(MagicCaster magicCaster, ManagerSFX managerSFX)
     {
         _managerSFX = managerSFX;
 
@@ -73,7 +76,7 @@ public class PlayerController : Movable, IPlayerControlled
         _inputs.Player.Sprint.performed += OnRun;
         _inputs.Player.Sprint.canceled += OnRun;
         _inputs.Player.Attack.performed += OnAttack;
-       // _inputs.Player.Attack.canceled += OnAttack;
+        // _inputs.Player.Attack.canceled += OnAttack;
         _inputs.Player.Cast.started += OnCastMagic;
         _inputs.Enable();
     }
@@ -117,6 +120,11 @@ public class PlayerController : Movable, IPlayerControlled
         else
         {
             _agent.isStopped = false;
+        }
+
+        if (_pursuit && _target != null)
+        {
+            _agent.SetDestination(_target.transform.position);
         }
 
         _dead = GetComponent<EntityCoreSystem>().GetHealthSystem().GetIsDead();
@@ -177,24 +185,27 @@ public class PlayerController : Movable, IPlayerControlled
         {
             Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
             Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity);
-            if (hit.collider == null) {
-                
+            if (hit.collider == null)
+            {
+
                 _target = null;
                 _characterController.enabled = true;
-                _agent.isStopped = true; 
+                _agent.isStopped = true;
             }
 
-            else if (hit.transform.gameObject.layer ==  6)
-                {
-                    _target = hit.collider.transform;
-                    base.GoToTarget(_target, _runSpeed);
-                    _characterController.enabled = false;
-                    _agent.isStopped = false;
+            else if (hit.transform.gameObject.layer == 6)
+            {
+                _target = hit.collider.transform;
+                base.GoToTarget(_target, _runSpeed);
+                _characterController.enabled = false;
+                _agent.isStopped = false;
 
-                    transform.LookAt(_target);
-                    _managerSFX.PlaySFX(_spoteClips[Random.Range(0, _spoteClips.Count)], transform.position, ManagerSFX.MixerGroupType.Voice, null, false, 1, 0);
+                _pursuit = true;
+
+                transform.LookAt(_target);
+                _managerSFX.PlaySFX(_spoteClips[Random.Range(0, _spoteClips.Count)], transform.position, ManagerSFX.MixerGroupType.Voice, null, false, 1, 0);
             }
-            
+
 
         }
     }
