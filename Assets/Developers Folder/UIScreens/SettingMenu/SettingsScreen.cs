@@ -7,6 +7,9 @@ using UnityEngine.Audio;
 public class SettingsScreen : MonoBehaviour
 {
     [Header("UI Elements")]
+
+    [SerializeField] private Toggle peaceModeToggle;
+
     [SerializeField] private TMP_Dropdown resolutionDropdown;
     [SerializeField] private Toggle fullscreenToggle;
     [SerializeField] private TMP_Dropdown qualityDropdown;
@@ -33,6 +36,11 @@ public class SettingsScreen : MonoBehaviour
     {
         InitializeResolutionOptions();
         InitializeQualityOptions();
+
+
+        Peacemode isPeaceful = FindAnyObjectByType<Peacemode>();
+        peaceModeToggle.isOn = isPeaceful.PeacefulMode;
+        peaceModeToggle.onValueChanged.AddListener(delegate { isPeaceful.PeacefulMode = !isPeaceful.PeacefulMode;  });
 
         fullscreenToggle.isOn = Screen.fullScreen;
         fullscreenToggle.onValueChanged.AddListener(SetFullScreen);
