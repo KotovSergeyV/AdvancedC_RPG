@@ -33,26 +33,28 @@ public class ACS_Movement : MonoBehaviour
 
     }
 
-    public void Follow(GameObject Key_targetPosition)
+    public void Follow(GameObject Key_target)
     {
         _navMeshAgent.speed = _runSpeed;
-        transform.LookAt(Key_targetPosition.transform.position);
+        transform.LookAt(Key_target.transform.position);
         _chaseFlag = true;
-        StartCoroutine( Chasing(Key_targetPosition));
+        StartCoroutine( Chasing(Key_target));
     }
     public void StopFollow() { 
         _chaseFlag = false;
         Debug.Log("_chaseFlag is sety to " + _chaseFlag);
     }
 
-    IEnumerator Chasing(GameObject Key_targetPosition)
+    IEnumerator Chasing(GameObject Key_target)
     {
+        _navMeshAgent.speed = _runSpeed;
         if (!_isChasing)
         {
             _isChasing = true;
             while (_chaseFlag)
             {
-                _navMeshAgent.SetDestination(Key_targetPosition.transform.position);
+                transform.LookAt(Key_target.transform.position);
+                _navMeshAgent.SetDestination(Key_target.transform.position);
                 yield return null;
             }
             _isChasing = false;

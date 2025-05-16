@@ -29,6 +29,7 @@ public class GlobalBootstrapper : MonoBehaviour
     [SerializeField] private GameObject _gamePausePrefab;
     [SerializeField] private GameObject _settingsScreen;
 
+    EndScreen _endscreen;
 
     [Space(10)]
     [SerializeField] private ManagerSFX _managerSFX;
@@ -63,7 +64,7 @@ public class GlobalBootstrapper : MonoBehaviour
     {
 // Temp - Setting Application - Temp
         Peacemode mode = gameObject.AddComponent<Peacemode>();
-        mode.PeacefulMode = true;
+        mode.PeacefulMode = false;
 // Temp
 
 // Manager Instantiation
@@ -78,10 +79,10 @@ public class GlobalBootstrapper : MonoBehaviour
         _saveLoadManager = new SaveLoadManager(new RepositoryJson());
 
 // EndScreen Instantiate
-        EndScreen endscreen = new EndScreen();
-        endscreen.Initialize(_endscreenPrefab, Reload);
-        ACT_endScr_Hide += endscreen.Hide;
-        ACT_endScr_Show += endscreen.Show;
+        _endscreen = new EndScreen();
+        _endscreen.Initialize(_endscreenPrefab, Reload);
+        ACT_endScr_Hide += _endscreen.Hide;
+        ACT_endScr_Show += _endscreen.Show;
         ACT_endScr_Hide.Invoke();
 
 // SettingsScreen Instantiate 
@@ -132,7 +133,7 @@ public class GlobalBootstrapper : MonoBehaviour
                 _isPaused = false;
                 CloseInGameMenu();
             }
-            else
+            else if (!_endscreen.GetShow())
             {
                 _isPaused = true;
                 ShowInGameMenu();

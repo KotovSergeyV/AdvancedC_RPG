@@ -69,7 +69,7 @@ public class EntityMind_Boss : EntityMind
         
         // Action Components creation
         ACS_Movement acs_movement = gameObject.AddComponent<ACS_Movement>();
-        acs_movement.Initialize(2f, 5f, 10, .5f, _navMeshAgent);
+        acs_movement.Initialize(2f, 4f, 10, .5f, _navMeshAgent);
         ACS_Attacking acs_attacking = gameObject.AddComponent<ACS_Attacking>();
 
 
@@ -142,8 +142,7 @@ public class EntityMind_Boss : EntityMind
         Task_attackTarget.Initialize("Task_attackTarget",Priority.High, (callback) => acs_attacking.StrikeFinished += callback,
             // Logic
             delegate {
-                _navMeshAgent.speed = 0;
-                StartCoroutine(acs_attacking.Attack());
+                StartCoroutine(acs_attacking.Attack(Key_target));
             }
         );
 

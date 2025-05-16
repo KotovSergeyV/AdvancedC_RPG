@@ -12,9 +12,16 @@ public class EndScreen
         Button[] btns = _endScreen.GetComponentsInChildren<Button>();
         btns[0].onClick.AddListener(ReloadGameAction);
     }
-    public void Hide() { _endScreen.SetActive(false); }
+    public bool GetShow() { return _endScreen.activeSelf; }
+    public void Hide() {
+
+        Time.timeScale = 1; 
+        _endScreen.SetActive(false); 
+    }
     public void Show() 
-    { 
+    {
+
+        Time.timeScale = 0;
         _endScreen.SetActive(true);
     }
 }
