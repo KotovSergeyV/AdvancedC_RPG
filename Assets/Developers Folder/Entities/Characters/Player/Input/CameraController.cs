@@ -81,7 +81,7 @@ public class CameraController : MonoBehaviour
         Ray ray = _mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
-            if (hit.collider.CompareTag("Enemy"))
+            if (hit.collider.CompareTag("Enemy") || hit.collider.CompareTag("Boss"))
             {
                 Cursor.SetCursor(_highlightCursor, _cursorHotspot, CursorMode.Auto);
             }
