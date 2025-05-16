@@ -60,7 +60,6 @@ public class WarriorAI : EnemyAIBase
             default:
                 if (Time.time - _lastAttackTime >= _attackCooldown)
                 {
-                    Debug.Log("Attacking");
                     _lastAttackTime = Time.time;
                     AnimatorController?.PlayAttackAnimationByTrigger();
                     AnimatorController?.PlayWalkAnimation(false);

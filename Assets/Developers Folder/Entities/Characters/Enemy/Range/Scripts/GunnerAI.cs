@@ -60,7 +60,6 @@ public class GunnerAI : EnemyAIBase
             default:
                 if ((Time.time - _lastAttackTime >= _attackCooldown) && isFriendly)
                 {
-                    Debug.Log("Attacking");
                     _lastAttackTime = Time.time;
                     AnimatorController?.PlayAttackAnimationByTrigger();
                     AnimatorController?.PlayWalkAnimation(false);

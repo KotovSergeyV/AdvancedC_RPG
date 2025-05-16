@@ -184,7 +184,7 @@ public class PlayerController : Movable, IPlayerControlled
                 _agent.isStopped = true; 
             }
 
-            else if (hit.collider.CompareTag("Enemy"))
+            else if (hit.transform.gameObject.layer ==  6)
                 {
                     _target = hit.collider.transform;
                     base.GoToTarget(_target, _runSpeed);

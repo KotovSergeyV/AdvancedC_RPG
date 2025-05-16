@@ -16,7 +16,7 @@ public class DamageMagic : MagicInfluenceBase
         if (_target != null)
         {
             IDamageCalculationSystem damageDealler = caster.GetComponent<EntityCoreSystem>().GetDamageCalculationSystem();
-            damageDealler?.Damage(_target, _damageData);
+            damageDealler?.Damage(caster, _target, _damageData);
             Debug.Log("Damage dealt to target: " + _target.name);
         }
     }

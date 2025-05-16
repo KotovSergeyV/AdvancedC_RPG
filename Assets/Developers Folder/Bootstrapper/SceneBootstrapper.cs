@@ -2,13 +2,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using static UnityEditor.Experimental.GraphView.GraphView;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class SceneBootstrapper 
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void Initialize(ManagerSFX managerSFX, ManagerUI managerUI, List<EntitySaveData> data =null)
     {
+
         InitializeEnemies(managerSFX, managerUI, data);
+        InitializeBoss(managerSFX, managerUI);
+    }
+
+    private void InitializeBoss(ManagerSFX managerSFX, ManagerUI managerUI)
+    {
+        GameObject boss = GameObject.FindGameObjectWithTag("Boss");
+        EntityCoreCreation(boss, managerUI, 500, 500, 1, 3, 15, 3, 3, 3);
     }
 
     private void InitializeEnemies(ManagerSFX managerSFX, ManagerUI managerUI, List<EntitySaveData> data)
@@ -18,7 +27,6 @@ public class SceneBootstrapper
         {
             GunnerAI gunner = enemy.GetComponent<GunnerAI>();
             WarriorAI warrior = enemy.GetComponent<WarriorAI>();
-            CivilianAI civilian = enemy.GetComponent<CivilianAI>();
             if (gunner)
             {
                 gunner.Initialize(managerSFX);
@@ -29,12 +37,6 @@ public class SceneBootstrapper
                 warrior.Initialize(managerSFX);
                 EntityAgregator.AddEntity(enemy, Enum_EntityType.Melee);
             }
-            else if (civilian)
-            {
-                civilian.Initialize(managerSFX);
-                EntityAgregator.AddEntity(enemy, Enum_EntityType.Civilian);
-            }
-
             if (data != null) {
                 EntitySaveData entityData;
                 if (gunner) {
@@ -54,7 +56,30 @@ public class SceneBootstrapper
             else EntityCoreCreation(enemy, managerUI);
         } 
     }
+    
+    private EntityCoreSystem EntityCoreCreation(GameObject entity, ManagerUI managerUI, int maxHp, int maxMana, float 
+        regenTime, int agi, int atc, int luck, int def, int intl)
+    {
+        EntityCoreSystem entityCoreSystem = entity.AddComponent<EntityCoreSystem>();
 
+        HealthBar healthBar = entity?.GetComponentInChildren<HealthBar>();
+        ManaBar manaBar = entity?.GetComponentInChildren<ManaBar>();
+
+        entityCoreSystem.Initialize(new HealthSystem(managerUI, maxHp, healthBar), new DamageCalculationSystem(), new ManaSystem(managerUI, maxMana, regenTime, manaBar),
+            new StatSystem(agi, atc, luck, def, intl), new EntityStatesSystem());
+        try
+        {
+            IHealthSystem healthSystem = (entityCoreSystem.GetHealthSystem());
+            ((HealthSystem)healthSystem).OnDamaged += entity.GetComponent<AnimatorController>().PlayHitAnimation;
+            ((HealthSystem)healthSystem).OnDead += entity.GetComponent<AnimatorController>().PlayDeathAnimation;
+
+        }
+        catch { Debug.Log("Damage/Death anim assignation error!"); }
+
+
+        return entityCoreSystem;
+    }
+    
     private EntityCoreSystem EntityCoreCreation(GameObject entity, ManagerUI managerUI)
     {
         EntityCoreSystem entityCoreSystem = entity.AddComponent<EntityCoreSystem>();
@@ -62,7 +87,7 @@ public class SceneBootstrapper
         HealthBar healthBar = entity?.GetComponentInChildren<HealthBar>();
         ManaBar manaBar = entity?.GetComponentInChildren<ManaBar>();
 
-        entityCoreSystem.Initialize(new HealthSystem(managerUI, 50, healthBar), new DamageCalculationSystem(), new ManaSystem(managerUI, 100, 0.5f, manaBar),
+        entityCoreSystem.Initialize(new HealthSystem(managerUI, 100, healthBar), new DamageCalculationSystem(), new ManaSystem(managerUI, 100, 0.5f, manaBar),
             new StatSystem(1, 1, 1, 1, 1), new EntityStatesSystem());
         try
         {

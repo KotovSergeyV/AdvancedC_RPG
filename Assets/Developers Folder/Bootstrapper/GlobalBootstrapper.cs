@@ -61,6 +61,10 @@ public class GlobalBootstrapper : MonoBehaviour
 
     private void Awake()
     {
+// Temp - Setting Application - Temp
+        Peacemode mode = gameObject.AddComponent<Peacemode>();
+        mode.PeacefulMode = true;
+// Temp
 
 // Manager Instantiation
         gameObject.AddComponent<ManagerSFX>();
