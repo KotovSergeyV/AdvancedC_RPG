@@ -9,7 +9,6 @@ public class GunnerAI : EnemyAIBase
     {
         base.Start();
         _lastAttackTime = -_attackCooldown;
-        isFriendly = false;
     }
 
 
@@ -58,7 +57,7 @@ public class GunnerAI : EnemyAIBase
                 break;
 
             default:
-                if ((Time.time - _lastAttackTime >= _attackCooldown) && isFriendly)
+                if ((Time.time - _lastAttackTime >= _attackCooldown) && _isPeaceful)
                 {
                     _lastAttackTime = Time.time;
                     AnimatorController?.PlayAttackAnimationByTrigger();

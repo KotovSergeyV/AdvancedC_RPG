@@ -9,7 +9,6 @@ public class WarriorAI : EnemyAIBase
     {
         base.Start();
         _lastAttackTime = -_attackCooldown;
-        isFriendly = false;
     }
 
 

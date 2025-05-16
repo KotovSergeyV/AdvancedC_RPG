@@ -8,12 +8,13 @@ public abstract class EnemyAIBase : Movable
     protected int _currentWaypointIndex = 0;
     protected AI_States _currentState;
     protected ManagerSFX _managerSFX;
-    protected bool isFriendly;
     protected Transform PlayerTarget;
 
 
     [SerializeField] protected AudioClip[] _takeDamageClips;
     [SerializeField] protected AudioClip[] _spoteClips;
+
+    protected bool _isPeaceful = true;
 
     protected override void Awake()
     {
@@ -28,6 +29,7 @@ public abstract class EnemyAIBase : Movable
         Patrol();
         FindWaypoints();
         PlayerTarget = GameObject.FindGameObjectWithTag("Player").transform;
+        _isPeaceful = FindAnyObjectByType<Peacemode>().PeacefulMode;
     }
 
     /// <summary>
@@ -78,7 +80,7 @@ public abstract class EnemyAIBase : Movable
         if (TryGetComponent<EntityCoreSystem>(out EntityCoreSystem core)) {
             currentHp = core.GetHealthSystem().GetHp();
             maxHp = core.GetHealthSystem().GetMaxHp();
-            if ((currentHp <= maxHp / 2) && isFriendly)
+            if ((currentHp <= maxHp / 2) && _isPeaceful)
             {
                 _currentState = AI_States.Fallback;
                 //AnimatorController.PlayDeathAnimation(_dead);
@@ -102,7 +104,7 @@ public abstract class EnemyAIBase : Movable
         if (player == null) return;
 
         float distance = Vector3.Distance(transform.position, player.transform.position);
-        if (distance <= _spotRange)
+        if (distance <= _spotRange && !_isPeaceful)
         {
             _managerSFX.PlaySFX(_spoteClips?[Random.Range(0, _spoteClips.Length)], transform.position, ManagerSFX.MixerGroupType.Voice, null, true, 1, 0);
             _target = player.transform;
@@ -121,20 +123,23 @@ public abstract class EnemyAIBase : Movable
 
     protected virtual void RunBack()
     {
-        if (PlayerTarget == null) return;
+        if (_isPeaceful)
+        {
+            if (PlayerTarget == null) return;
 
-        Vector3 directionAwayFromPlayer = (transform.position - PlayerTarget.position).normalized;
+            Vector3 directionAwayFromPlayer = (transform.position - PlayerTarget.position).normalized;
 
-        Vector3 runToPosition = transform.position + directionAwayFromPlayer * 10f;
+            Vector3 runToPosition = transform.position + directionAwayFromPlayer * 10f;
 
-        GameObject tempTarget = new GameObject("TargetToAway");
-        tempTarget.transform.position = runToPosition;
+            GameObject tempTarget = new GameObject("TargetToAway");
+            tempTarget.transform.position = runToPosition;
 
-        base.GoToTarget(tempTarget.transform, _runSpeed);
+            base.GoToTarget(tempTarget.transform, _runSpeed);
 
-        Destroy(tempTarget, 1f);
+            Destroy(tempTarget, 0.1f);
 
-        Debug.Log("AAAAAAAAAA");
+            Debug.Log("AAAAAAAAAA");
+        }
     }
 
 
