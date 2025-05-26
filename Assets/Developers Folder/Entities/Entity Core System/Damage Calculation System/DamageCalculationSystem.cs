@@ -28,7 +28,7 @@ public class DamageCalculationSystem : IDamageCalculationSystem
 
         targetCore.GetHealthSystem().GetHp();
 
-        if (!damageData.isInneviåtable)
+        if (!damageData.isInnevitable)
         {
             int baseDodgeChance = 5;
             float dodgeChance = (float)(baseDodgeChance + (agility * 0.1) + (luck * 0.05));
@@ -56,9 +56,7 @@ public class DamageCalculationSystem : IDamageCalculationSystem
 
     private void TriggerDamaged(GameObject instigator, GameObject target)
     {
-        BehaviorSense_Damaged damagedComp;
-        if (target.TryGetComponent(out damagedComp))
-        { damagedComp.Trigger(instigator); }
+        
     }
 
     private int ApplyDamage(IHealthSystem target, int targetsDefence, float damage)

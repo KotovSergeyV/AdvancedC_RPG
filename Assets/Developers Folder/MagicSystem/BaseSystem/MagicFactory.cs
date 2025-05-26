@@ -1,7 +1,5 @@
 public static class MagicFactory
 {
-
-
     // Create a basic magic instance
     public static MagicBase CreateMagic(float castTime, int manaCost)
     {
@@ -25,4 +23,5 @@ public static class MagicFactory
     {
         return new HealingSpell(castTime, manaCost, healAmount, "HealSpellSound");
     }
+
 }

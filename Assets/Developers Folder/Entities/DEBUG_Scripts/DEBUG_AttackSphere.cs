@@ -16,7 +16,7 @@ public class DEBUG_AttackSphere : MonoBehaviour
         damageData.DamageAmount = 20;
         damageData.Responce = Enum_DamageResponses.Stun;
         damageData.DamageType = Enum_DamageTypes.Physic;
-        damageData.isInneviåtable = false;
+        damageData.isInnevitable = false;
         damageData.isBlockable = false;
 
         //gameObject.GetComponent<IDamageCalculationSystem>().Damage(gameobject, collider.gameObject, damageData);

@@ -263,7 +263,7 @@ public class GlobalBootstrapper : MonoBehaviour
 
         // EndScreen
         IHealthSystem healthSystem = (entityCoreSystem.GetHealthSystem());
-        ((HealthSystem)healthSystem).OnDead += ACT_endScr_Show.Invoke;
+        ((HealthSystem)healthSystem).OnDeath += ACT_endScr_Show.Invoke;
 
         // Magic System
         MagicCaster magicCaster = player.AddComponent<MagicCaster>();
@@ -289,7 +289,7 @@ public class GlobalBootstrapper : MonoBehaviour
         try {
             IHealthSystem healthSystem = (entityCoreSystem.GetHealthSystem());
             ((HealthSystem)healthSystem).OnDamaged += entity.GetComponent<AnimatorController>().PlayHitAnimation;
-            ((HealthSystem)healthSystem).OnDead += entity.GetComponent<AnimatorController>().PlayDeathAnimation;
+            ((HealthSystem)healthSystem).OnDeath += entity.GetComponent<AnimatorController>().PlayDeathAnimation;
 
             Debug.Log("Initial HP:" + healthSystem.GetHp());
         }
@@ -316,7 +316,7 @@ public class GlobalBootstrapper : MonoBehaviour
         {
             IHealthSystem healthSystem = (entityCoreSystem.GetHealthSystem());
             ((HealthSystem)healthSystem).OnDamaged += entity.GetComponent<AnimatorController>().PlayHitAnimation;
-            ((HealthSystem)healthSystem).OnDead += entity.GetComponent<AnimatorController>().PlayDeathAnimation;
+            ((HealthSystem)healthSystem).OnDeath += entity.GetComponent<AnimatorController>().PlayDeathAnimation;
 
             Debug.Log("Initial HP:" + healthSystem.GetHp());
         }

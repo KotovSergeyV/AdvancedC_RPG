@@ -18,7 +18,7 @@ public class DEBUG_MagicCasterUsage : MonoBehaviour
             DamageAmount = 10,
             DamageType = Enum_DamageTypes.Magic,
             isBlockable = false,
-            isInneviåtable = true,
+            isInnevitable = true,
             Responce = Enum_DamageResponses.SmallStun
         };
 

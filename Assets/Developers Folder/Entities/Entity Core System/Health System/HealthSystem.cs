@@ -8,8 +8,8 @@ public class HealthSystem : IHealthSystem
     private int _maxHealth;
     private bool _isDead;
 
-    public Action OnDamaged;
-    public Action OnDead;
+    public event Action OnDamaged;
+    public event Action OnDeath;
 
     private ManagerUI _managerUI;
 
@@ -35,6 +35,7 @@ public class HealthSystem : IHealthSystem
     public int GetHp()    {  return _health; }
     public int GetMaxHp()    {  return _maxHealth; }
     public bool GetIsDead()    { return _isDead; }
+
     public int Damage(int amount)   
     {
         if (_isDead) return 0;
@@ -50,7 +51,7 @@ public class HealthSystem : IHealthSystem
         if (_health == 0) 
         { 
             _isDead = true;
-            OnDead?.Invoke(); 
+            OnDeath?.Invoke(); 
         }   
         return _health;
     }

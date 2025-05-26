@@ -44,12 +44,10 @@ GameObject:
   - component: {fileID: 4908643121933325337}
   - component: {fileID: 8433103167198414179}
   - component: {fileID: 6318858829188398739}
-  - component: {fileID: 7896532053601644700}
-  - component: {fileID: 7435087430057326925}
-  - component: {fileID: 4611628746226352119}
+  - component: {fileID: 4792632861598323128}
   m_Layer: 6
   m_Name: DEBUG_Boss
-  m_TagString: Enemy
+  m_TagString: Boss
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -152,7 +150,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56a64fce6e87b654f817efa0ff70bf25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &7896532053601644700
+--- !u!114 &4792632861598323128
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -161,39 +159,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 376184773511942434}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d7d2b36a9f641b4584434b947a900d0, type: 3}
+  m_Script: {fileID: 11500000, guid: 1e8ac8ef90658ad4e99564f9a11b10d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &7435087430057326925
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 376184773511942434}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa0d3554f57de884eb16bea2f9ddcd14, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _targetList: []
---- !u!114 &4611628746226352119
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 376184773511942434}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6052cfc9aecfc1c4aadd83a5c61b4ec7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _canSee: 0
-  _distance: 15
-  _viewAngle: 110
-  _viewOffset: {x: 0, y: 3, z: 0}
-  _targetList: []
+  <MagicPrefab>k__BackingField: {fileID: 8546693527037084911, guid: 8064d18a452a249459aa76d0c870c3e9, type: 3}
 --- !u!1 &381670221893606487
 GameObject:
   m_ObjectHideFlags: 0
@@ -971,7 +940,7 @@ MonoBehaviour:
     DamageAmount: 3
     Responce: 0
     DamageType: 0
-    "isInnevi\u0435table": 0
+    isInnevitable: 0
     isBlockable: 0
 --- !u!65 &5010812578381765327
 BoxCollider:

@@ -5777,10 +5777,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: DEBUG_Boss
       objectReference: {fileID: 0}
-    - target: {fileID: 376184773511942434, guid: 87a33aec26e3b0741b881e06d9825839, type: 3}
-      propertyPath: m_TagString
-      value: Boss
-      objectReference: {fileID: 0}
     - target: {fileID: 2079830527717187158, guid: 87a33aec26e3b0741b881e06d9825839, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -5788,22 +5784,6 @@ PrefabInstance:
     - target: {fileID: 2079830527717187158, guid: 87a33aec26e3b0741b881e06d9825839, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4631069644445060088, guid: 87a33aec26e3b0741b881e06d9825839, type: 3}
-      propertyPath: rangeOfView
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 8657364679163251640, guid: 87a33aec26e3b0741b881e06d9825839, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8657364679163251640, guid: 87a33aec26e3b0741b881e06d9825839, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8657364679163251640, guid: 87a33aec26e3b0741b881e06d9825839, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1.1
       objectReference: {fileID: 0}
     - target: {fileID: 8657364679163251640, guid: 87a33aec26e3b0741b881e06d9825839, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5845,8 +5825,7 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 4631069644445060088, guid: 87a33aec26e3b0741b881e06d9825839, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -8685,7 +8664,7 @@ MonoBehaviour:
     DamageAmount: 3
     Responce: 0
     DamageType: 0
-    "isInnevi\u0435table": 0
+    isInnevitable: 0
     isBlockable: 0
 --- !u!1 &446511504
 GameObject:
@@ -23886,7 +23865,7 @@ MonoBehaviour:
     DamageAmount: 3
     Responce: 0
     DamageType: 0
-    "isInnevi\u0435table": 0
+    isInnevitable: 0
     isBlockable: 0
 --- !u!1 &1325273385
 GameObject:
@@ -35098,7 +35077,7 @@ MonoBehaviour:
     DamageAmount: 3
     Responce: 0
     DamageType: 0
-    "isInnevi\u0435table": 0
+    isInnevitable: 0
     isBlockable: 0
 --- !u!1 &2126146377
 GameObject:

@@ -71,7 +71,7 @@ public class SceneBootstrapper
         {
             IHealthSystem healthSystem = (entityCoreSystem.GetHealthSystem());
             ((HealthSystem)healthSystem).OnDamaged += entity.GetComponent<AnimatorController>().PlayHitAnimation;
-            ((HealthSystem)healthSystem).OnDead += entity.GetComponent<AnimatorController>().PlayDeathAnimation;
+            ((HealthSystem)healthSystem).OnDeath += entity.GetComponent<AnimatorController>().PlayDeathAnimation;
 
         }
         catch { Debug.Log("Damage/Death anim assignation error!"); }
@@ -93,7 +93,7 @@ public class SceneBootstrapper
         {
             IHealthSystem healthSystem = (entityCoreSystem.GetHealthSystem());
             ((HealthSystem)healthSystem).OnDamaged += entity.GetComponent<AnimatorController>().PlayHitAnimation;
-            ((HealthSystem)healthSystem).OnDead += entity.GetComponent<AnimatorController>().PlayDeathAnimation;
+            ((HealthSystem)healthSystem).OnDeath += entity.GetComponent<AnimatorController>().PlayDeathAnimation;
 
         }
         catch { Debug.Log("Damage/Death anim assignation error!"); }
@@ -119,7 +119,7 @@ public class SceneBootstrapper
         {
             IHealthSystem healthSystem = (entityCoreSystem.GetHealthSystem());
             ((HealthSystem)healthSystem).OnDamaged += entity.GetComponent<AnimatorController>().PlayHitAnimation;
-            ((HealthSystem)healthSystem).OnDead += entity.GetComponent<AnimatorController>().PlayDeathAnimation;
+            ((HealthSystem)healthSystem).OnDeath += entity.GetComponent<AnimatorController>().PlayDeathAnimation;
 
         }
         catch { Debug.Log("Damage/Death anim assignation error!"); }
