@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -40,6 +41,7 @@ public class GlobalBootstrapper : MonoBehaviour
 
     private SaveLoadManager _saveLoadManager;
 
+    private EnemySpawner currentEnemySpawner;
 
     // ��������� ������ ��� �������� ��� ������ "����������"
     List<EntitySaveData> __LoadDataContainer;
@@ -138,6 +140,11 @@ public class GlobalBootstrapper : MonoBehaviour
                 _isPaused = true;
                 ShowInGameMenu();
             }
+        }
+
+        if (currentEnemySpawner != null && !_isPaused)
+        {
+            currentEnemySpawner.Update(Time.deltaTime);
         }
 
     }
@@ -346,10 +353,14 @@ public class GlobalBootstrapper : MonoBehaviour
         if (scene.name == "CyberpunkScene")
         {
             SceneManager.sceneLoaded -= OnNewSceneLoaded;
-            
+
+            var spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint")
+                          .Select(go => go.transform).ToArray();
+
             SceneBootstrapper boot = new SceneBootstrapper();
-            boot.Initialize(_managerSFX, _managerUI);
+            boot.Initialize(_managerSFX, _managerUI, spawnPoints);
             _managerUI.Initialize();
+            currentEnemySpawner = boot.Spawner;
         }
     }
     private void OnSceneLoadedFromSave(UnityEngine.SceneManagement.Scene scene, LoadSceneMode mode, List<EntitySaveData> data)
@@ -362,8 +373,14 @@ public class GlobalBootstrapper : MonoBehaviour
         {
             SceneBootstrapper boot = new SceneBootstrapper();
             Debug.Log("!!!!!!!! "+_managerSFX + "   " + _managerUI + "   " + data);
-            boot.Initialize(_managerSFX, _managerUI, data);
+
+            var spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint")
+                          .Select(go => go.transform).ToArray();
+
+            boot.Initialize(_managerSFX, _managerUI, spawnPoints, data);
             _managerUI.Initialize();
+
+            currentEnemySpawner = boot.Spawner;
         }
         __LoadDataContainer = null;
     }

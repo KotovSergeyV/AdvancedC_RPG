@@ -20,8 +20,23 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1552b04f42da05740a8070fecbed1cff
+    m_Address: Assets/Developers Folder/Weapons/Melee/Katana/Prefab/CyberKatana.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1831cbfa546996448aa356305ac69e95
+    m_Address: Assets/Developers Folder/Weapons/Range/Blaster/Prefab/Blaster.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1b394cfee1e44044ebef2100a2b9ffe6
     m_Address: HealSpellSound
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2eac0cf68a21bf64cbfaa7ee9d4667c4
+    m_Address: Assets/Developers Folder/Entities/Characters/Enemy/Melee/Warrior/DEBUG_Warrior_Enemy.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -30,8 +45,23 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6ca92e0092b66b64f90084984e53d675
+    m_Address: Assets/Developers Folder/Weapons/Range/Blaster_Carabin/Prefab/Blaster_Carabin.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 93417d47ec6cc0143b21ee60509046be
     m_Address: HighlightCursor
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 97e3a01126225304fa5a5ba58e0741ce
+    m_Address: Assets/Developers Folder/Weapons/Melee/Katana_Muramasa/Prefab/Katana_Muramasa.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e80ec574731e41348a2a221066f39538
+    m_Address: Assets/Developers Folder/Entities/Characters/Enemy/Range/Gunner/DEBUG_Gunner_Enemy.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
