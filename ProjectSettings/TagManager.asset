@@ -9,6 +9,7 @@ TagManager:
   - PlayerCanvas
   - PauseScreen
   - Boss
+  - SpawnPoint
   layers:
   - Default
   - TransparentFX
