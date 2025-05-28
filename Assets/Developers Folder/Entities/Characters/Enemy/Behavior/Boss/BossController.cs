@@ -13,7 +13,7 @@ public class BossController : MonoBehaviour, IEntity
     private float _specialCooldownTime = 10f;
     private float _specialCooldownTimer = 0;
 
-    [field: SerializeField] public GameObject MagicPrefab { get; private set; }
+    public MagicProjectileFactory MagicFactory;
 
     void Start()
     {

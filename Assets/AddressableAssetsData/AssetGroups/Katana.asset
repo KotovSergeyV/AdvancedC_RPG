@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Katana
+  m_EditorClassIdentifier: 
+  m_GroupName: Katana
+  m_GUID: bd24dc0ff93dafa4389d80f55cf88694
+  m_SerializeEntries:
+  - m_GUID: 3b9b4ea69e84230488bac27e6cac8926
+    m_Address: CyberKatanaPrefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 52821d47a1d266d4480b56ff453e353e
+    m_Address: KatanaYellowMat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8046b54cb304e7b4b9ac63f9133f7e3d
+    m_Address: KatanaPurpleMat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9e0bb83832e7d27408893956025c928a
+    m_Address: KatanaGreenMat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f79e51f41bc449b4a997273645846637
+    m_Address: KatanaRedMat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 7716a52fe2e9d924ab540ece442153d0, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 1321d3b9ce9cc29429b67ba6fab3caec, type: 2}
+    - {fileID: 11400000, guid: fa5bc0bc6ee5c70468edc97dc648fe48, type: 2}

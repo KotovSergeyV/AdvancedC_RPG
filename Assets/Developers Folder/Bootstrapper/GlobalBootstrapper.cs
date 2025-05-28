@@ -21,6 +21,7 @@ public class GlobalBootstrapper : MonoBehaviour
 
 
     [SerializeField] private GameObject _playerPrefab;
+    [SerializeField] private GameObject _bossPrefab;
     [SerializeField] private GameObject _player;
 
 
@@ -261,11 +262,12 @@ public class GlobalBootstrapper : MonoBehaviour
         EntityCoreSystem entityCoreSystem;
         if (playerData != null)
         {
-             entityCoreSystem = PlayerCoreCreation(player, playerData);
+            entityCoreSystem = EntityCoreCreator.EntityCoreCreation(player, _managerUI, playerData);    
         }
-        else 
+        else
         {
-             entityCoreSystem = PlayerCoreCreation(player);
+            entityCoreSystem = EntityCoreCreator.EntityCoreCreation(player, _managerUI, 200, 200,
+                0.5f, 5, 5, 5, 5, 5 );;
         }
 
         // EndScreen
@@ -282,55 +284,6 @@ public class GlobalBootstrapper : MonoBehaviour
         player.AddComponent<CameraController>();
         player.AddComponent<PlayerJump>();
 
-    }
-
-    private EntityCoreSystem PlayerCoreCreation(GameObject entity)
-    {
-        EntityCoreSystem entityCoreSystem = entity.AddComponent<EntityCoreSystem>();
-
-        HealthBar healthBar = entity?.GetComponentInChildren<HealthBar>();
-        ManaBar manaBar = entity?.GetComponentInChildren<ManaBar>();
-
-        entityCoreSystem.Initialize(new HealthSystem(_managerUI, 100, healthBar), new DamageCalculationSystem(), new ManaSystem(_managerUI, 100, 0.5f, manaBar),
-            new StatSystem(1, 20, 1, 1, 1), new EntityStatesSystem());
-        try {
-            IHealthSystem healthSystem = (entityCoreSystem.GetHealthSystem());
-            ((HealthSystem)healthSystem).OnDamaged += entity.GetComponent<AnimatorController>().PlayHitAnimation;
-            ((HealthSystem)healthSystem).OnDeath += entity.GetComponent<AnimatorController>().PlayDeathAnimation;
-
-            Debug.Log("Initial HP:" + healthSystem.GetHp());
-        }
-        catch { Debug.Log("Damage/Death anim assignation error!"); }
-
-
-        return entityCoreSystem;
-    }
-
-    private EntityCoreSystem PlayerCoreCreation(GameObject entity, CoreData coreData)
-    {
-        EntityCoreSystem entityCoreSystem = entity.AddComponent<EntityCoreSystem>();
-
-        HealthBar healthBar = entity?.GetComponentInChildren<HealthBar>();
-        ManaBar manaBar = entity?.GetComponentInChildren<ManaBar>();
-
-        entityCoreSystem.Initialize(new HealthSystem(_managerUI, coreData.HealthData.MaxHealth,healthBar, coreData.HealthData.Health),
-            new DamageCalculationSystem(),
-            new ManaSystem(_managerUI, coreData.ManaData.MaxMana, 0.5f, manaBar, coreData.ManaData.Mana ),
-            new StatSystem(coreData.StatData.Agility, coreData.StatData.Attack, coreData.StatData.Luck, coreData.StatData.Defence, coreData.StatData.Intelligence),
-            new EntityStatesSystem() // <---- current state here after it released in game
-            );
-        try
-        {
-            IHealthSystem healthSystem = (entityCoreSystem.GetHealthSystem());
-            ((HealthSystem)healthSystem).OnDamaged += entity.GetComponent<AnimatorController>().PlayHitAnimation;
-            ((HealthSystem)healthSystem).OnDeath += entity.GetComponent<AnimatorController>().PlayDeathAnimation;
-
-            Debug.Log("Initial HP:" + healthSystem.GetHp());
-        }
-        catch { Debug.Log("Damage/Death anim assignation error!"); }
-
-
-        return entityCoreSystem;
     }
 
     private void LoadGameScene(List<EntitySaveData> data = null)
@@ -358,7 +311,9 @@ public class GlobalBootstrapper : MonoBehaviour
                           .Select(go => go.transform).ToArray();
 
             SceneBootstrapper boot = new SceneBootstrapper();
-            boot.Initialize(_managerSFX, _managerUI, spawnPoints);
+
+            boot.Initialize(_bossPrefab, _managerSFX, _managerUI, spawnPoints);
+
             _managerUI.Initialize();
             currentEnemySpawner = boot.Spawner;
         }
@@ -374,10 +329,12 @@ public class GlobalBootstrapper : MonoBehaviour
             SceneBootstrapper boot = new SceneBootstrapper();
             Debug.Log("!!!!!!!! "+_managerSFX + "   " + _managerUI + "   " + data);
 
+
             var spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint")
                           .Select(go => go.transform).ToArray();
 
-            boot.Initialize(_managerSFX, _managerUI, spawnPoints, data);
+            boot.Initialize(_bossPrefab, _managerSFX, _managerUI, spawnPoints, data);
+
             _managerUI.Initialize();
 
             currentEnemySpawner = boot.Spawner;

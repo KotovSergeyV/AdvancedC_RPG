@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
@@ -12,8 +13,6 @@ public class MagicProjectile_Base : MonoBehaviour
     private float _speed;
     
     private Struct_DamageData _damageData;
-    private string _audioEffectAdr;
-    private Rigidbody _rb;
     
     private GameObject _owner;
     
@@ -25,16 +24,14 @@ public class MagicProjectile_Base : MonoBehaviour
 
    
     public void Initialize(GameObject owner, float castTime, int manaCost, Vector3 direction, 
-        float speed, Struct_DamageData damageData, string audioEffectAddress, float TTL=10f)
+        float speed, Struct_DamageData damageData,  float TTL=10f)
     {
         CastTime = castTime;
         ManaCost = manaCost;
         _direction = direction;
         _speed = speed;
         _damageData = damageData;
-        _audioEffectAdr = audioEffectAddress;
         
-        _rb =  GetComponent<Rigidbody>();
         
         _owner = owner;
         
@@ -67,9 +64,11 @@ public class MagicProjectile_Base : MonoBehaviour
         {
             _owner.GetComponent<EntityCoreSystem>().GetDamageCalculationSystem().Damage(_owner, 
                 other.gameObject, _damageData);
+            GetComponent<AudioSource>().Play();//
             Destroy(gameObject);
+            
         }
     }
 
-
+  
 }

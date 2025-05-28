@@ -9,6 +9,7 @@ public class BossState_Follow : Abs_State_Boss
     float _followSpeed = 3f;
     Transform _target;
     NavMeshAgent _navMeshAgent;
+    private IAnimatorController _animatorController;
     
     protected override IEnumerator StateFixedUpdate()
     {
@@ -23,6 +24,9 @@ public class BossState_Follow : Abs_State_Boss
 
     public override void Enter(StateMachine_Boss stateMachine)
     {
+        _animatorController ??= GetComponent<IAnimatorController>();
+        _animatorController.PlayRunAnimation(true);
+        
         _target = stateMachine.GetMachineOwner().GetTarget();
         if (_navMeshAgent == null) _navMeshAgent = GetComponent<NavMeshAgent>(); 
         
@@ -32,6 +36,7 @@ public class BossState_Follow : Abs_State_Boss
 
     public override void Exit()
     {
+        _animatorController.PlayRunAnimation(false);
         _navMeshAgent.speed = 0;
         base.Exit();
     }

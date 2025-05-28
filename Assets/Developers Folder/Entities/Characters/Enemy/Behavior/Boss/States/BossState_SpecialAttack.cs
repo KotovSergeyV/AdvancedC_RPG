@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -24,21 +25,31 @@ public class BossState_SpecialAttack : Abs_State_Boss
         cooldownAfterCastTimer = Time.time;
 
                 
-        Struct_DamageData dd = new Struct_DamageData();
-        dd.DamageAmount = 10;
-        dd.DamageType = Enum_DamageTypes.Fire;
-        dd.isBlockable = false;
-        dd.isInnevitable = false;
-        dd.Responce = Enum_DamageResponses.NoResponse;
+        Struct_DamageData damageData = new Struct_DamageData();
+        damageData.DamageAmount = 10;
+        damageData.DamageType = Enum_DamageTypes.Fire;
+        damageData.isBlockable = false;
+        damageData.isInnevitable = false;
+        damageData.Responce = Enum_DamageResponses.NoResponse;
         
         
         base.Enter(stateMachine);
         BossController owner = StateMachine.GetMachineOwner();
-        GameObject magic = Instantiate(owner.MagicPrefab);
-        magic.transform.position = owner.transform.position + (owner.transform.forward + Vector3.up)*1.5f;
         
-        magic.GetComponent<MagicProjectile_Base>().Initialize(owner.gameObject, 1, 12,
-            owner.transform.forward, 10, dd, "");
+        GetMagicInstance(owner, damageData);
+
         
     }
+
+    private async void GetMagicInstance(BossController owner, Struct_DamageData damageData)
+    {
+        GameObject magic = await owner.MagicFactory.GetMagicAsync();
+        magic.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+        var magicPrj = Instantiate(magic, owner.transform.position + (owner.transform.forward + Vector3.up)*1.5f,
+            owner.transform.rotation );
+        magicPrj.GetComponent<MagicProjectile_Base>().Initialize(owner.gameObject, 1, 12,
+            owner.transform.forward, 10, damageData);
+
+    }
+    
 }

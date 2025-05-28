@@ -6,21 +6,23 @@ using UnityEngine.WSA;
 using static UnityEditor.Experimental.GraphView.GraphView;
 using static UnityEngine.EventSystems.EventTrigger;
 
-public class SceneBootstrapper 
+public class SceneBootstrapper
 {
     private EnemySpawner enemySpawner;
     public EnemySpawner Spawner => enemySpawner;
     private ManagerSFX sfxManager;
     private ManagerUI uiManager;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    public void Initialize(ManagerSFX managerSFX, ManagerUI managerUI, Transform[] spawnPoints = null, List<EntitySaveData> data =null)
+
+    public void Initialize(GameObject bossPrefab, ManagerSFX managerSFX, ManagerUI managerUI, Transform[] spawnPoints = null, List<EntitySaveData> data = null)
+
     {
         sfxManager = managerSFX;
         uiManager = managerUI;
 
         InitializeEnemies(managerSFX, managerUI, data);
-        InitializeBoss(managerSFX, managerUI);
+
+        InitializeBoss(bossPrefab, managerUI);
         InitializeSpawner(spawnPoints);
 
     }
@@ -94,19 +96,30 @@ public class SceneBootstrapper
             }
             else
             {
-                Debug.LogWarning($"WeaponSocket не найден у врага {enemy.name}");
+                Debug.LogWarning($"WeaponSocket пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ {enemy.name}");
             }
         }
 
-        EntityCoreCreation(enemy, uiManager);
+        EntityCoreCreator.EntityCoreCreation(enemy, uiManager);
     }
 
 
-    private void InitializeBoss(ManagerSFX managerSFX, ManagerUI managerUI)
+
+
+    private void InitializeBoss(GameObject bossPrefab, ManagerUI managerUI)
     {
-        GameObject boss = GameObject.FindGameObjectWithTag("Boss");
-        EntityCoreCreation(boss, managerUI, 500, 500, 1, 3, 15, 3, 3, 3);
+        BossSpawner bossSpawner = GameObject.FindFirstObjectByType<BossSpawner>();
+        int element = Random.Range(1, 4);
+        if (element == 1)
+            bossSpawner.SpawnBoss(bossPrefab, new LightningKatanaFactory(), new LightningMagicProjectileFactory(), managerUI);
+        else if (element == 2)
+            bossSpawner.SpawnBoss(bossPrefab, new FireKatanaFactory(), new FireMagicProjectileFactory(), managerUI);
+        else if (element == 3)
+            bossSpawner.SpawnBoss(bossPrefab, new WindKatanaFactory(), new WindMagicProjectileFactory(), managerUI);
+        else if (element == 4)
+            bossSpawner.SpawnBoss(bossPrefab, new SpaceKatanaFactory(), new SpaceMagicProjectileFactory(), managerUI);
     }
+
 
     private void InitializeEnemies(ManagerSFX managerSFX, ManagerUI managerUI, List<EntitySaveData> data)
     {
@@ -125,92 +138,26 @@ public class SceneBootstrapper
                 warrior.Initialize(managerSFX);
                 EntityAgregator.AddEntity(enemy, Enum_EntityType.Melee);
             }
-            if (data != null) {
+            if (data != null)
+            {
                 EntitySaveData entityData;
-                if (gunner) {
+                if (gunner)
+                {
                     entityData = data.FirstOrDefault(x => x.EntityType == Enum_EntityType.Range);
                     data.Remove(entityData);
                 }
-                else {
+                else
+                {
                     entityData = data.FirstOrDefault(x => x.EntityType == Enum_EntityType.Melee);
                     data.Remove(entityData);
                 }
-                EntityCoreCreation(enemy, managerUI, entityData.CoreData);
+                EntityCoreCreator.EntityCoreCreation(enemy, managerUI, entityData.CoreData);
                 enemy.transform.position = entityData.Position;
                 enemy.transform.rotation = entityData.Rotation;
             }
-            else EntityCoreCreation(enemy, managerUI);
-        } 
-    }
-    
-    private EntityCoreSystem EntityCoreCreation(GameObject entity, ManagerUI managerUI, int maxHp, int maxMana, float 
-        regenTime, int agi, int atc, int luck, int def, int intl)
-    {
-        EntityCoreSystem entityCoreSystem = entity.AddComponent<EntityCoreSystem>();
-
-        HealthBar healthBar = entity?.GetComponentInChildren<HealthBar>();
-        ManaBar manaBar = entity?.GetComponentInChildren<ManaBar>();
-
-        entityCoreSystem.Initialize(new HealthSystem(managerUI, maxHp, healthBar), new DamageCalculationSystem(), new ManaSystem(managerUI, maxMana, regenTime, manaBar),
-            new StatSystem(agi, atc, luck, def, intl), new EntityStatesSystem());
-        try
-        {
-            IHealthSystem healthSystem = (entityCoreSystem.GetHealthSystem());
-            ((HealthSystem)healthSystem).OnDamaged += entity.GetComponent<AnimatorController>().PlayHitAnimation;
-            ((HealthSystem)healthSystem).OnDeath += entity.GetComponent<AnimatorController>().PlayDeathAnimation;
-
+            else EntityCoreCreator.EntityCoreCreation(enemy, managerUI);
         }
-        catch { Debug.Log("Damage/Death anim assignation error!"); }
-
-
-        return entityCoreSystem;
-    }
-    
-    private EntityCoreSystem EntityCoreCreation(GameObject entity, ManagerUI managerUI)
-    {
-        EntityCoreSystem entityCoreSystem = entity.AddComponent<EntityCoreSystem>();
-
-        HealthBar healthBar = entity?.GetComponentInChildren<HealthBar>();
-        ManaBar manaBar = entity?.GetComponentInChildren<ManaBar>();
-
-        entityCoreSystem.Initialize(new HealthSystem(managerUI, 100, healthBar), new DamageCalculationSystem(), new ManaSystem(managerUI, 100, 0.5f, manaBar),
-            new StatSystem(1, 1, 1, 1, 1), new EntityStatesSystem());
-        try
-        {
-            IHealthSystem healthSystem = (entityCoreSystem.GetHealthSystem());
-            ((HealthSystem)healthSystem).OnDamaged += entity.GetComponent<AnimatorController>().PlayHitAnimation;
-            ((HealthSystem)healthSystem).OnDeath += entity.GetComponent<AnimatorController>().PlayDeathAnimation;
-
-        }
-        catch { Debug.Log("Damage/Death anim assignation error!"); }
-
-
-        return entityCoreSystem;
     }
 
-    private EntityCoreSystem EntityCoreCreation(GameObject entity, ManagerUI managerUI, CoreData coreData)
-    {
-        EntityCoreSystem entityCoreSystem = entity.AddComponent<EntityCoreSystem>();
 
-        HealthBar healthBar = entity?.GetComponentInChildren<HealthBar>();
-        ManaBar manaBar = entity?.GetComponentInChildren<ManaBar>();
-
-        entityCoreSystem.Initialize(new HealthSystem(managerUI, coreData.HealthData.MaxHealth, healthBar, coreData.HealthData.Health),
-            new DamageCalculationSystem(),
-            new ManaSystem(managerUI, coreData.ManaData.MaxMana, 0.5f, manaBar, coreData.ManaData.Mana),
-            new StatSystem(coreData.StatData.Agility, coreData.StatData.Attack, coreData.StatData.Luck, coreData.StatData.Defence, coreData.StatData.Intelligence),
-            new EntityStatesSystem() // <---- current state here after it released in game
-            );
-        try
-        {
-            IHealthSystem healthSystem = (entityCoreSystem.GetHealthSystem());
-            ((HealthSystem)healthSystem).OnDamaged += entity.GetComponent<AnimatorController>().PlayHitAnimation;
-            ((HealthSystem)healthSystem).OnDeath += entity.GetComponent<AnimatorController>().PlayDeathAnimation;
-
-        }
-        catch { Debug.Log("Damage/Death anim assignation error!"); }
-
-
-        return entityCoreSystem;
-    }
 }
