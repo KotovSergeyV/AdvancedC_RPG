@@ -121,7 +121,7 @@ MonoBehaviour:
   _damageCooldown: 1
   _canDamage: 1
   _weaponDamageData:
-    DamageAmount: 3
+    DamageAmount: 7
     Responce: 0
     DamageType: 0
     isInnevitable: 0
