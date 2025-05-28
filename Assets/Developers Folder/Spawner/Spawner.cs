@@ -6,8 +6,8 @@ public class Spawner : ISpawner
     protected List<Transform> spawnPoints = new List<Transform>();
     protected List<GameObject> spawnedObjects = new List<GameObject>();
     protected float spawnTimer;
-    protected float spawnInterval = 5f;
-    protected int maxObjects = 10;
+    protected float spawnInterval = 10f;
+    protected int maxObjects = 5;
     protected bool isActive;
 
     public event System.Action<GameObject> OnObjectSpawned;

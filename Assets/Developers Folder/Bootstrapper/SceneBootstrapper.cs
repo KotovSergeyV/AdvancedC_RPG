@@ -13,19 +13,33 @@ public class SceneBootstrapper
     private ManagerSFX sfxManager;
     private ManagerUI uiManager;
 
+    private AudioClip winTheme;
 
-    public void Initialize(GameObject bossPrefab, ManagerSFX managerSFX, ManagerUI managerUI, Transform[] spawnPoints = null, List<EntitySaveData> data = null)
+
+    public void Initialize(GameObject bossPrefab, ManagerSFX managerSFX, ManagerUI managerUI, Transform[] spawnPoints = null, AudioClip winMusic = null, List < EntitySaveData> data = null)
 
     {
         sfxManager = managerSFX;
         uiManager = managerUI;
+
+        winTheme = winMusic;
 
         InitializeEnemies(managerSFX, managerUI, data);
 
         EventHub.Broadcast_EnemyCounterUpdated += (count) =>
             {
                 if (count == 3)
+                {
                     InitializeBoss(bossPrefab, managerUI);
+                }
+
+                if (count == 5)
+                {
+                    sfxManager.StopAllSFX();
+                    sfxManager.PlaySFX(winTheme, Vector3.zero, ManagerSFX.MixerGroupType.Music, null, false, 1, 0.1f);
+                }
+
+                
             };
         
         InitializeSpawner(spawnPoints);
