@@ -22,10 +22,16 @@ public class SceneBootstrapper
 
         InitializeEnemies(managerSFX, managerUI, data);
 
-        InitializeBoss(bossPrefab, managerUI);
+        EventHub.Broadcast_EnemyCounterUpdated += (count) =>
+            {
+                if (count == 3)
+                    InitializeBoss(bossPrefab, managerUI);
+            };
+        
         InitializeSpawner(spawnPoints);
 
     }
+    
 
     private void InitializeSpawner(Transform[] spawnPoints)
     {
@@ -101,6 +107,7 @@ public class SceneBootstrapper
         }
 
         EntityCoreCreator.EntityCoreCreation(enemy, uiManager);
+        enemy.GetComponent<EntityCoreSystem>().GetHealthSystem().OnDeath += EventHub.AddDeathCall;
     }
 
 
@@ -152,10 +159,12 @@ public class SceneBootstrapper
                     data.Remove(entityData);
                 }
                 EntityCoreCreator.EntityCoreCreation(enemy, managerUI, entityData.CoreData);
+                enemy.GetComponent<EntityCoreSystem>().GetHealthSystem().OnDeath += EventHub.AddDeathCall;
                 enemy.transform.position = entityData.Position;
                 enemy.transform.rotation = entityData.Rotation;
             }
             else EntityCoreCreator.EntityCoreCreation(enemy, managerUI);
+            enemy.GetComponent<EntityCoreSystem>().GetHealthSystem().OnDeath += EventHub.AddDeathCall;
         }
     }
 
