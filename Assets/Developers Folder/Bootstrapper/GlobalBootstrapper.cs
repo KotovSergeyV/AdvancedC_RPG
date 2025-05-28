@@ -312,7 +312,7 @@ public class GlobalBootstrapper : MonoBehaviour
 
             SceneBootstrapper boot = new SceneBootstrapper();
 
-            boot.Initialize(_bossPrefab, _managerSFX, _managerUI, spawnPoints);
+            boot.Initialize(_bossPrefab, _managerSFX, _managerUI, spawnPoints, _musicClip[2]);
 
             _managerUI.Initialize();
             currentEnemySpawner = boot.Spawner;
@@ -333,7 +333,7 @@ public class GlobalBootstrapper : MonoBehaviour
             var spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint")
                           .Select(go => go.transform).ToArray();
 
-            boot.Initialize(_bossPrefab, _managerSFX, _managerUI, spawnPoints, data);
+            boot.Initialize(_bossPrefab, _managerSFX, _managerUI, spawnPoints, _musicClip[2], data);
 
             _managerUI.Initialize();
 

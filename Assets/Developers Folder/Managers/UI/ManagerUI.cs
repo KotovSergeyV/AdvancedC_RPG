@@ -7,9 +7,13 @@ public class ManagerUI : BaseManager<ManagerUI>
     private Dictionary<IHealthSystem, HealthBar> healthBars = new Dictionary<IHealthSystem, HealthBar>();
     private Dictionary<IManaSystem, ManaBar> manaBars = new Dictionary<IManaSystem, ManaBar>();
 
+    private ScoreDisplay scoreDisplay;
+    private int currentScore;
+
     private new void Awake()
     {
         playerCanvas = GameObject.FindGameObjectWithTag("PlayerCanvas");
+        currentScore = 0;
     }
 
     public override void Initialize()
@@ -23,6 +27,53 @@ public class ManagerUI : BaseManager<ManagerUI>
         }
 
         Debug.Log("UIManager Initialized: PlayerCanvas найден.");
+
+        InitializeScoreSystem();
+    }
+
+    private void InitializeScoreSystem()
+    {
+ 
+        scoreDisplay = FindObjectOfType<ScoreDisplay>();
+        if (scoreDisplay == null)
+        {
+
+            Debug.LogError("scoreDisplay not found");
+        }
+
+        EventHub.Broadcast_EnemyCounterUpdated += OnEnemyDeathCountUpdated;
+        UpdateScoreDisplay();
+    }
+
+    private void OnEnemyDeathCountUpdated(int deathCount)
+    {
+        currentScore = deathCount * 100;
+        UpdateScoreDisplay();
+    }
+
+    private void UpdateScoreDisplay()
+    {
+        if (scoreDisplay != null)
+        {
+            scoreDisplay.UpdateScore(currentScore);
+        }
+    }
+
+    public void AddScore(int amount)
+    {
+        currentScore += amount;
+        UpdateScoreDisplay();
+    }
+
+    public void ResetScore()
+    {
+        currentScore = 0;
+        UpdateScoreDisplay();
+    }
+
+    public int GetCurrentScore()
+    {
+        return currentScore;
     }
 
     public void RegisterHealthBar(IHealthSystem healthSystem, HealthBar healthBar)
