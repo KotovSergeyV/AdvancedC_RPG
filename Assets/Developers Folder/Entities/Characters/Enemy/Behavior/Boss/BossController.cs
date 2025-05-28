@@ -10,11 +10,19 @@ public class BossController : MonoBehaviour, IEntity
     
     private float _viewRange = 20f;
     private float _attackRange = 2.5f;
-    private float _specialCooldownTime = 10f;
+    private float _specialCooldownTime = 1f;
     private float _specialCooldownTimer = 0;
 
     public MagicProjectileFactory MagicFactory;
 
+    public ManagerSFX ManagerSFX {get; private set; }
+
+    public void Initialize(ManagerSFX managerSFX)
+    {
+        ManagerSFX =  managerSFX;
+    }
+    
+    
     void Start()
     {
         _target = GameObject.FindGameObjectWithTag("Player").transform;

@@ -267,7 +267,7 @@ public class GlobalBootstrapper : MonoBehaviour
         else
         {
             entityCoreSystem = EntityCoreCreator.EntityCoreCreation(player, _managerUI, 200, 200,
-                0.5f, 5, 5, 5, 5, 5 );;
+                0.5f, 5, 500, 5, 2, 5 );;
         }
 
         // EndScreen

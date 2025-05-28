@@ -12,7 +12,7 @@ public abstract class MagicProjectileFactory
     protected AssetReference _materialKey; 
     protected AssetReference _audioKey; 
 
-    public async Task<GameObject> GetMagicAsync()
+    public async Task<GameObject> GetMagicAsync(BossController owner, Struct_DamageData damageData )
     {
 
         _handleMagic = Addressables.LoadAssetAsync<GameObject>("ProjectileMagicPrefab");
@@ -33,8 +33,12 @@ public abstract class MagicProjectileFactory
         AudioClip sound = await _handleSound.Task;
         Addressables.Release(_handleSound);
         if (sound == null) return null;
-        magic.GetComponent<AudioSource>().clip = sound;
         
+        var magicPrj = GameObject.Instantiate(magic, owner.transform.position + (owner.transform.forward + Vector3.up)*1.5f,
+            owner.transform.rotation );
+        magicPrj.GetComponent<MagicProjectile_Base>().Initialize(owner.gameObject, 1, 12,
+            owner.transform.forward, 10, damageData, sound, owner.ManagerSFX);
+
         return magic;
     }
 

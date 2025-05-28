@@ -17,15 +17,20 @@ public class ManagerSFX : BaseManager<ManagerSFX>
         Debug.Log("SFXManager initialized.");
     }
 
-    public void PlaySFX(AudioClip clip, Vector3 position, MixerGroupType mixerGroupType, AudioSource template = null, bool is3D = true, float volume = 1f, float pitchVariation = 0.1f)
+    public void PlaySFX(AudioClip clip, Vector3 position, MixerGroupType mixerGroupType, 
+        AudioSource template = null, bool is3D = true, float volume = 1f, float pitchVariation = 0.1f)
     {
         if (clip == null) return;
 
         AudioMixerGroup mixerGroup = GetMixerGroup(mixerGroupType);
-
-        AudioSource newSource = (template != null)
-            ? Instantiate(template, position, Quaternion.identity)
-            : new GameObject("SFX_AudioSource").AddComponent<AudioSource>();
+        AudioSource newSource;
+        if (template != null) 
+             newSource = Instantiate(template, position, Quaternion.identity);
+        else
+        {
+            newSource = new GameObject("SFX_AudioSource").AddComponent<AudioSource>();
+            newSource.transform.position = position;
+        }
 
         newSource.clip = clip;
         newSource.volume = volume;

@@ -20,11 +20,14 @@ public class MagicProjectile_Base : MonoBehaviour
 
     private float TimeToLive;
     private float creationTime;
+    
+    AudioClip _burstClip = null;
+    private ManagerSFX _managerSFX;
 
 
    
     public void Initialize(GameObject owner, float castTime, int manaCost, Vector3 direction, 
-        float speed, Struct_DamageData damageData,  float TTL=10f)
+        float speed, Struct_DamageData damageData,  AudioClip burstClip, ManagerSFX managerSFX, float TTL=10f)
     {
         CastTime = castTime;
         ManaCost = manaCost;
@@ -42,6 +45,9 @@ public class MagicProjectile_Base : MonoBehaviour
         
         TimeToLive = TTL;
         creationTime = Time.time;
+        
+        _burstClip= burstClip;
+        _managerSFX = managerSFX;
     }
 
     private void FixedUpdate()
@@ -64,7 +70,9 @@ public class MagicProjectile_Base : MonoBehaviour
         {
             _owner.GetComponent<EntityCoreSystem>().GetDamageCalculationSystem().Damage(_owner, 
                 other.gameObject, _damageData);
-            GetComponent<AudioSource>().Play();//
+            
+            _managerSFX.PlaySFX(_burstClip, gameObject.transform.position, ManagerSFX.MixerGroupType.SFX,
+                null, true, 10f);
             Destroy(gameObject);
             
         }

@@ -30,7 +30,7 @@ public class SceneBootstrapper
             {
                 if (count == 3)
                 {
-                    InitializeBoss(bossPrefab, managerUI);
+                    InitializeBoss(bossPrefab, managerSFX, managerUI);
                 }
 
                 if (count == 5)
@@ -127,18 +127,18 @@ public class SceneBootstrapper
 
 
 
-    private void InitializeBoss(GameObject bossPrefab, ManagerUI managerUI)
+    private void InitializeBoss(GameObject bossPrefab, ManagerSFX managerSFX,  ManagerUI managerUI)
     {
         BossSpawner bossSpawner = GameObject.FindFirstObjectByType<BossSpawner>();
         int element = Random.Range(1, 4);
         if (element == 1)
-            bossSpawner.SpawnBoss(bossPrefab, new LightningKatanaFactory(), new LightningMagicProjectileFactory(), managerUI);
+            bossSpawner.SpawnBoss(bossPrefab, new LightningKatanaFactory(),  new LightningMagicProjectileFactory(), managerUI, managerSFX);
         else if (element == 2)
-            bossSpawner.SpawnBoss(bossPrefab, new FireKatanaFactory(), new FireMagicProjectileFactory(), managerUI);
+            bossSpawner.SpawnBoss(bossPrefab, new FireKatanaFactory(), new FireMagicProjectileFactory(), managerUI, managerSFX);
         else if (element == 3)
-            bossSpawner.SpawnBoss(bossPrefab, new WindKatanaFactory(), new WindMagicProjectileFactory(), managerUI);
+            bossSpawner.SpawnBoss(bossPrefab, new WindKatanaFactory(), new WindMagicProjectileFactory(), managerUI, managerSFX);
         else if (element == 4)
-            bossSpawner.SpawnBoss(bossPrefab, new SpaceKatanaFactory(), new SpaceMagicProjectileFactory(), managerUI);
+            bossSpawner.SpawnBoss(bossPrefab, new SpaceKatanaFactory(), new SpaceMagicProjectileFactory(),managerUI, managerSFX);
     }
 
 

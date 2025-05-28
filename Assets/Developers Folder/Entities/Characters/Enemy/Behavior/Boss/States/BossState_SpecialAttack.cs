@@ -22,6 +22,7 @@ public class BossState_SpecialAttack : Abs_State_Boss
 
     public override void Enter(StateMachine_Boss stateMachine)
     {
+        
         cooldownAfterCastTimer = Time.time;
 
                 
@@ -43,12 +44,8 @@ public class BossState_SpecialAttack : Abs_State_Boss
 
     private async void GetMagicInstance(BossController owner, Struct_DamageData damageData)
     {
-        GameObject magic = await owner.MagicFactory.GetMagicAsync();
+        GameObject magic = await owner.MagicFactory.GetMagicAsync(owner, damageData);
         magic.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-        var magicPrj = Instantiate(magic, owner.transform.position + (owner.transform.forward + Vector3.up)*1.5f,
-            owner.transform.rotation );
-        magicPrj.GetComponent<MagicProjectile_Base>().Initialize(owner.gameObject, 1, 12,
-            owner.transform.forward, 10, damageData);
 
     }
     
