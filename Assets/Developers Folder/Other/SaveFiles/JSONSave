@@ -1,0 +1,221 @@
+{
+    "data": [
+        {
+            "Position": {
+                "x": 0.0,
+                "y": -1.4820709228515626,
+                "z": 0.0
+            },
+            "Rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+            },
+            "EntityType": 0,
+            "CoreData": {
+                "HealthData": {
+                    "MaxHealth": 100,
+                    "Health": 100
+                },
+                "ManaData": {
+                    "MaxMana": 100,
+                    "Mana": 100
+                },
+                "StatData": {
+                    "Attack": 20,
+                    "Defence": 1,
+                    "Agility": 1,
+                    "Luck": 1,
+                    "Intelligence": 1
+                }
+            }
+        },
+        {
+            "Position": {
+                "x": 19.767236709594728,
+                "y": -1.495635986328125,
+                "z": 24.149770736694337
+            },
+            "Rotation": {
+                "x": 0.0,
+                "y": -0.5813441276550293,
+                "z": 0.0,
+                "w": 0.8136578798294067
+            },
+            "EntityType": 2,
+            "CoreData": {
+                "HealthData": {
+                    "MaxHealth": 100,
+                    "Health": 100
+                },
+                "ManaData": {
+                    "MaxMana": 100,
+                    "Mana": 100
+                },
+                "StatData": {
+                    "Attack": 1,
+                    "Defence": 1,
+                    "Agility": 1,
+                    "Luck": 1,
+                    "Intelligence": 1
+                }
+            }
+        },
+        {
+            "Position": {
+                "x": -1.063929557800293,
+                "y": -1.495635986328125,
+                "z": 43.32416534423828
+            },
+            "Rotation": {
+                "x": 0.0,
+                "y": -0.9050078392028809,
+                "z": 0.0,
+                "w": 0.4253949522972107
+            },
+            "EntityType": 1,
+            "CoreData": {
+                "HealthData": {
+                    "MaxHealth": 100,
+                    "Health": 100
+                },
+                "ManaData": {
+                    "MaxMana": 100,
+                    "Mana": 100
+                },
+                "StatData": {
+                    "Attack": 1,
+                    "Defence": 1,
+                    "Agility": 1,
+                    "Luck": 1,
+                    "Intelligence": 1
+                }
+            }
+        },
+        {
+            "Position": {
+                "x": 24.218341827392579,
+                "y": -1.495635986328125,
+                "z": 22.135915756225587
+            },
+            "Rotation": {
+                "x": 0.0,
+                "y": -0.5634118318557739,
+                "z": 0.0,
+                "w": 0.8261762857437134
+            },
+            "EntityType": 1,
+            "CoreData": {
+                "HealthData": {
+                    "MaxHealth": 100,
+                    "Health": 100
+                },
+                "ManaData": {
+                    "MaxMana": 100,
+                    "Mana": 100
+                },
+                "StatData": {
+                    "Attack": 1,
+                    "Defence": 1,
+                    "Agility": 1,
+                    "Luck": 1,
+                    "Intelligence": 1
+                }
+            }
+        },
+        {
+            "Position": {
+                "x": 20.374876022338868,
+                "y": -1.495635986328125,
+                "z": 45.655738830566409
+            },
+            "Rotation": {
+                "x": 0.0,
+                "y": -0.8876067996025086,
+                "z": 0.0,
+                "w": 0.4606020450592041
+            },
+            "EntityType": 2,
+            "CoreData": {
+                "HealthData": {
+                    "MaxHealth": 100,
+                    "Health": 100
+                },
+                "ManaData": {
+                    "MaxMana": 100,
+                    "Mana": 100
+                },
+                "StatData": {
+                    "Attack": 1,
+                    "Defence": 1,
+                    "Agility": 1,
+                    "Luck": 1,
+                    "Intelligence": 1
+                }
+            }
+        },
+        {
+            "Position": {
+                "x": 24.137855529785158,
+                "y": -1.495635986328125,
+                "z": 44.593631744384769
+            },
+            "Rotation": {
+                "x": 0.0,
+                "y": -0.7865234613418579,
+                "z": 0.0,
+                "w": 0.6175605058670044
+            },
+            "EntityType": 1,
+            "CoreData": {
+                "HealthData": {
+                    "MaxHealth": 100,
+                    "Health": 100
+                },
+                "ManaData": {
+                    "MaxMana": 100,
+                    "Mana": 100
+                },
+                "StatData": {
+                    "Attack": 1,
+                    "Defence": 1,
+                    "Agility": 1,
+                    "Luck": 1,
+                    "Intelligence": 1
+                }
+            }
+        },
+        {
+            "Position": {
+                "x": -4.145626544952393,
+                "y": -1.495635986328125,
+                "z": 44.75007629394531
+            },
+            "Rotation": {
+                "x": 0.0,
+                "y": -0.9704717993736267,
+                "z": 0.0,
+                "w": 0.2412146031856537
+            },
+            "EntityType": 2,
+            "CoreData": {
+                "HealthData": {
+                    "MaxHealth": 100,
+                    "Health": 100
+                },
+                "ManaData": {
+                    "MaxMana": 100,
+                    "Mana": 100
+                },
+                "StatData": {
+                    "Attack": 1,
+                    "Defence": 1,
+                    "Agility": 1,
+                    "Luck": 1,
+                    "Intelligence": 1
+                }
+            }
+        }
+    ]
+}
