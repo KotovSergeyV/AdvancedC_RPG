@@ -15,11 +15,14 @@
 
 
 ## Описание работы спавнера босса:
+
 BossSpawner (Assets/Developers Folder/Scripts/Entities/Enemy/Boss/BossSpawner.cs), вызывается из SceneBootstrapper и используюет фабрики магических снарядов (Assets/Developers Folder/Scripts/Magic/MagicProjectileFactory.cs) и катаны (Assets/Developers Folder/Scripts/Weapons/Melee/Katana/KatanaFactory.cs) для получения одного из четырех вариантов оружия.
 
 У фабрик магии/катаны есть общая абстрактная реализация и 4 варианта спавна, переопределяющие материал и звуки/цвет эффектов. Элементы подгружаются через Adressables.
 
-Спавн привязан к каналу DeathCount из статичного класса EventHub (Assets/Developers Folder/Scripts/EventChanel/EventHub.cs), собирающем информацию о каждой смерти врага и транслирующий текущее число убитых в канал. 
+## Канал оповещения об убитых врагах
+
+Спавн босса привязан к каналу DeathCount из статичного класса EventHub (Assets/Developers Folder/Scripts/EventChanel/EventHub.cs), собирающем информацию о каждой смерти врага и транслирующий текущее число убитых в канал. 
 BossSpawner подписывается на канал через SceneBootstrapper и спавнит босса когда счетчик доходит до 3.
 
 К этому же каналу привязано проигрывание звуков после убийства 5 врагов и обновление scoreboard (Assets/Developers Folder/Scripts/HUD/ScoreDisplay.cs).
