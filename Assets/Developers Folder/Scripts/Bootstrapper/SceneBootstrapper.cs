@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.WSA;
 using static UnityEditor.Experimental.GraphView.GraphView;
 using static UnityEngine.EventSystems.EventTrigger;
@@ -43,31 +44,31 @@ public class SceneBootstrapper
             };
         
         InitializeSpawner(spawnPoints);
-
+        
     }
-    
+
 
     private void InitializeSpawner(Transform[] spawnPoints)
     {
         enemySpawner = new EnemySpawner(spawnPoints);
 
         var meleePrefab = AssetDatabase.LoadAssetAtPath<GameObject>(
-            "Assets/Developers Folder/Entities/Characters/Enemy/Melee/Warrior/DEBUG_Warrior_Enemy.prefab");
+            "Assets/Developers Folder/Other/Entities/Characters/Enemy/Melee/Warrior/DEBUG_Warrior_Enemy.prefab");
 
         var rangedPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(
-            "Assets/Developers Folder/Entities/Characters/Enemy/Range/Gunner/DEBUG_Gunner_Enemy.prefab");
+            "Assets/Developers Folder/Other/Entities/Characters/Enemy/Range/Gunner/DEBUG_Gunner_Enemy.prefab");
 
         var sword = AssetDatabase.LoadAssetAtPath<GameObject>(
-            "Assets/Developers Folder/Weapons/Melee/Katana/Prefab/CyberKatana.prefab");
+            "Assets/Developers Folder/Other/Weapons/Katana/Prefab/CyberKatana.prefab");
 
         var muramasa = AssetDatabase.LoadAssetAtPath<GameObject>
-            ("Assets/Developers Folder/Weapons/Melee/Katana_Muramasa/Prefab/Katana_Muramasa.prefab");
+            ("Assets/Developers Folder/Other/Weapons/Katana_Muramasa/Prefab/Katana_Muramasa.prefab");
 
         var blaster = AssetDatabase.LoadAssetAtPath<GameObject>(
-            "Assets/Developers Folder/Weapons/Range/Blaster/Prefab/Blaster.prefab");
+            "Assets/Developers Folder/Other/Weapons/Range/Blaster/Prefab/Blaster.prefab");
 
         var blaster_carabin = AssetDatabase.LoadAssetAtPath<GameObject>
-            ("Assets/Developers Folder/Weapons/Range/Blaster_Carabin/Prefab/Blaster_Carabin.prefab");
+            ("Assets/Developers Folder/Other/Weapons/Range/Blaster_Carabin/Prefab/Blaster_Carabin.prefab");
 
 
         if (meleePrefab == null) Debug.LogError("Melee enemy prefab not found!");
@@ -122,6 +123,7 @@ public class SceneBootstrapper
 
         EntityCoreCreator.EntityCoreCreation(enemy, uiManager);
         enemy.GetComponent<EntityCoreSystem>().GetHealthSystem().OnDeath += EventHub.AddDeathCall;
+
     }
 
 

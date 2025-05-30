@@ -17,6 +17,8 @@ using static UnityEngine.Timeline.DirectorControlPlayable;
 
 public class GlobalBootstrapper : MonoBehaviour
 {
+    SceneBootstrapper _sceneBoot;
+
     [SerializeField] private InputActionAsset inputActions;
 
 
@@ -305,17 +307,17 @@ public class GlobalBootstrapper : MonoBehaviour
     {
         if (scene.name == "CyberpunkScene")
         {
+            EventHub.ResetDeathCounter();
             SceneManager.sceneLoaded -= OnNewSceneLoaded;
 
             var spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint")
                           .Select(go => go.transform).ToArray();
-
-            SceneBootstrapper boot = new SceneBootstrapper();
-
-            boot.Initialize(_bossPrefab, _managerSFX, _managerUI, spawnPoints, _musicClip[2]);
+            _sceneBoot = new SceneBootstrapper();
+            _sceneBoot.Initialize(_bossPrefab, _managerSFX, _managerUI, spawnPoints, _musicClip[2]);
+            
 
             _managerUI.Initialize();
-            currentEnemySpawner = boot.Spawner;
+            currentEnemySpawner = _sceneBoot.Spawner;
         }
     }
     private void OnSceneLoadedFromSave(UnityEngine.SceneManagement.Scene scene, LoadSceneMode mode, List<EntitySaveData> data)
@@ -326,18 +328,18 @@ public class GlobalBootstrapper : MonoBehaviour
 
         if (scene.name == "CyberpunkScene")
         {
-            SceneBootstrapper boot = new SceneBootstrapper();
+            _sceneBoot = new SceneBootstrapper();
             Debug.Log("!!!!!!!! "+_managerSFX + "   " + _managerUI + "   " + data);
 
 
             var spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint")
                           .Select(go => go.transform).ToArray();
 
-            boot.Initialize(_bossPrefab, _managerSFX, _managerUI, spawnPoints, _musicClip[2], data);
+            _sceneBoot.Initialize(_bossPrefab, _managerSFX, _managerUI, spawnPoints, _musicClip[2], data);
 
             _managerUI.Initialize();
 
-            currentEnemySpawner = boot.Spawner;
+            currentEnemySpawner = _sceneBoot.Spawner;
         }
         __LoadDataContainer = null;
     }

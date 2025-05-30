@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class RepositoryJson : IRepository
 {
-    private readonly string _savePath = "Assets/Developers Folder/SaveLoad/SaveFiles/JSONSave";
+    private readonly string _savePath = "Assets/Developers Folder/Other/SaveLoad/SaveFiles/JSONSave";
     public async Task SaveDataAsync(List<EntitySaveData> data)
     {
         Debug.LogWarning("Data count to save: " + data);

@@ -53,7 +53,10 @@ public class Spawner : ISpawner
 
         var spawnPoint = GetRandomSpawnPoint();
         var obj = Object.Instantiate(GetObjectToSpawn(), spawnPoint.position, spawnPoint.rotation);
+        obj.transform.SetParent(spawnPoint.transform);
         spawnedObjects.Add(obj);
+        Debug.Log(obj);
+        Debug.Log(spawnPoint);
         OnObjectSpawned?.Invoke(obj);
     }
 

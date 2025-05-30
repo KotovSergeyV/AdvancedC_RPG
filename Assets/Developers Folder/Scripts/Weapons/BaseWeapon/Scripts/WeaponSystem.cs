@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.PackageManager;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class WeaponSystem : MonoBehaviour
 {
@@ -33,15 +35,22 @@ public class WeaponSystem : MonoBehaviour
 
     protected void OnWeaponDamage(GameObject target)
     {
-        if (target.layer != _physicLayer && _canDamage)
+        if (target.layer != _physicLayer && _canDamage && (target.layer == 0 || target.layer==6))
         {
-            _canDamage = false;
-            
+            try
+            {
+                _canDamage = false;
+
+
                 EntityCoreSystem coreSystem = _rootOwner.GetComponent<EntityCoreSystem>();
+
                 coreSystem.GetDamageCalculationSystem().Damage(_rootOwner, target, _weaponDamageData, coreSystem.GetStatSystem());
 
-            StartCoroutine(ReloadCanDamage());
-            
+                StartCoroutine(ReloadCanDamage());
+            }
+            catch (System.Exception e)
+            {
+            }
         }
         
     }

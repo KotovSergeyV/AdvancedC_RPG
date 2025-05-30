@@ -10,6 +10,7 @@ public class BossSpawner : MonoBehaviour
     {
         var katana = await katanaFactory.GetKatanaAsync();
         GameObject boss = Instantiate(bossPrefab, transform.position, transform.rotation );
+        boss.transform.SetParent( transform );
         if (katana is not null)
             Instantiate(katana, boss.GetComponentInChildren<WeaponSocketMarker>().transform); 
         else 

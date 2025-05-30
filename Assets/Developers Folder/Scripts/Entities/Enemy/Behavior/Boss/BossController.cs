@@ -13,6 +13,8 @@ public class BossController : MonoBehaviour, IEntity
     private float _specialCooldownTime = 10f;
     private float _specialCooldownTimer = 0;
 
+    bool _isDead = false;
+
     public MagicProjectileFactory MagicFactory;
 
     public ManagerSFX ManagerSFX {get; private set; }
@@ -20,6 +22,7 @@ public class BossController : MonoBehaviour, IEntity
     public void Initialize(ManagerSFX managerSFX)
     {
         ManagerSFX =  managerSFX;
+        
     }
     
     
@@ -100,6 +103,7 @@ public class BossController : MonoBehaviour, IEntity
             CreateMachine(stateTransitions_Peaceful);
             
         }
+        GetComponent<EntityCoreSystem>().GetHealthSystem().OnDeath += delegate { CreateMachine(stateTransitions_Peaceful); };
     }
 
     void CreateMachine(Dictionary<Abs_State_Boss, List<(Func<Abs_State_Boss, bool> condition,
@@ -138,6 +142,7 @@ public class BossController : MonoBehaviour, IEntity
         }
         return false;
     }
+
 
     #endregion
 

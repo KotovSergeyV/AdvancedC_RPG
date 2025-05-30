@@ -13,6 +13,11 @@ public static class EventHub
         Broadcast_EnemyCounterUpdated.Invoke(EnemyDeathCalls);
     }
 
+    public static void ResetDeathCounter()
+    {
+        EnemyDeathCalls = 0;
+        Broadcast_EnemyCounterUpdated = delegate { };
+    }
     #endregion
-    
+
 }
